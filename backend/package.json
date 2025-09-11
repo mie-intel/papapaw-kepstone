@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Ini projek PAW",
+  "description": "Ini Back End PAW",
   "main": "index.js",
   "scripts": {
     "test": "nodemon"
@@ -9,5 +9,29 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@next/eslint-plugin-next": "^15.1.3",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/node": "22.10.7",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^9.26.0",
+    "eslint-config-next": "^15.3.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "postcss": "^8.4.38",
+    "prettier": "^3.5.3",
+    "tw-animate-css": "^1.3.5",
+    "typescript": "^5.4.5"
+  }
 }
