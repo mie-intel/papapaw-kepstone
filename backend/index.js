@@ -1,7 +1,8 @@
-const express = require('express')
+import express from 'express';
 const app = express()
 const port = 3000
-const pekerjaRouter = require('./routes/pekerja')
+
+import pekerjaRouter from './routes/pekerjaRoutes.js';
 
 app.use(express.json());
 
