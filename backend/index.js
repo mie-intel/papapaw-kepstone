@@ -1,19 +1,12 @@
-// <<<<<<< HEAD
-// import express from 'express';
-// const app = express()
-// const port = 3000
+import express from 'express';
+const app = express()
+const port = 3000
 
-// import pekerjaRouter from './routes/pekerjaRoutes.js';
-
-const express = require('express');
-const app = express();
-const port = 3000;
-const pekerjaRouter = require('./routes/pekerja');
+import pekerjaRouter from './routes/pekerjaRoutes.js';
 // const connectDB = require('./config/db'); // ADD THIS
 
 
 app.use(express.json());
-
 app.use('/pekerja', pekerjaRouter);
 
 app.get('/', (req, res) => {

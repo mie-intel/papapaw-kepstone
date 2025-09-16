@@ -1,6 +1,6 @@
 import express from 'express'
+import {createPekerja} from "../controller/pekerja/createPekerja.js"
 const router = express.Router()
-import {createPekerja} from "../controllers/pekerja/pekerjaController.js"
 
 router.use(logger)
 

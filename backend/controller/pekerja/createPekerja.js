@@ -1,9 +1,9 @@
-const Pekerja = require('../models/objectModel').Pekerja;
+import { Pekerja } from '../../models/objectModel.js';
 
 //temporary tanpa db
 const pekerjaList=[];
 
-const createPekerja = async (req,res) => {
+export const createPekerja = async (req,res) => {
 
     const { nomorInduk, nama, jabatan, departemen, username, password } = req.body;
     if (!nomorInduk || !nama || !jabatan || !departemen || !username || !password) {
@@ -33,9 +33,7 @@ const createPekerja = async (req,res) => {
         jabatan,
         departemen,
         username,
-        // !! PENTING: Dalam aplikasi nyata, JANGAN PERNAH simpan password sebagai plain text.
-        // Gunakan library seperti bcrypt untuk melakukan hashing pada password.
-        password, // Di sini kita simpan langsung untuk contoh saja
+        password,
     });
 
     pekerjaList.push(pekerjaBaru)
@@ -43,17 +41,11 @@ const createPekerja = async (req,res) => {
     res.status(201).json({
         message: 'Pekerja baru berhasil ditambahkan!',
         data: {
-            id: pekerjaBaru.id,
             nomorInduk: pekerjaBaru.nomorInduk,
             nama: pekerjaBaru.nama,
+            jabatan: pekerjaBaru.jabatan,
+            departemen: pekerjaBaru.departemen,
             username: pekerjaBaru.username
         }
     });
-
-
-
 };
-
-module.exports={
-    createPekerja
-}
