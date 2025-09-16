@@ -1,5 +1,8 @@
 const Pekerja = require('../models/objectModel').Pekerja;
 
+//temporary tanpa db
+const pekerjaList=[];
+
 const createPekerja = async (req,res) => {
 
     const { nomorInduk, nama, jabatan, departemen, username, password } = req.body;
@@ -10,13 +13,20 @@ const createPekerja = async (req,res) => {
     }
 
     // cek apakah nomor induk already exists
-    const isExist = await Pekerja.findOne({ nomorInduk });
+    // const isExist = await Pekerja.findOne({ nomorInduk });
+    // if (isExist) {
+    //     return res.status(409).json({
+    //         error: `Pekerja dengan nomorInduk ${nomorInduk} sudah terdaftar.`
+    //     });
+    // }
+
+    const isExist = pekerjaList.find(p => p.nomorInduk === nomorInduk);
     if (isExist) {
         return res.status(409).json({
             error: `Pekerja dengan nomorInduk ${nomorInduk} sudah terdaftar.`
         });
     }
-  
+
     const pekerjaBaru = new Pekerja({
         nomorInduk,
         nama,
@@ -28,7 +38,7 @@ const createPekerja = async (req,res) => {
         password, // Di sini kita simpan langsung untuk contoh saja
     });
 
-    await pekerjaBaru.save();
+    pekerjaList.push(pekerjaBaru)
 
     res.status(201).json({
         message: 'Pekerja baru berhasil ditambahkan!',

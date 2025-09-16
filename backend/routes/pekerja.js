@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const {
-    createPekerja,
-} = require('../controllers/objectModel');
+const  pekerjaController= require('../controller/pekerjaController');
 
 function logger(req,res,next) {
     console.log(req.originalUrl)
     next()
 }
 
-router.route('/')
-    .post(logger, createPekerja);
+router.post('/', pekerjaController.createPekerja);
+
+module.exports = router;
