@@ -1,10 +1,13 @@
 import express from 'express';
+import pekerjaRouter from './routes/pekerjaRoutes.js';
+import { connectDB } from './config/db.js';
+import dotenv from "dotenv";
 const app = express()
 const port = 3000
 
-import pekerjaRouter from './routes/pekerjaRoutes.js';
-// const connectDB = require('./config/db'); // ADD THIS
+dotenv.config()
 
+connectDB()
 
 app.use(express.json());
 app.use('/pekerja', pekerjaRouter);
