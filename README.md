@@ -11,7 +11,7 @@ Install all dependencies and run the development server using this command
 - **pnpm** (recommended)
 
   ```
-  pnpm i
+  pnpm is
   pnpm dev
   ```
 
