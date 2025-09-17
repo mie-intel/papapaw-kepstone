@@ -4,12 +4,10 @@ export async function createPekerja(req, res) {
   try {
     const { nomorInduk, nama, jabatan, departemen, username, password } = req.body;
     if (!nomorInduk || !nama || !jabatan || !departemen || !username || !password) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Data tidak lengkap. Semua field (nomor induk, nama, jabatan, departemen, username, password) harus diisi.",
-        });
+      return res.status(400).json({
+        error:
+          "Data tidak lengkap. Semua field (nomor induk, nama, jabatan, departemen, username, password) harus diisi.",
+      });
     }
     // cek apakah nomor induk already exists
     const isExist = await Pekerja.findOne({ nomorInduk });
@@ -38,11 +36,7 @@ export async function createPekerja(req, res) {
     res.status(201).json({
       message: "Pekerja baru berhasil ditambahkan!",
       data: {
-        nomorInduk: pekerjaBaru.nomorInduk,
-        nama: pekerjaBaru.nama,
-        jabatan: pekerjaBaru.jabatan,
-        departemen: pekerjaBaru.departemen,
-        username: pekerjaBaru.username,
+        ...pekerjaBaru,
       },
     });
   } catch (error) {

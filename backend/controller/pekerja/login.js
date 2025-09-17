@@ -27,6 +27,8 @@ export async function login(req, res) {
       id: user._id, // Gunakan _id dari MongoDB
       username: user.username,
       nama: user.nama,
+      jabatan: user.jabatan,
+      departemen: user.departemen,
     };
 
     const secretKey = process.env.JWT_SECRET;

@@ -1,11 +1,10 @@
 import express from "express";
-import { createPekerja } from "../controller/pekerja/createPekerja.js";
-import { login } from "../controller/pekerja/login.js";
+import { register, login } from "../controller/pekerja";
 const router = express.Router();
 
 router.use(logger);
 
-router.post("/", createPekerja);
+router.post("/", register);
 router.post("/login", login);
 
 function logger(req, res, next) {
