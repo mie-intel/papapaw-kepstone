@@ -1,6 +1,6 @@
 import { Pekerja } from "../../models/objectModel.js";
 
-export async function createPekerja(req, res) {
+export async function register(req, res) {
   try {
     const { nomorInduk, nama, jabatan, departemen, username, password } = req.body;
     if (!nomorInduk || !nama || !jabatan || !departemen || !username || !password) {
