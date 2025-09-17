@@ -67,7 +67,7 @@ const eslintConfig = [
       "prettier/prettier": [
         "error",
         {
-          endOfLine: "lf",
+          endOfLine: "auto",
         },
       ],
       "react-hooks/exhaustive-deps": "warn",

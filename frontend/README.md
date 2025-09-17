@@ -50,7 +50,6 @@ Contoh: feature/navbar.arya
 `<type>(<scope>): <short_summary>`
 
 - `<type>` :
-
   - feat: saya menambahkan fitur baru
   - fix: saya memperbaiki fitur
 
