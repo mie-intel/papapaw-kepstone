@@ -1,5 +1,5 @@
 import express from "express";
-import pekerjaRouter from "./routes/pekerjaRoutes.js";
+import pekerjaRouter from "./routes/pekerja.js";
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 
