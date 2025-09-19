@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login } from "../controller/pekerja";
+import { register, login } from "../controller/pekerja/index.js";
 const router = express.Router();
 
 router.use(logger);
