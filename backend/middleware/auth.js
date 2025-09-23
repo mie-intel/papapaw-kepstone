@@ -1,4 +1,4 @@
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const protectRoute = (req, res, next) => {
   let token;
@@ -10,12 +10,13 @@ const protectRoute = (req, res, next) => {
       token = authHeader.split(" ")[1];
 
       // Verifikasi token menggunakan secret yang SAMA
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+      const secretKey = process.env.JWT_SECRET;
+      const decoded = jwt.verify(token, secretKey);
       // Jika berhasil, simpan data user ke request untuk dipakai di controller selanjutnya
       req.user = decoded;
       next(); // Lanjutkan ke controller
     } catch (error) {
+      console.log("Token verification error:", error);
       res.status(401).json({ message: "Token tidak valid atau sudah kedaluwarsa." });
     }
   } else {
