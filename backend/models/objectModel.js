@@ -10,7 +10,7 @@ const pekerjaSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-// Middleware untuk hashing password (tidak perlu diubah)
+// hashing
 pekerjaSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
