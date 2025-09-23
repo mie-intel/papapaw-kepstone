@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import * as jwt from "jsonwebtoken";
 
 const protectRoute = (req, res, next) => {
   let token;
@@ -24,3 +24,12 @@ const protectRoute = (req, res, next) => {
 };
 
 export { protectRoute };
+
+export function rolesAuthorization(...roles) {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Akses ditolak." });
+    }
+    next();
+  };
+}
