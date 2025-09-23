@@ -19,13 +19,13 @@ pekerjaSchema.pre("save", async function (next) {
 
 const laporanSchema = new mongoose.Schema({
   idSurat: { type: String, required: true, unique: true },
-  tanggal: { type: Date, required: true },
+  tanggal: { type: Date, required: true, default: Date.now },
   skalaCedera: { type: Number, required: true },
   detail: { type: String, required: true },
-  status: { type: Number, required: true },
+  status: { type: Number, required: true, default: 1 },
   lokasi: { type: String, required: true },
   pesanKesalahan: { type: String, required: false },
-  tertolak: { type: Boolean, required: true },
+  tertolak: { type: Boolean, required: true, default: false },
 });
 
 const Pekerja = mongoose.model("Pekerja", pekerjaSchema);
