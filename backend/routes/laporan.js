@@ -1,11 +1,10 @@
 import express from "express";
-import { register, login } from "../controller/pekerja/index.js";
+import { create } from "../controller/laporan/index.js";
 import { logger } from "../middleware/logger.js";
 const router = express.Router();
 
 router.use(logger);
 
-router.post("/", register);
-router.post("/login", login);
+router.post("/", create);
 
 export default router;
