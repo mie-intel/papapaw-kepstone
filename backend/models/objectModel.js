@@ -4,8 +4,8 @@ import bcrypt from "bcrypt";
 const pekerjaSchema = new mongoose.Schema({
   nomorInduk: { type: String, required: true, unique: true },
   nama: { type: String, required: true },
-  jabatan: { type: String, required: true },
-  departemen: { type: String, required: true },
+  jabatan: { type: String, enum: ["hse", "kepala bagian", "direktur"], required: true },
+  departemen: { type: String, enum: ["mechanical", "electronical", "software", "qa", "warehouse"], required: false },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
@@ -19,17 +19,18 @@ pekerjaSchema.pre("save", async function (next) {
 
 const laporanSchema = new mongoose.Schema({
   idSurat: { type: String, required: true, unique: true },
-  tanggal: { type: Date, required: true },
+  tanggal: { type: Date, required: true, default: Date.now },
   skalaCedera: { type: Number, required: true },
   detail: { type: String, required: true },
-  status: { type: Number, required: true },
+  status: { type: Number, required: true, default: 1 }, //1 nunggu kepala bagian, 2 nunggu direktur, 3 diterima
   lokasi: { type: String, required: true },
   pesanKesalahan: { type: String, required: false },
-  tertolak: { type: Boolean, required: true },
+  tertolak: { type: Boolean, required: true, default: false },
+  headBagianApprove: { type: Date },
+  direkturApprove: { type: Date },
 });
 
 const Pekerja = mongoose.model("Pekerja", pekerjaSchema);
 const Laporan = mongoose.model("Laporan", laporanSchema);
 
-// Menggunakan 'named export' untuk mengekspor beberapa model
 export { Pekerja, Laporan };
