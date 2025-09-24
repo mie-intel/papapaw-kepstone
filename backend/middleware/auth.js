@@ -34,3 +34,19 @@ export function rolesAuthorization(...roles) {
     next();
   };
 }
+
+export function authorizeHSE(req, res, next) {
+  // Middleware ini berasumsi 'protectRoute' sudah berjalan sebelumnya
+  // dan berhasil menaruh data user di `req.user`.
+
+  // Menggunakan .toLowerCase() agar tidak case-sensitive (misal: "HSE", "hse", "Hse")
+  if (req.user && req.user.jabatan && req.user.jabatan.toLowerCase() === "hse") {
+    // Jika jabatan sesuai, lanjutkan ke controller
+    next();
+  } else {
+    // Jika tidak, kirim respons error 403 Forbidden
+    res
+      .status(403)
+      .json({ message: "Akses ditolak. Hanya user dengan jabatan HSE yang diizinkan." });
+  }
+}
