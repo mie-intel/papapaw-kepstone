@@ -41,6 +41,26 @@ export async function updateStatus(req, res) {
   }
 }
 
+export async function tolakLaporan(req, res) {
+  try {
+    const { id } = req.params;
+    const { pesanKesalahan } = req.body;
+    const user = req.user;
+    if (user.jabatan !== "kepala bagian" && user.jabatan !== "direktur") {
+      return res.status(403).json({ message: "Akses ditolak" });
+    }
+    const laporan = await Laporan.findById(id);
+    if (!laporan) return res.status(404).json({ message: "Laporan tidak ditemukan" });
+    laporan.pesanKesalahan = pesanKesalahan;
+    laporan.tertolak = true;
+    laporan.status = 0;
+    await laporan.save();
+    res.json({ message: "Laporan ditolak", laporan });
+  } catch (err) {
+    res.status(500).json({ message: "Terjadi kesalahan", error: err.message });
+  }
+}
+
 export async function revisiLaporan(req, res) {
   try {
     const { id } = req.params;
@@ -50,7 +70,7 @@ export async function revisiLaporan(req, res) {
     const laporan = await Laporan.findById(id);
     if (!laporan) return res.status(404).json({ message: "Laporan tidak ditemukan" });
 
-    if (laporan.tertolak && user.jabatan === "hse") {
+    if (laporan.tertolak && laporan.status === 0 && user.jabatan === "hse") {
       if (detail) laporan.detail = detail;
       if (lokasi) laporan.lokasi = lokasi;
       if (skalaCedera) laporan.skalaCedera = skalaCedera;
