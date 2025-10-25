@@ -15,6 +15,7 @@ module.exports = {
         xxs: "480px",
       },
       fontFamily: {
+        jakarta: "var(--font-plus-jakarta)",
         // "eudoxus-bold": ["var(--font-eudoxus-bold)"],
         // "eudoxus-extrabold": ["var(--font-eudoxus-extrabold)"],
         // "eudoxus-light": ["var(--font-eudoxus-light)"],
