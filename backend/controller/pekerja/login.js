@@ -36,6 +36,9 @@ export async function login(req, res) {
 
     res.json({
       message: "Login berhasil!",
+      jabatan: user.jabatan,
+      departemen: user.departemen,
+      uid: user._id,
       token: token,
     });
   } catch (error) {

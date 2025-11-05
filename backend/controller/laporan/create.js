@@ -3,10 +3,10 @@ import { Laporan } from "../../models/objectModel.js";
 export async function create(req, res) {
   try {
     // Ambil data yang diperlukan dari body request
-    const { idSurat, skalaCedera, detail, lokasi } = req.body;
+    const { idSurat, uid, skalaCedera, detail, lokasi } = req.body;
 
     // Validasi input sederhana
-    if (!idSurat || !skalaCedera || !detail || !lokasi) {
+    if (!idSurat || !skalaCedera || !detail || !lokasi || !uid) {
       return res.status(400).json({ error: "Data yang dibutuhkan tidak lengkap." });
     }
 
@@ -21,6 +21,7 @@ export async function create(req, res) {
     // Buat instance Laporan baru dengan data dari request
     const laporanBaru = new Laporan({
       idSurat,
+      uid,
       skalaCedera,
       detail,
       lokasi,
