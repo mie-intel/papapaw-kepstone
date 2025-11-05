@@ -1,23 +1,24 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Dropdown1, Dropdown2 } from '../allPage/Dropdown';
-import { Button1, Button2, Button3 } from '../allPage/Button';
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Dropdown1, Dropdown2 } from "../allPage/Dropdown";
+import { Button1, Button2, Button3 } from "../allPage/Button";
+import InputForm from "../allPage/InputForm";
 
 export default function Register() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    noInduk: '',
-    nama: '',
-    jabatan: '',
-    departemen: '',
-    username: '',
-    password: '',
+    noInduk: "",
+    nama: "",
+    jabatan: "",
+    departemen: "",
+    username: "",
+    password: "",
   });
 
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,65 +27,60 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
-    setErrorMsg('');
-    setSuccessMsg('');
+    setErrorMsg("");
+    setSuccessMsg("");
 
     const { noInduk, nama, jabatan, departemen, username, password } = formData;
     if (!noInduk || !nama || !jabatan || !departemen || !username || !password) {
-      setErrorMsg('Terdapat field kosong');
+      setErrorMsg("Terdapat field kosong");
       return;
     }
 
-    setErrorMsg('');
-    setSuccessMsg('Akun berhasil dibuat!\n Mengalihkan ke halaman Login...');
+    setErrorMsg("");
+    setSuccessMsg("Akun berhasil dibuat!\n Mengalihkan ke halaman Login...");
   };
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen w-full overflow-hidden font-jakarta p-5">
+    <div className="font-jakarta relative flex min-h-screen w-full items-center justify-center overflow-hidden p-5">
       {/* MOBILE */}
-      <div className="lg:hidden w-full max-w-sm flex flex-col justify-between items-center min-h-screen pt-[5vw] pb-[10vw]">
+      <div className="flex min-h-screen w-full max-w-sm flex-col items-center justify-between pt-[5vw] pb-[10vw] lg:hidden">
         {/* LOGO */}
-        <div className="text-center mb-10">
-          <div className="flex justify-center items-end">
+        <div className="mb-10 text-center">
+          <div className="flex items-end justify-center">
             <Image
-              src={'/logo.png'}
-              alt='logoooo solanum'
+              src={"/logo.png"}
+              alt="logoooo solanum"
               width={500}
               height={500}
-              className='w-[10vw] h-full'
+              className="h-full w-[10vw]"
             />
             <span className="text-3xl font-bold">SOLANUM.</span>
             <span className="text-sm font-light text-white/80">agrotech</span>
           </div>
-          <p className="text-white/80 text-sm">
-            Anywhere you farm, we power progress
-          </p>
+          <p className="text-sm text-white/80">Anywhere you farm, we power progress</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4" autoComplete='off'>
-          <input
+        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4" autoComplete="off">
+          <InputForm
             type="text"
             name="noInduk"
             placeholder="No. Induk"
             value={formData.noInduk}
             onChange={handleChange}
-            className="w-full p-4 bg-transparent border border-[#A3A5B1] rounded-2xl text-white placeholder-white/70 outline-none focus:ring-1 focus:ring-white"
           />
-          <input
+          <InputForm
             type="text"
             name="nama"
             placeholder="Nama"
             value={formData.nama}
             onChange={handleChange}
-            className="w-full p-4 bg-transparent border border-[#A3A5B1] rounded-2xl text-white placeholder-white/70 outline-none focus:ring-1 focus:ring-white"
           />
-
           <Dropdown1
             formData={formData}
             handleChange={handleChange}
             name="jabatan"
             placeholder="Pilih Jabatan"
-            options={['HSE', 'Direktur', 'Kepala Bagian']}
+            options={["HSE", "Direktur", "Kepala Bagian"]}
           />
           <Dropdown1
             name="departemen"
@@ -92,70 +88,56 @@ export default function Register() {
             handleChange={handleChange}
             placeholder="Pilih Departemen"
             options={[
-              'Mechanical Assembly',
-              'Electronical Assembly',
-              'Software Installation',
-              'Quality Assurance',
-              'Warehouse',
-              'Direktur'
+              "Mechanical Assembly",
+              "Electronical Assembly",
+              "Software Installation",
+              "Quality Assurance",
+              "Warehouse",
+              "Direktur",
             ]}
           />
-
-          <input
+          <InputForm
             type="text"
             name="username"
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
-            className="w-full p-4 bg-transparent border border-[#A3A5B1] rounded-2xl text-white placeholder-white/70 outline-none focus:ring-1 focus:ring-white"
           />
-          <input
+          <InputForm
             type="password"
             name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full p-4 bg-transparent border border-[#A3A5B1] rounded-2xl text-white placeholder-white/70 outline-none focus:ring-1 focus:ring-white"
           />
 
-          {errorMsg && (
-            <p className="text-center text-[#E8697E] text-sm">{errorMsg}</p>
-          )}
-          {successMsg && (
-            <p className="text-center text-green-primary text-sm">{successMsg}</p>
-          )}
+          {errorMsg && <p className="text-center text-sm text-[#E8697E]">{errorMsg}</p>}
+          {successMsg && <p className="text-green-primary text-center text-sm">{successMsg}</p>}
         </form>
 
-        <div className='w-full flex flex-col gap-3'>
-          <Button1
-            type="submit"
-            disabled={!!successMsg}
-            label="Sign Up"
-            onClick={handleSubmit}
-          />
+        <div className="flex w-full flex-col gap-3">
+          <Button1 type="submit" disabled={!!successMsg} label="Sign Up" onClick={handleSubmit} />
           <Button2
             type="button"
             label="I already have an account"
-            onClick={() => router.push('/login')}
+            onClick={() => router.push("/login")}
           />
         </div>
       </div>
 
       {/* DESKTOP */}
-      <div className="hidden lg:relative lg:flex justify-center items-center">
-        <div className="relative z-20 lg:w-[600px] w-[55vw] p-10 bg-white/10 text-white backdrop-blur-[20px] rounded-4xl shadow-[inset_0px_0px_30px_rgba(255,255,255,0.25)]">
-          <h2 className="text-center mb-8 text-3xl font-extrabold">
-            Sign Up
-          </h2>
+      <div className="hidden items-center justify-center lg:relative lg:flex">
+        <div className="relative z-20 w-[55vw] rounded-4xl bg-white/10 p-10 text-white shadow-[inset_0px_0px_30px_rgba(255,255,255,0.25)] backdrop-blur-[20px] lg:w-[600px]">
+          <h2 className="mb-8 text-center text-3xl font-extrabold">Sign Up</h2>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6" autoComplete='off'>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6" autoComplete="off">
             <input
               type="text"
               name="noInduk"
               placeholder="No. Induk"
               value={formData.noInduk}
               onChange={handleChange}
-              className="w-full p-1 bg-transparent border-b-2 border-black/50 text-base outline-none placeholder-white/70 focus:border-white box-border"
+              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
             />
             <input
               type="text"
@@ -163,14 +145,14 @@ export default function Register() {
               placeholder="Nama"
               value={formData.nama}
               onChange={handleChange}
-              className="w-full p-1 bg-transparent border-b-2 border-black/50 text-base outline-none placeholder-white/70  focus:border-white box-border"
+              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
             />
             <Dropdown2
               name="jabatan"
               placeholder="Pilih Jabatan"
               value={formData.jabatan}
               onChange={handleChange}
-              options={['HSE', 'Kepala Bagian', 'Direktur']}
+              options={["HSE", "Kepala Bagian", "Direktur"]}
             />
             <Dropdown2
               name="departemen"
@@ -178,11 +160,11 @@ export default function Register() {
               value={formData.departemen}
               onChange={handleChange}
               options={[
-                'Mechanical Assembly',
-                'Electronical Assembly',
-                'Software Installation',
-                'Quality Assurance',
-                'Warehouse',
+                "Mechanical Assembly",
+                "Electronical Assembly",
+                "Software Installation",
+                "Quality Assurance",
+                "Warehouse",
               ]}
             />
             <input
@@ -191,7 +173,7 @@ export default function Register() {
               placeholder="Username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full p-1 bg-transparent border-b-2 border-black/50 text-base outline-none placeholder-white/70 focus:border-white box-border"
+              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
             />
             <input
               type="password"
@@ -199,32 +181,22 @@ export default function Register() {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full p-1 bg-transparent border-b-2 border-black/50 text-base outline-none placeholder-white/70 focus:border-white box-border"
+              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
             />
 
-            <Button3
-              type="submit"
-              disabled={!!successMsg}
-              label="Sign Up"
-            />
+            <Button3 type="submit" disabled={!!successMsg} label="Sign Up" />
           </form>
 
-          {errorMsg && (
-            <p className="mt-3 text-center text-red-primary text-xs">
-              {errorMsg}
-            </p>
-          )}
+          {errorMsg && <p className="text-red-primary mt-3 text-center text-xs">{errorMsg}</p>}
           {successMsg && (
-            <p className="mt-3 text-center text-green-primary text-xs">
-              {successMsg}
-            </p>
+            <p className="text-green-primary mt-3 text-center text-xs">{successMsg}</p>
           )}
 
-          <p className="mt-4 text-xs text-white/80 text-center">
-            Already have an account?{' '}
+          <p className="mt-4 text-center text-xs text-white/80">
+            Already have an account?{" "}
             <span
-              className="text-[#007FFF] cursor-pointer hover:underline"
-              onClick={() => router.push('/login')}
+              className="cursor-pointer text-[#007FFF] hover:underline"
+              onClick={() => router.push("/login")}
             >
               Login
             </span>
@@ -232,8 +204,8 @@ export default function Register() {
         </div>
 
         {/* BOLBOLBOLB */}
-        <div className="hidden lg:block absolute left-[-120px] bottom-[10px] w-[200px] h-[200px] rounded-full bg-[#34D391] z-10"></div>
-        <div className="hidden lg:block absolute right-[-120px] top-[10px] w-[200px] h-[200px] rounded-full bg-[#E8697E] z-10"></div>
+        <div className="absolute bottom-[10px] left-[-120px] z-10 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] lg:block" />
+        <div className="absolute top-[10px] right-[-120px] z-10 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] lg:block" />
       </div>
     </div>
   );
