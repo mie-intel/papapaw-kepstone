@@ -85,3 +85,20 @@ export async function revisiLaporan(req, res) {
     res.status(500).json({ message: "Terjadi kesalahan", error: err.message });
   }
 }
+
+export async function getPelapor(req, res) {
+  try{
+    const {id} = req.params;
+    const laporan = await Laporan.findById(id);
+    if (!laporan) return res.status(404).json({ message: "Laporan tidak ditemukan" });
+    const pelapor = await Pekerja.findById(laporan.uid);
+    if (!pelapor) return res.status(404).json({ message: "Data pelapor tidak ditemukan" });
+    const { password, ...pelaporData } = pelapor.toObject();
+    res.json({
+      message: "Data Pelapor",
+      pelapor: pelaporData,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Terjadi kesalahan", error: err.message });
+  }
+}
