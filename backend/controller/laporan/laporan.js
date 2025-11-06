@@ -1,4 +1,4 @@
-import {Laporan } from '../../models/objectModel.js';
+import { Laporan, Pekerja } from '../../models/objectModel.js';
 
 function canUpdateStatus(user, laporan, nextStatus) {
   if (nextStatus === 2 && user.jabatan === "kepala bagian" && laporan.status === 1) return true;
