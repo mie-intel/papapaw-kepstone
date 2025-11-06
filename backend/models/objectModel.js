@@ -23,11 +23,12 @@ pekerjaSchema.pre("save", async function (next) {
 
 const laporanSchema = new mongoose.Schema({
   idSurat: { type: String, required: true, unique: true },
-  tanggal: { type: Date, required: true, default: Date.now },
+  uid: { type: String, required: true },
   skalaCedera: { type: Number, required: true },
   detail: { type: String, required: true },
-  status: { type: Number, required: true, default: 1 }, //1 nunggu kepala bagian, 2 nunggu direktur, 3 diterima
   lokasi: { type: String, required: true },
+  tanggal: { type: Date, required: true, default: Date.now },
+  status: { type: Number, required: true, default: 1 }, //1 nunggu kepala bagian, 2 nunggu direktur, 3 diterima
   pesanKesalahan: { type: String, required: false },
   tertolak: { type: Boolean, required: true, default: false },
   headBagianApprove: { type: Date },

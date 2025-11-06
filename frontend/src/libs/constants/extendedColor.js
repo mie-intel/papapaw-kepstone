@@ -108,4 +108,12 @@ export const extendedColor = {
     DEFAULT: "#6D8C70",
     hover: "#E0F0D9",
   },
+  "dark-1": "#2B2E4D",
+  "dark-2": "#20243F",
+  "dark-3": "#292F4C",
+  "blue-primary": "#0273EA",
+  "green-primary": "#34D391",
+  "yellow-primary": "#FDBC64",
+  "red-primary": "#E8697E",
+  "gray-primary": "#C4C4C4",
 };

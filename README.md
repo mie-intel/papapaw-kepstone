@@ -1,26 +1,39 @@
-# Repositori PAPAPAW KEPSTONE!
+# Repositori Kelompok 5 PAPAPAW Kepstone!!!
 
-## Design 🎨
+## Deskripsi
 
-[Figma Link](https://www.figma.com/design/UiYlFsjPx6fblaqJWnEXz9/KELOMPOK-5-WEBAPP?node-id=0-1&t=xaSoGVvtccYxHa8z-1)
+Aplikasi ini merupakan aplikasi yang dibuat untuk membuat laporan apabila terjadi kecelakaan kerja. Aplikasi ini memiliki fitur utama yaitu membuat laporan kecelakaan kerja. Nantinya laporan ini dapat ditandatangani oleh kepala bagian kerja dan direktur. Aplikasi ini dibuat untuk menyelesaikan masalah pada user story 1.
 
-## How To Run 🏃🏻‍♂️
+## **Kelompok**
 
-Install all dependencies and run the development server using this command
+| Nama Anggota                | NIM                | Role                  |
+| --------------------------- | ------------------ | --------------------- |
+| Polikarpus Arya Pradhanika  | 23/512404/TK/56325 | (Project Manager)     |
+| P. Atalie Savista Arunata   | 23/522436/TK/57668 | (Front End Developer) |
+| Jonathan Alvarado Panjaitan | 23/515661/TK/56706 | (Front End Developer) |
+| Timothy Tanuwidjaya         | 23/515955/TK/56763 | (Back End Developer)  |
+| Dzulfikar Rizqi Ramadhani   | 23/522193/TK/57616 | (Back End Developer)  |
 
-- **pnpm** (recommended)
+## **Struktur folder**
 
-  ```
-  pnpm is
-  pnpm dev
-  ```
+### **Back End**
 
-- **npm**
+```
+config/         Berisi konfigurasi koneksi ke database
+controller/     Berisi fungsi - fungsi yang digunakan untuk setiap endpoint
+middleware/     Berisi fungsi yang dipanggil pertama kali ketika mengakses sebuah endpoints
+models/         Berisi skema yang dipakai di dalam database
+routes/         Berisi pengaturan routing endpoint pada back end
+```
 
-  ```
-  npm i
-  npm run dev
-  ```
+## Teknologi Yang Digunakan
+
+1. Express.js: untuk back end
+2. MongoDB : untuk database
+
+## URL Laporan Back End
+
+https://ugm365-my.sharepoint.com/:w:/g/personal/pataliesavistaarunata_365_ugm_ac_id/Ee0p8VbnP6FMnvW4BlQ1CJwBQn4nzkOIYdkx3NWvlpAU6Q?e=wCnquy
 
 ## Pull & Push Schema 💪🏻
 
