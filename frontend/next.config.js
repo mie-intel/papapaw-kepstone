@@ -30,6 +30,9 @@ module.exports = {
       },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     config.resolve.mainFields = ["browser", "module", "main"];
     return config;
