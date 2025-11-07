@@ -2,7 +2,12 @@ import express from "express";
 import { create, view } from "../controller/laporan/index.js";
 import { logger } from "../middleware/logger.js";
 import { protectRoute, authorizeHSE } from "../middleware/auth.js";
-import { updateStatus, revisiLaporan, tolakLaporan, getPelapor } from "../controller/laporan/laporan.js";
+import {
+  updateStatus,
+  revisiLaporan,
+  tolakLaporan,
+  getPelapor,
+} from "../controller/laporan/laporan.js";
 const router = express.Router();
 
 router.use(logger);
