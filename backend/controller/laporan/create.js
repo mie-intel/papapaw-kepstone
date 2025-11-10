@@ -3,10 +3,10 @@ import { Laporan } from "../../models/objectModel.js";
 export async function create(req, res) {
   try {
     // Ambil data yang diperlukan dari body request
-    const { idSurat, uid, skalaCedera, detail, lokasi } = req.body;
+    const { idSurat, uid, skalaCedera, detail, lokasi, departemen } = req.body;
 
     // Validasi input sederhana
-    if (!idSurat || !skalaCedera || !detail || !lokasi || !uid) {
+    if (!idSurat || !skalaCedera || !detail || !lokasi || !uid || !departemen) {
       return res.status(400).json({ error: "Data yang dibutuhkan tidak lengkap." });
     }
 
@@ -25,6 +25,7 @@ export async function create(req, res) {
       skalaCedera,
       detail,
       lokasi,
+      departemen
     });
 
     // Simpan ke database

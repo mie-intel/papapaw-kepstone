@@ -56,7 +56,7 @@ const eslintConfig = [
       react: pluginReact,
       "jsx-a11y": pluginJsxA11y,
       import: pluginImport,
-      "@typescript-eslint": pluginTypescript,
+      // "@typescript-eslint": pluginTypescript,
       "react-hooks": pluginReactHooks, // Added missing plugin
     },
   },

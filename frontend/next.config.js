@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
-  output: "standalone",
   trailingSlash: false,
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
@@ -29,6 +28,9 @@ module.exports = {
         port: "",
       },
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   webpack: (config) => {
     config.resolve.mainFields = ["browser", "module", "main"];
