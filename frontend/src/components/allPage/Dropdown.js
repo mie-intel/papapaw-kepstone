@@ -1,9 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-export function Dropdown1({ name, options, formData, handleChange, placeholder }) {
+export function Dropdown1({
+  name,
+  options,
+  formData,
+  handleChange,
+  placeholder,
+  showError = false,
+}) {
   const [open, setOpen] = useState(false);
   const selected = formData?.[name] || "";
+  const hasError = showError && !selected;
 
   function onSelect(opt) {
     setOpen(false);
@@ -17,32 +25,35 @@ export function Dropdown1({ name, options, formData, handleChange, placeholder }
       <button
         type="button"
         onClick={() => setOpen((s) => !s)}
-        className="w-full p-4 bg-transparent border border-[#A3A5B1] rounded-2xl outline-none focus:ring-1 focus:ring-white flex justify-between items-center text-left transition-all"
+        className={`flex w-full items-center justify-between rounded-2xl border bg-transparent p-4 text-left transition-all duration-200 outline-none focus:ring-1 ${
+          hasError ? "border-[#E8697E] focus:ring-[#E8697E]" : "border-[#A3A5B1] focus:ring-white"
+        }`}
       >
         <span className={`${selected ? "text-white" : "text-white/70"}`}>
           {selected || placeholder}
         </span>
 
         <IoMdArrowDropdown
-          className={`text-[#A3A5B1] text-xl transition-transform duration-300 ${
+          className={`text-xl transition-transform duration-300 ${
             open ? "rotate-180" : "rotate-0"
-          }`}
+          } ${hasError ? "text-[#E8697E]" : "text-[#A3A5B1]"}`}
         />
       </button>
 
       {open && (
         <div
-          className="absolute left-0 right-0 mt-2 z-20 animate-fade-down"
+          className="animate-fade-down absolute right-0 left-0 z-20 mt-2"
           style={{ animationDuration: "150ms" }}
         >
-          <div className="rounded-2xl bg-[#2B2E4D] border border-[#A3A5B1] shadow-xl overflow-hidden">
+          <div className="overflow-hidden rounded-2xl border border-[#A3A5B1] bg-[#2B2E4D] shadow-xl">
             {options.map((opt) => (
               <button
                 key={opt}
                 type="button"
                 onClick={() => onSelect(opt)}
-                className={`w-full text-left p-4 hover:bg-[#3B3E5D] focus:bg-[#3B3E5D] transition
-                  ${selected === opt ? "bg-[#41446B]" : ""}`}
+                className={`w-full p-4 text-left transition hover:bg-[#3B3E5D] focus:bg-[#3B3E5D] ${
+                  selected === opt ? "bg-[#41446B]" : ""
+                }`}
               >
                 <span className="text-white">{opt}</span>
               </button>
@@ -53,8 +64,6 @@ export function Dropdown1({ name, options, formData, handleChange, placeholder }
     </div>
   );
 }
-
-
 
 export function Dropdown2({ name, options, value, onChange, placeholder }) {
   const [open, setOpen] = useState(false);
@@ -71,8 +80,7 @@ export function Dropdown2({ name, options, value, onChange, placeholder }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`w-full text-left p-1 bg-transparent border-b-2 border-black/50 text-base outline-none focus:border-white box-border flex justify-between items-center transition-colors 
-            ${selected ? "text-white" : "text-white/70"}`}
+        className={`box-border flex w-full items-center justify-between border-b-2 border-black/50 bg-transparent p-1 text-left text-base transition-colors outline-none focus:border-white ${selected ? "text-white" : "text-white/70"}`}
       >
         {selected || placeholder}
         <IoMdArrowDropdown
@@ -84,16 +92,16 @@ export function Dropdown2({ name, options, value, onChange, placeholder }) {
 
       {open && (
         <div
-          className="absolute left-0 right-0 mt-2 z-20 animate-fade-down"
+          className="animate-fade-down absolute right-0 left-0 z-20 mt-2"
           style={{ animationDuration: "150ms" }}
         >
-          <div className="rounded-2xl bg-[#2B2E4D] border border-[#A3A5B1] shadow-xl overflow-hidden">
+          <div className="overflow-hidden rounded-2xl border border-[#A3A5B1] bg-[#2B2E4D] shadow-xl">
             {options.map((opt) => (
               <button
                 key={opt}
                 type="button"
                 onClick={() => handleSelect(opt)}
-                className={`w-full text-left p-4 text-white hover:bg-[#3B3E5D] focus:bg-[#3B3E5D] transition-colors ${
+                className={`w-full p-4 text-left text-white transition-colors hover:bg-[#3B3E5D] focus:bg-[#3B3E5D] ${
                   selected === opt ? "bg-[#41446B]" : ""
                 }`}
               >

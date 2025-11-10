@@ -1,51 +1,60 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button1, Button2, Button3 } from "../allPage/Button";
+import { Button1, Button2 } from "../allPage/Button";
 import Image from "next/image";
 import InputForm from "../allPage/InputForm";
+import { loginSchema } from "@/libs/schema";
 
 export default function Login() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [showErrors, setShowErrors] = useState(false);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
     setErrorMsg("");
+    setShowErrors(false);
 
-    const trimmedUser = username.trim();
-
-    if (!trimmedUser || trimmedUser !== "admin") {
-      setErrorMsg("Username salah");
-    } else if (!password || password !== "1234") {
-      setErrorMsg("Password salah");
+    const result = loginSchema.safeParse({ username, password });
+    if (!result.success) {
+      const error = result.error.issues[0].message;
+      setErrorMsg(error);
+      setShowErrors(true);
     } else {
       console.log("Login Berhasil!");
-      console.log({ username, password });
+      console.log(result.data);
     }
   };
 
   return (
     <div className="font-jakarta relative flex min-h-screen w-full items-center justify-center overflow-hidden p-5">
-      {/* MOBILE */}
-      <div className="flex min-h-screen w-full max-w-sm flex-col items-center justify-between pt-[10vw] pb-[15vw] lg:hidden">
-        <div className="text-center">
+      {/* Logo Desktop */}
+      <div className="absolute top-10 left-[6vw] hidden flex-col items-start text-white lg:flex">
+        <div className="flex items-end">
+          <Image src={"/logo.png"} alt="logo solanum" width={50} height={50} />
+          <div className="flex flex-row items-end leading-tight">
+            <span className="text-xl font-bold">SOLANUM.</span>
+            <span className="text-sm font-light text-white/80">agrotech</span>
+          </div>
+        </div>
+      </div>
+
+      {/* FORM */}
+      <div className="relative z-10 flex min-h-screen w-full max-w-sm flex-col items-center justify-between pt-[10vw] pb-[15vw] lg:justify-center">
+        {/* Logo Mobile */}
+        <div className="text-center lg:hidden">
           <div className="flex items-end justify-center">
-            <Image
-              src={"/logo.png"}
-              alt="logoooo solanum"
-              width={500}
-              height={500}
-              className="h-full w-[10vw]"
-            />
-            <span className="text-3xl font-bold">SOLANUM.</span>
+            <Image src={"/logo.png"} alt="logo solanum" width={40} height={40} />
+            <span className="text-2xl font-bold">SOLANUM.</span>
             <span className="text-sm font-light text-white/80">agrotech</span>
           </div>
           <p className="text-sm text-white/80">Anywhere you farm, we power progress</p>
         </div>
 
+        <h2 className="mb-10 hidden text-4xl font-extrabold lg:flex">Login</h2>
         <form
           id="loginForm"
           onSubmit={handleSubmit}
@@ -57,63 +66,36 @@ export default function Login() {
             placeholder="Enter your username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            showError={showErrors}
           />
           <InputForm
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            showError={showErrors}
           />
-          {errorMsg && <p className="text-red-primary text-center text-sm">{errorMsg}</p>}
         </form>
 
-        <div className="flex w-full flex-col gap-3">
-          <Button1 type="submit" label="Log in" onClick={handleSubmit} />
+        <div className="relative flex w-full flex-col gap-3">
+          <Button1 type="submit" label="Login" onClick={handleSubmit} />
           <Button2
             type="button"
             label="Create new account"
             onClick={() => router.push("/register")}
           />
+
+          {errorMsg && (
+            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-sm text-[#E8697E]">
+              {errorMsg}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* DESKTOP */}
-      <div className="relative hidden lg:block">
-        <div className="relative z-20 w-[500px] rounded-4xl bg-white/10 p-10 text-white shadow-[inset_0px_0px_30px_rgba(255,255,255,0.25)] backdrop-blur-[20px]">
-          <h2 className="mb-8 text-center text-3xl font-extrabold">Login to your account</h2>
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-7" autoComplete="off">
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="box-border w-full border-b-2 border-black/50 bg-transparent p-[10px] text-center text-base placeholder-white/70 outline-none focus:border-white"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="box-border w-full border-b-2 border-black/50 bg-transparent p-[10px] text-center text-base placeholder-white/70 outline-none focus:border-white"
-            />
-
-            <Button3 type="submit" label="Login" />
-          </form>
-          <p
-            className="mt-3 cursor-pointer text-left text-xs text-white/80 hover:underline"
-            onClick={() => router.push("/register")}
-          >
-            Create an account
-          </p>
-
-          {errorMsg && <p className="text-red-primary mt-3 text-center text-xs">{errorMsg}</p>}
-        </div>
-
-        {/* BOLLB */}
-        <div className="absolute bottom-[-80px] left-[-80px] z-10 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] lg:block" />
-        <div className="absolute top-[-80px] right-[-80px] z-10 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] lg:block" />
-      </div>
+      {/* BOLBB */}
+      <div className="absolute bottom-[120px] left-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] blur-xs lg:block" />
+      <div className="absolute top-[60px] right-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] blur-lg lg:block" />
     </div>
   );
 }

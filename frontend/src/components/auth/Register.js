@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Dropdown1, Dropdown2 } from "../allPage/Dropdown";
 import { Button1, Button2, Button3 } from "../allPage/Button";
 import InputForm from "../allPage/InputForm";
+import { registerSchema } from "@/libs/schema";
 
 export default function Register() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function Register() {
   });
 
   const [errorMsg, setErrorMsg] = useState("");
+  const [showErrors, setShowErrors] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
 
   const handleChange = (e) => {
@@ -28,38 +30,47 @@ export default function Register() {
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
     setErrorMsg("");
+    setShowErrors(false);
     setSuccessMsg("");
 
-    const { noInduk, nama, jabatan, departemen, username, password } = formData;
-    if (!noInduk || !nama || !jabatan || !departemen || !username || !password) {
-      setErrorMsg("Terdapat field kosong");
+    const result = registerSchema.safeParse(formData);
+    if (!result.success) {
+      const error = result.error.issues[0].message;
+      setErrorMsg(error);
+      setShowErrors(true);
       return;
+    } else {
+      setErrorMsg("");
+      setSuccessMsg("Akun berhasil dibuat!");
     }
-
-    setErrorMsg("");
-    setSuccessMsg("Akun berhasil dibuat!\n Mengalihkan ke halaman Login...");
   };
 
   return (
     <div className="font-jakarta relative flex min-h-screen w-full items-center justify-center overflow-hidden p-5">
-      {/* MOBILE */}
-      <div className="flex min-h-screen w-full max-w-sm flex-col items-center justify-between pt-[5vw] pb-[10vw] lg:hidden">
-        {/* LOGO */}
-        <div className="mb-10 text-center">
+      {/* Logo Desktop */}
+      <div className="absolute top-10 left-[6vw] hidden flex-col items-start text-white lg:flex">
+        <div className="flex items-end">
+          <Image src={"/logo.png"} alt="logo solanum" width={50} height={50} />
+          <div className="flex flex-row items-end leading-tight">
+            <span className="text-xl font-bold">SOLANUM.</span>
+            <span className="text-sm font-light text-white/80">agrotech</span>
+          </div>
+        </div>
+      </div>
+
+      {/* FORM */}
+      <div className="relative z-10 flex min-h-screen w-full max-w-sm flex-col items-center justify-between pt-[7vw] pb-[15vw] lg:justify-center lg:p-0">
+        {/* Logo Mobile */}
+        <div className="mb-5 text-center lg:mb-0 lg:hidden">
           <div className="flex items-end justify-center">
-            <Image
-              src={"/logo.png"}
-              alt="logoooo solanum"
-              width={500}
-              height={500}
-              className="h-full w-[10vw]"
-            />
-            <span className="text-3xl font-bold">SOLANUM.</span>
+            <Image src={"/logo.png"} alt="logo solanum" width={40} height={40} />
+            <span className="text-2xl font-bold">SOLANUM.</span>
             <span className="text-sm font-light text-white/80">agrotech</span>
           </div>
           <p className="text-sm text-white/80">Anywhere you farm, we power progress</p>
         </div>
 
+        <h2 className="mb-10 hidden text-4xl font-extrabold lg:flex">Sign Up</h2>
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4" autoComplete="off">
           <InputForm
             type="text"
@@ -67,6 +78,7 @@ export default function Register() {
             placeholder="No. Induk"
             value={formData.noInduk}
             onChange={handleChange}
+            showError={showErrors}
           />
           <InputForm
             type="text"
@@ -74,6 +86,7 @@ export default function Register() {
             placeholder="Nama"
             value={formData.nama}
             onChange={handleChange}
+            showError={showErrors}
           />
           <Dropdown1
             formData={formData}
@@ -81,6 +94,7 @@ export default function Register() {
             name="jabatan"
             placeholder="Pilih Jabatan"
             options={["HSE", "Direktur", "Kepala Bagian"]}
+            showError={showErrors}
           />
           <Dropdown1
             name="departemen"
@@ -95,6 +109,7 @@ export default function Register() {
               "Warehouse",
               "Direktur",
             ]}
+            showError={showErrors}
           />
           <InputForm
             type="text"
@@ -102,6 +117,7 @@ export default function Register() {
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
+            showError={showErrors}
           />
           <InputForm
             type="password"
@@ -109,104 +125,34 @@ export default function Register() {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+            showError={showErrors}
           />
-
-          {errorMsg && <p className="text-center text-sm text-[#E8697E]">{errorMsg}</p>}
-          {successMsg && <p className="text-green-primary text-center text-sm">{successMsg}</p>}
         </form>
 
-        <div className="flex w-full flex-col gap-3">
+        <div className="relative flex w-full flex-col gap-3">
           <Button1 type="submit" disabled={!!successMsg} label="Sign Up" onClick={handleSubmit} />
           <Button2
             type="button"
             label="I already have an account"
             onClick={() => router.push("/login")}
           />
-        </div>
-      </div>
 
-      {/* DESKTOP */}
-      <div className="hidden items-center justify-center lg:relative lg:flex">
-        <div className="relative z-20 w-[55vw] rounded-4xl bg-white/10 p-10 text-white shadow-[inset_0px_0px_30px_rgba(255,255,255,0.25)] backdrop-blur-[20px] lg:w-[600px]">
-          <h2 className="mb-8 text-center text-3xl font-extrabold">Sign Up</h2>
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6" autoComplete="off">
-            <input
-              type="text"
-              name="noInduk"
-              placeholder="No. Induk"
-              value={formData.noInduk}
-              onChange={handleChange}
-              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
-            />
-            <input
-              type="text"
-              name="nama"
-              placeholder="Nama"
-              value={formData.nama}
-              onChange={handleChange}
-              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
-            />
-            <Dropdown2
-              name="jabatan"
-              placeholder="Pilih Jabatan"
-              value={formData.jabatan}
-              onChange={handleChange}
-              options={["HSE", "Kepala Bagian", "Direktur"]}
-            />
-            <Dropdown2
-              name="departemen"
-              placeholder="Pilih Departemen"
-              value={formData.departemen}
-              onChange={handleChange}
-              options={[
-                "Mechanical Assembly",
-                "Electronical Assembly",
-                "Software Installation",
-                "Quality Assurance",
-                "Warehouse",
-              ]}
-            />
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              value={formData.username}
-              onChange={handleChange}
-              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              className="box-border w-full border-b-2 border-black/50 bg-transparent p-1 text-base placeholder-white/70 outline-none focus:border-white"
-            />
-
-            <Button3 type="submit" disabled={!!successMsg} label="Sign Up" />
-          </form>
-
-          {errorMsg && <p className="text-red-primary mt-3 text-center text-xs">{errorMsg}</p>}
-          {successMsg && (
-            <p className="text-green-primary mt-3 text-center text-xs">{successMsg}</p>
+          {errorMsg && (
+            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-sm text-[#E8697E]">
+              {errorMsg}
+            </p>
           )}
-
-          <p className="mt-4 text-center text-xs text-white/80">
-            Already have an account?{" "}
-            <span
-              className="cursor-pointer text-[#007FFF] hover:underline"
-              onClick={() => router.push("/login")}
-            >
-              Login
-            </span>
-          </p>
+          {successMsg && (
+            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-sm text-[#34D391]">
+              {successMsg}
+            </p>
+          )}
         </div>
-
-        {/* BOLBOLBOLB */}
-        <div className="absolute bottom-[10px] left-[-120px] z-10 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] lg:block" />
-        <div className="absolute top-[10px] right-[-120px] z-10 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] lg:block" />
       </div>
+
+      {/* BOLBB */}
+      <div className="absolute bottom-[120px] left-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] blur-xs lg:block" />
+      <div className="absolute top-[60px] right-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] blur-lg lg:block" />
     </div>
   );
 }

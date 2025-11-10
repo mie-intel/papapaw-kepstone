@@ -27,11 +27,9 @@ export default function AuthLayout({ children }) {
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} antialiased flex items-center justify-center min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} flex min-h-screen items-center justify-center antialiased`}
       >
-        <div className="w-full min-h-screen bg-dark-2 lg:bg-dark-1 text-white shadow-lg">
-          {children}
-        </div>
+        <div className="min-h-screen w-full bg-[#191A36] text-white shadow-lg">{children}</div>
       </body>
     </html>
   );
