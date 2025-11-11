@@ -24,14 +24,12 @@ export const metadata = {
 
 export default function AuthLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} flex min-h-screen items-center justify-center antialiased`}
-      >
-        <div className="min-h-screen w-full bg-[#191A36] text-white shadow-lg">{children}</div>
-      </body>
-    </html>
+    <div
+      suppressHydrationWarning={true}
+      className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} flex min-h-screen items-center justify-center bg-[#191A36] text-white antialiased`}
+    >
+      <div className="min-h-screen w-full max-w-[100vw]">{children}</div>
+    </div>
   );
 }
 

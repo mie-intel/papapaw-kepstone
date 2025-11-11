@@ -5,6 +5,7 @@ import { Button1, Button2 } from "../allPage/Button";
 import Image from "next/image";
 import InputForm from "../allPage/InputForm";
 import { loginSchema } from "@/libs/schema";
+import { mockUsers } from "@/libs/constants/mockData";
 
 export default function Login() {
   const router = useRouter();
@@ -23,9 +24,21 @@ export default function Login() {
       const error = result.error.issues[0].message;
       setErrorMsg(error);
       setShowErrors(true);
-    } else {
-      console.log("Login Berhasil!");
-      console.log(result.data);
+    }
+
+    // Mock data for testing
+    const user = mockUsers.find((u) => u.username === username && u.password === password);
+    localStorage.setItem("userRole", user.role);
+    switch (user.role) {
+      case "hse":
+        router.push("/hse/dashboard");
+        break;
+      case "kepala":
+        router.push("/kepala/dashboard");
+        break;
+      case "direktur":
+        router.push("/direktur/dashboard");
+        break;
     }
   };
 
