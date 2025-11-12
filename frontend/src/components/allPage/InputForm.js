@@ -1,4 +1,16 @@
+"use client";
 import React from "react";
+import PropTypes from "prop-types";
+import { Input } from "postcss";
+
+InputForm.propTypes = {
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  showError: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 export default function InputForm({
   type = "text",

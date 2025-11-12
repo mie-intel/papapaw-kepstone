@@ -18,7 +18,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: "Solarium",
+  title: "Auth",
   description: "Authentication of Solarium",
 };
 
