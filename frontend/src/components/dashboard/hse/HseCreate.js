@@ -27,7 +27,7 @@ const HseCreate = () => {
   };
 
   return (
-    <div className="h-full w-full overflow-y-auto p-8">
+    <div className="font-jakarta relative flex h-full w-full overflow-y-auto p-8">
       <div className="w-full max-w-6xl">
         {/* Header */}
         <div className="mb-8">
@@ -38,7 +38,7 @@ const HseCreate = () => {
         {/* Form Container */}
         <div className="rounded-2xl border border-slate-700/50 bg-slate-800/40 p-8 backdrop-blur-sm">
           {/* Section Title */}
-          <h3 className="mb-8 text-2xl font-semibold text-white">Basic Information</h3>
+          <h3 className="mb-8 text-2xl font-extrabold text-white">Basic Information</h3>
 
           <form onSubmit={handleSubmit}>
             {/* Report Title */}

@@ -1,12 +1,12 @@
-import Login from '@/components/auth/Login'
-import React from 'react'
+import Login from "@/components/auth/Login";
+import React from "react";
 
 function page() {
   return (
     <div>
-        <Login />
+      <Login />
     </div>
-  )
+  );
 }
 
-export default page
+export default page;
