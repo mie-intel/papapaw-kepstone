@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState, createContext } from "react";
+import { createContext } from "react";
 import axios from "@/config/axios-config";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { loginSchema, registerSchema } from "@/libs/schema";
 
 export const AuthContext = createContext();
