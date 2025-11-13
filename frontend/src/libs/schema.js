@@ -9,7 +9,7 @@ export const loginSchema = z.object({
 });
 
 export const registerSchema = z.object({
-  noInduk: z.string().trim().min(1, { message: "Data belum lengkap" }),
+  nomorInduk: z.string().trim().min(1, { message: "Data belum lengkap" }),
   nama: z.string().trim().min(1, { message: "Data belum lengkap" }),
   jabatan: z.string().min(1, { message: "Data belum lengkap" }),
   departemen: z.string().min(1, { message: "Data belum lengkap" }),

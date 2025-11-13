@@ -1,8 +1,8 @@
-import { Laporan, Pekerja } from '../../models/objectModel.js';
+import { Laporan, Pekerja } from "../../models/objectModel.js";
 
 function canUpdateStatus(user, laporan, nextStatus) {
-  if (nextStatus === 2 && user.jabatan === "kepala bagian" && laporan.status === 1) return true;
-  if (nextStatus === 3 && user.jabatan === "direktur" && laporan.status === 2) return true;
+  if (nextStatus === 2 && user.jabatan === "Kepala Bagian" && laporan.status === 1) return true;
+  if (nextStatus === 3 && user.jabatan === "Direktur" && laporan.status === 2) return true;
   return false;
 }
 
@@ -25,10 +25,10 @@ export async function updateStatus(req, res) {
       laporan.status = status;
     } else {
       laporan.status = status;
-      if (status === 2 && user.jabatan === "kepala bagian") {
+      if (status === 2 && user.jabatan === "Kepala Bagian") {
         laporan.headBagianApprove = new Date();
       }
-      if (status === 3 && user.jabatan === "direktur") {
+      if (status === 3 && user.jabatan === "Direktur") {
         laporan.direkturApprove = new Date();
         laporan.tertolak = false;
       }
@@ -46,7 +46,7 @@ export async function tolakLaporan(req, res) {
     const { id } = req.params;
     const { pesanKesalahan } = req.body;
     const user = req.user;
-    if (user.jabatan !== "kepala bagian" && user.jabatan !== "direktur") {
+    if (user.jabatan !== "Kepala Bagian" && user.jabatan !== "Direktur") {
       return res.status(403).json({ message: "Akses ditolak" });
     }
     const laporan = await Laporan.findById(id);
@@ -70,7 +70,7 @@ export async function revisiLaporan(req, res) {
     const laporan = await Laporan.findById(id);
     if (!laporan) return res.status(404).json({ message: "Laporan tidak ditemukan" });
 
-    if (laporan.tertolak && laporan.status === 0 && user.jabatan === "hse") {
+    if (laporan.tertolak && laporan.status === 0 && user.jabatan === "HSE") {
       if (detail) laporan.detail = detail;
       if (lokasi) laporan.lokasi = lokasi;
       if (skalaCedera) laporan.skalaCedera = skalaCedera;
@@ -87,8 +87,8 @@ export async function revisiLaporan(req, res) {
 }
 
 export async function getPelapor(req, res) {
-  try{
-    const {id} = req.params;
+  try {
+    const { id } = req.params;
     const laporan = await Laporan.findById(id);
     if (!laporan) return res.status(404).json({ message: "Laporan tidak ditemukan" });
     const pelapor = await Pekerja.findById(laporan.uid);

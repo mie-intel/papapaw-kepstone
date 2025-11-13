@@ -6,11 +6,13 @@ import { Dropdown1 } from "../allPage/Dropdown";
 import { Button1, Button2, Button3 } from "../allPage/Button";
 import InputForm from "../allPage/InputForm";
 import { registerSchema } from "@/libs/schema";
+import axios from "@/config/axios-config";
+import { set } from "zod";
 
 export default function Register() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    noInduk: "",
+    nomorInduk: "",
     nama: "",
     jabatan: "",
     departemen: "",
@@ -21,28 +23,49 @@ export default function Register() {
   const [errorMsg, setErrorMsg] = useState("");
   const [showErrors, setShowErrors] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+    setLoading(true);
     setErrorMsg("");
     setShowErrors(false);
     setSuccessMsg("");
 
     const result = registerSchema.safeParse(formData);
+
     if (!result.success) {
       const error = result.error.issues[0].message;
       setErrorMsg(error);
       setShowErrors(true);
+      setLoading(false);
       return;
-    } else {
-      setErrorMsg("");
-      setSuccessMsg("Akun berhasil dibuat!");
     }
+    // call api
+    console.log(formData);
+    try {
+      const response = await axios.post("/pekerja/register", formData);
+      console.log(response.data);
+      setSuccessMsg("Registrasi berhasil! Silakan login.");
+      setFormData({
+        nomorInduk: "",
+        nama: "",
+        jabatan: "",
+        departemen: "",
+        username: "",
+        password: "",
+      });
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+      setErrorMsg(error.response.data.error);
+    }
+    setLoading(false);
   };
 
   return (
@@ -74,9 +97,9 @@ export default function Register() {
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4" autoComplete="off">
           <InputForm
             type="text"
-            name="noInduk"
+            name="nomorInduk"
             placeholder="No. Induk"
-            value={formData.noInduk}
+            value={formData.nomorInduk}
             onChange={handleChange}
             showError={showErrors}
           />
@@ -130,7 +153,7 @@ export default function Register() {
         </form>
 
         <div className="relative flex w-full flex-col gap-3">
-          <Button1 type="submit" disabled={!!successMsg} label="Sign Up" onClick={handleSubmit} />
+          <Button1 type="submit" disabled={loading} label="Sign Up" onClick={handleSubmit} />
           <Button2
             type="button"
             label="I already have an account"
@@ -138,12 +161,12 @@ export default function Register() {
           />
 
           {errorMsg && (
-            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-sm text-[#E8697E]">
+            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-center text-sm text-[#E8697E]">
               {errorMsg}
             </p>
           )}
           {successMsg && (
-            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-sm text-[#34D391]">
+            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-center text-sm text-[#34D391]">
               {successMsg}
             </p>
           )}
