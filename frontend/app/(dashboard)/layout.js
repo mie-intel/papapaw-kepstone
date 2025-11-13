@@ -4,5 +4,5 @@ export const metadata = {
 };
 
 export default function DashboardLayout({ children }) {
-  return <div className="flex h-screen w-full bg-[#2B2E4D] lg:pt-12 lg:pl-5">{children}</div>;
+  return <div className="flex w-full bg-[#2B2E4D] lg:h-screen lg:pt-12 lg:pl-5">{children}</div>;
 }
