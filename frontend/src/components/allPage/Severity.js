@@ -3,19 +3,23 @@ import PropTypes from "prop-types";
 
 export default function Severity({ level }) {
   let colorClasses = "";
-  let textColor = "";
+  let label = "";
 
   switch (level) {
-    case "Severe":
+    case 3:
+      label = "Severe";
       colorClasses = "bg-[#E8697E]";
       break;
-    case "Moderate":
+    case 2:
+      label = "Moderate";
       colorClasses = "bg-[#FDBC64]";
       break;
-    case "Minor":
+    case 1:
+      label = "Minor";
       colorClasses = "bg-[#34D391]";
       break;
     default:
+      label = "Unknown";
       colorClasses = "bg-gray-600/20";
   }
 
@@ -23,11 +27,11 @@ export default function Severity({ level }) {
     <div
       className={`font-jakarta inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold text-white ${colorClasses} min-w-[80px]`}
     >
-      {level}
+      {label}
     </div>
   );
 }
 
 Severity.propTypes = {
-  level: PropTypes.string,
+  level: PropTypes.number,
 };

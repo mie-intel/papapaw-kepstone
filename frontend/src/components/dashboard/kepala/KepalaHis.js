@@ -7,7 +7,7 @@ import Severity from "@/components/allPage/Severity";
 import Status from "@/components/allPage/Status";
 import Overview from "@/components/allPage/Overview";
 import { Dropdown1 } from "@/components/allPage/Dropdown";
-import { mockReports } from "@/libs/constants/mockData";
+import { mockReports2 } from "@/libs/constants/mockData";
 
 export default function KepalaHis() {
   const [selectedReport, setSelectedReport] = useState(null);
@@ -21,19 +21,36 @@ export default function KepalaHis() {
     search: "",
   });
 
-  const filteredReports = mockReports.filter((report) => {
-    const searchMatch = report.title.toLowerCase().includes(formData.search.toLowerCase());
-    const statusMatch =
-      formData.status === "" ||
-      formData.status === "All Status" ||
-      report.status === formData.status;
-    const severityMatch =
-      formData.severity === "" ||
-      formData.severity === "Severity Level" ||
-      report.severity === formData.severity;
+  const filteredReports = mockReports2
+    .filter((report) => report.status !== 0 && !report.tertolak)
+    .filter((report) => {
+      const searchMatch =
+        report.detail.toLowerCase().includes(formData.search.toLowerCase()) ||
+        report.lokasi.toLowerCase().includes(formData.search.toLowerCase()) ||
+        report.departemen.toLowerCase().includes(formData.search.toLowerCase());
 
-    return searchMatch && statusMatch && severityMatch;
-  });
+      const statusLabel = report.tertolak
+        ? "Rejected"
+        : report.status === 3
+          ? "Completed"
+          : report.status === 0
+            ? "Draft"
+            : "Ongoing";
+
+      const statusMatch =
+        formData.status === "" ||
+        formData.status === "All Status" ||
+        formData.status === statusLabel;
+
+      const severityMatch =
+        formData.severity === "" ||
+        formData.severity === "Severity Level" ||
+        (report.skalaCedera === 3 && formData.severity === "Severe") ||
+        (report.skalaCedera === 2 && formData.severity === "Moderate") ||
+        (report.skalaCedera === 1 && formData.severity === "Minor");
+
+      return searchMatch && statusMatch && severityMatch;
+    });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,23 +120,23 @@ export default function KepalaHis() {
                   {filteredReports.length > 0 ? (
                     filteredReports.map((report) => (
                       <tr
-                        key={report.id}
+                        key={report.idSurat}
                         className="border-b border-[#C4C4C4]/20 bg-[#2B2E4D]/30 text-base transition-colors hover:bg-[#C4C4C4]/10 md:text-sm"
                       >
-                        <td className="max-w-[120px] truncate overflow-hidden px-3 py-4 text-sm font-semibold text-ellipsis sm:max-w-[200px] md:w-[25vw] md:max-w-xs md:text-base">
-                          {report.title}
+                        <td className="max-w-[30vw] truncate overflow-hidden px-3 py-4 text-sm font-semibold text-ellipsis md:w-[25vw] md:max-w-xs md:text-base">
+                          {report.detail}
                         </td>
                         <td className="hidden px-3 py-4 text-[#C4C4C4] md:table-cell">
-                          {report.department}
+                          {report.departemen}
                         </td>
                         <td className="hidden px-3 py-4 text-[#C4C4C4] sm:table-cell">
-                          {report.date}
+                          {new Date(report.tanggal).toLocaleDateString()}
                         </td>
                         <td className="hidden px-3 py-4 lg:table-cell">
-                          <Severity level={report.severity} />
+                          <Severity level={report.skalaCedera} />
                         </td>
                         <td className="px-3 py-4">
-                          <Status status={report.status} />
+                          <Status status={report.status} tertolak={report.tertolak} />
                         </td>
                         <td className="px-3 py-4 text-center">
                           <div className="justify-left flex items-center space-x-2 md:space-x-5">
@@ -131,10 +148,10 @@ export default function KepalaHis() {
                                 setShowOverview(true);
                               }}
                             />
-                            {report.status === "Completed" && (
+                            {report.status === 3 && !report.tertolak && (
                               <FaDownload title="Download Report" className="cursor-pointer" />
                             )}
-                            {report.status === "Draft" && (
+                            {report.status === 0 && !report.tertolak && (
                               <>
                                 <IoPencilSharp title="Edit Report" className="cursor-pointer" />
                                 <FaTrashCan title="Delete Report" className="cursor-pointer" />
