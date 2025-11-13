@@ -3,10 +3,8 @@ import React, { useState, useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Dropdown1 } from "../allPage/Dropdown";
-import { Button1, Button2, Button3 } from "../allPage/Button";
+import { Button1, Button2 } from "../allPage/Button";
 import InputForm from "../allPage/InputForm";
-import { registerSchema } from "@/libs/schema";
-import axios from "@/config/axios-config";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function Register() {
