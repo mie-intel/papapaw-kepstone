@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import PropTypes from "prop-types";
 import Image from "next/image";
 import Link from "next/link";
 import { MdLogout } from "react-icons/md";
@@ -72,3 +73,26 @@ export default function Navbar({ userRole, navItems, activeItem, onChangeActive 
     </aside>
   );
 }
+
+NavItem.propTypes = {
+  item: PropTypes.shape({
+    href: PropTypes.string.isRequired,
+    icon: PropTypes.node.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  isActive: PropTypes.bool.isRequired,
+  onClick: PropTypes.func,
+};
+
+Navbar.propTypes = {
+  userRole: PropTypes.string.isRequired,
+  navItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      href: PropTypes.string.isRequired,
+      icon: PropTypes.node.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  activeItem: PropTypes.string.isRequired,
+  onChangeActive: PropTypes.func,
+};

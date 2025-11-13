@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import PropTypes from "prop-types";
 
 // Blue Button
 export function Button1({ label, onClick, type = "button", disabled = false, className = "" }) {
@@ -42,3 +43,15 @@ export function Button3({ label, onClick, type = "button", disabled = false, cla
     </button>
   );
 }
+
+const buttonPropTypes = {
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  type: PropTypes.oneOf(["button", "submit", "reset"]),
+  disabled: PropTypes.bool,
+  className: PropTypes.string,
+};
+
+Button1.propTypes = buttonPropTypes;
+Button2.propTypes = buttonPropTypes;
+Button3.propTypes = buttonPropTypes;

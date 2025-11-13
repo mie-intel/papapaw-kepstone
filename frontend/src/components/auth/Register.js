@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Dropdown1, Dropdown2 } from "../allPage/Dropdown";
+import { Dropdown1 } from "../allPage/Dropdown";
 import { Button1, Button2, Button3 } from "../allPage/Button";
 import InputForm from "../allPage/InputForm";
 import { registerSchema } from "@/libs/schema";
