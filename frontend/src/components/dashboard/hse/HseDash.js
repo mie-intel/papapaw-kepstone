@@ -68,12 +68,12 @@ export default function HseDash() {
         <CardReport
           label="Ongoing"
           value={12}
-          icon={<FaClock className="h-full w-[35px] text-[#FDBC64] md:h-full md:w-[28px]" />}
+          icon={<FaClock className="h-full w-[35px] text-[#FDBC64] md:h-full md:w-7" />}
         />
         <CardReport
           label="Rejected"
           value={8}
-          icon={<FaCircleInfo className="h-full w-[35px] text-[#E8697E] md:h-full md:w-[28px]" />}
+          icon={<FaCircleInfo className="h-full w-[35px] text-[#E8697E] md:h-full md:w-7" />}
         />
         <CardReport
           label="Draft"
