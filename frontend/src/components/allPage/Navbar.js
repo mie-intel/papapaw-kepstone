@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import Image from "next/image";
 import Link from "next/link";
 import { MdLogout } from "react-icons/md";
-
+import { useRouter } from "next/navigation";
+import { AuthContext } from "../contexts/AuthContext";
 function NavItem({ item, isActive, onClick }) {
   return (
     <li className="px-4 py-1 lg:px-4 lg:py-1">
@@ -32,6 +33,8 @@ function NavItem({ item, isActive, onClick }) {
 }
 
 export default function Navbar({ userRole, navItems, activeItem, onChangeActive }) {
+  const { logout } = useContext(AuthContext);
+  const router = useRouter();
   return (
     <aside className="fixed bottom-5 left-1/2 z-50 flex w-[80%] -translate-x-1/2 flex-row rounded-3xl border-2 border-[#818181] bg-[#37383C] text-gray-200 shadow-lg lg:static lg:h-full lg:w-64 lg:translate-x-0 lg:flex-col lg:rounded-t-none lg:rounded-tl-2xl lg:rounded-b-none lg:border-0 lg:bg-gradient-to-b lg:from-[#1A1B37] lg:via-[#1A1B37] lg:via-60% lg:to-[#2B2E4D] lg:shadow-[inset_-8px_0_16px_#2B2E4D]">
       <div className="hidden items-center space-x-3 p-5 lg:flex">
@@ -55,9 +58,15 @@ export default function Navbar({ userRole, navItems, activeItem, onChangeActive 
             />
           ))}
 
-          <button className="flex cursor-pointer flex-col items-center justify-center space-y-1 py-2 duration-300 ease-in-out active:text-[#E8697E] lg:hidden">
-            <MdLogout size={22} className="text-[#B5B5B5] duration-300 active:text-[#E8697E]" />
-            <span className="text-[#B5B5B5 ] text-xs font-medium">Logout</span>
+          <button
+            onClick={async () => {
+              await logout();
+              router.refresh();
+            }}
+            className="flex cursor-pointer flex-col items-center justify-center space-y-1 py-2 lg:hidden"
+          >
+            <MdLogout size={22} className="text-[#B5B5B5]" />
+            <span className="text-xs font-medium text-[#B5B5B5]">Logout</span>
           </button>
         </ul>
       </nav>
@@ -65,7 +74,13 @@ export default function Navbar({ userRole, navItems, activeItem, onChangeActive 
       <hr className="hidden border-2 border-t border-[#191A36] opacity-50 lg:block" />
 
       <div className="hidden p-4 lg:block">
-        <button className="flex w-full cursor-pointer items-center space-x-3 rounded-lg px-4 py-3 text-[#E8697E] transition-colors duration-500 ease-in-out hover:bg-[#C4C4C4]/5 active:bg-[#E8697E]/50">
+        <button
+          onClick={async () => {
+            await logout();
+            router.refresh();
+          }}
+          className="flex w-full cursor-pointer items-center space-x-3 rounded-lg px-4 py-3 text-[#E8697E] transition-colors duration-200 hover:bg-[#C4C4C4]/5"
+        >
           <MdLogout size={22} className="text-[#E8697E]" />
           <span className="font-jakarta font-bold">Logout</span>
         </button>

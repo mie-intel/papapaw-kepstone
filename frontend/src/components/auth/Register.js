@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Dropdown1 } from "../allPage/Dropdown";
@@ -7,7 +7,7 @@ import { Button1, Button2, Button3 } from "../allPage/Button";
 import InputForm from "../allPage/InputForm";
 import { registerSchema } from "@/libs/schema";
 import axios from "@/config/axios-config";
-import { set } from "zod";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Register() {
   const router = useRouter();
@@ -19,6 +19,8 @@ export default function Register() {
     username: "",
     password: "",
   });
+
+  const { register } = useContext(AuthContext);
 
   const [errorMsg, setErrorMsg] = useState("");
   const [showErrors, setShowErrors] = useState(false);
@@ -33,39 +35,21 @@ export default function Register() {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     setLoading(true);
-    setErrorMsg("");
+    setErrorMsg(null);
     setShowErrors(false);
-    setSuccessMsg("");
 
-    const result = registerSchema.safeParse(formData);
+    const response = await register(formData);
 
-    if (!result.success) {
-      const error = result.error.issues[0].message;
-      setErrorMsg(error);
+    if (!response.success) {
+      setErrorMsg(response.error);
       setShowErrors(true);
       setLoading(false);
       return;
     }
-    // call api
-    console.log(formData);
-    try {
-      const response = await axios.post("/pekerja/register", formData);
-      console.log(response.data);
-      setSuccessMsg("Registrasi berhasil! Silakan login.");
-      setFormData({
-        nomorInduk: "",
-        nama: "",
-        jabatan: "",
-        departemen: "",
-        username: "",
-        password: "",
-      });
-      router.push("/login");
-    } catch (error) {
-      console.log(error);
-      setErrorMsg(error.response.data.error);
-    }
+    setSuccessMsg(response.message || "Register successful! Redirecting to login...");
+
     setLoading(false);
+    router.push("/login");
   };
 
   return (

@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { Button1, Button2 } from "../allPage/Button";
 import Image from "next/image";
 import InputForm from "../allPage/InputForm";
-import { loginSchema } from "@/libs/schema";
-import { mockUsers } from "@/libs/constants/mockData";
+import Cookies from "js-cookie";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Login() {
   const router = useRouter();
@@ -13,30 +13,33 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [showErrors, setShowErrors] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { login } = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (e) e.preventDefault();
-    setErrorMsg("");
-    setShowErrors(false);
-
-    const result = loginSchema.safeParse({ username, password });
-    if (!result.success) {
-      const error = result.error.issues[0].message;
-      setErrorMsg(error);
+    setLoading(true);
+    const response = await login(username, password);
+    if (!response.success) {
+      setErrorMsg(response.error);
       setShowErrors(true);
+      setLoading(false);
+      return;
     }
-
+    const role = Cookies.get("role");
+    setLoading(false);
+    setShowErrors(false);
+    setErrorMsg("");
+    console.log("ROLE", role);
     // Mock data for testing
-    const user = mockUsers.find((u) => u.username === username && u.password === password);
-    localStorage.setItem("userRole", user.role);
-    switch (user.role) {
-      case "hse":
+    switch (role) {
+      case "HSE":
         router.push("/hse/dashboard");
         break;
-      case "kepala":
+      case "Kepala Bagian":
         router.push("/kepala/dashboard");
         break;
-      case "direktur":
+      case "Direktur":
         router.push("/direktur/dashboard");
         break;
     }
@@ -91,7 +94,7 @@ export default function Login() {
         </form>
 
         <div className="relative flex w-full flex-col gap-3">
-          <Button1 type="submit" label="Login" onClick={handleSubmit} />
+          <Button1 type="submit" label="Login" onClick={handleSubmit} disabled={loading} />
           <Button2
             type="button"
             label="Create new account"
