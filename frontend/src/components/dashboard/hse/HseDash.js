@@ -14,8 +14,8 @@ import Overview from "@/components/allPage/Overview";
 export default function HseDash() {
   const [selectedReport, setSelectedReport] = useState(null);
   const [showOverview, setShowOverview] = useState(false);
-  const statusOptions = ["All", "Ongoing", "Completed", "Draft", "Rejected"];
-  const severityOptions = ["All", "Severe", "Moderate", "Minor"];
+  const statusOptions = ["All Status", "Ongoing", "Completed", "Draft", "Rejected"];
+  const severityOptions = ["Severity Level", "Severe", "Moderate", "Minor"];
 
   const [formData, setFormData] = useState({
     status: "",
@@ -26,10 +26,12 @@ export default function HseDash() {
   const filteredReports = mockReports.filter((report) => {
     const searchMatch = report.title.toLowerCase().includes(formData.search.toLowerCase());
     const statusMatch =
-      formData.status === "" || formData.status === "All" || report.status === formData.status;
+      formData.status === "" ||
+      formData.status === "All Status" ||
+      report.status === formData.status;
     const severityMatch =
       formData.severity === "" ||
-      formData.severity === "All" ||
+      formData.severity === "Severity Level" ||
       report.severity === formData.severity;
 
     return searchMatch && statusMatch && severityMatch;
@@ -41,46 +43,52 @@ export default function HseDash() {
   };
 
   return (
-    <div className="font-jakarta flex min-h-screen w-full flex-col gap-7 overflow-hidden rounded-2xl bg-[#2B2E4D]/30 p-5 text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0">
+    <div className="font-jakarta flex min-h-screen w-full flex-col gap-7 overflow-hidden text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0">
       {/* Dashboard */}
       <div className="flex shrink-0 flex-col">
-        <h2 className="text-2xl font-extrabold">Dashboard</h2>
-        <p className="text-sm text-[#B5B5B5]">Welcome! Here is the overview of HSE reports.</p>
+        <h2 className="text-[7vw] font-extrabold md:text-2xl">Dashboard</h2>
+        <p className="text-[4vw] text-[#B5B5B5] md:text-sm">
+          Welcome! Here is the overview of HSE reports.
+        </p>
       </div>
 
-      <div className="flex shrink-0 flex-row flex-wrap gap-5">
+      <div className="flex shrink-0 flex-row flex-wrap justify-center gap-5 md:justify-start">
         <CardReport
-          label="Total Reports"
+          label="Total"
           value={100}
-          icon={<FaFileAlt size={25} className="text-[#0273EA]" />}
+          icon={<FaFileAlt className="h-full w-[37px] text-[#0273EA] md:h-full md:w-[25px]" />}
         />
         <CardReport
           label="Completed"
           value={80}
-          icon={<IoCheckmarkDoneCircle size={30} className="text-[#34D391]" />}
+          icon={
+            <IoCheckmarkDoneCircle className="h-full w-[45px] text-[#34D391] md:h-full md:w-[35px]" />
+          }
         />
         <CardReport
           label="Ongoing"
           value={12}
-          icon={<FaClock size={25} className="text-[#FDBC64]" />}
+          icon={<FaClock className="h-full w-[35px] text-[#FDBC64] md:h-full md:w-[28px]" />}
         />
         <CardReport
           label="Rejected"
           value={8}
-          icon={<FaCircleInfo size={25} className="text-[#E8697E]" />}
+          icon={<FaCircleInfo className="h-full w-[35px] text-[#E8697E] md:h-full md:w-[28px]" />}
         />
         <CardReport
           label="Draft"
           value={2}
-          icon={<FaFileAlt size={25} className="text-[#C4C4C4]" />}
+          icon={<FaFileAlt className="h-full w-[37px] text-[#C4C4C4] md:h-full md:w-[25px]" />}
         />
       </div>
 
       {/* History */}
       <div className="flex h-screen flex-1 flex-col overflow-hidden pb-5 lg:pb-0">
         <div className="flex shrink-0 flex-col">
-          <h2 className="text-2xl font-extrabold">History</h2>
-          <p className="text-sm text-[#B5B5B5]">View all of your submitted and draft reports.</p>
+          <h2 className="text-[7vw] font-extrabold md:text-2xl">History</h2>
+          <p className="text-[4vw] text-[#B5B5B5] md:text-sm">
+            View all of your submitted and draft reports.
+          </p>
         </div>
 
         <div className="mt-2 flex h-full flex-1 flex-col gap-2 overflow-hidden rounded-2xl border border-[#2B2E4D] bg-[#2B2E4D]/30 p-2 shadow-lg">
@@ -91,12 +99,12 @@ export default function HseDash() {
             placeholder="Search reports..."
             value={formData.search}
             onChange={handleChange}
-            className="h-10 rounded-lg border-[#A3A5B1]"
+            className="h-10 rounded-lg border-[#A3A5B1] text-base"
           />
 
           {/* Filters */}
           <div className="flex shrink-0 flex-col gap-3 md:flex-row md:items-center">
-            <p className="text-base font-medium text-[#FFFFFF]">Filter:</p>
+            <p className="text-lg font-medium text-[#FFFFFF] md:text-sm">Filter:</p>
             <div className="flex w-[60%] flex-col gap-3 sm:flex-row sm:gap-4 md:w-[40%]">
               <Dropdown1
                 name="status"
@@ -104,7 +112,7 @@ export default function HseDash() {
                 options={statusOptions}
                 formData={formData}
                 handleChange={handleChange}
-                className="h-10 w-20 rounded-lg border-[#A3A5B1]"
+                className="h-10 rounded-lg border-[#A3A5B1] text-base"
               />
               <Dropdown1
                 name="severity"
@@ -112,25 +120,23 @@ export default function HseDash() {
                 options={severityOptions}
                 formData={formData}
                 handleChange={handleChange}
-                className="h-10 rounded-lg border-[#A3A5B1]"
+                className="h-10 rounded-lg border-[#A3A5B1] text-base"
               />
             </div>
           </div>
 
           {/* All Reports */}
           <div className="mt-4 flex-1 overflow-hidden rounded-xl border border-[#C4C4C4]/20">
-            <div className="relative h-full max-h-screen overflow-y-auto">
+            <div className="relative h-[90vh] overflow-y-auto md:h-full">
               <table className="min-w-full text-left text-sm whitespace-nowrap">
-                <thead className="sticky top-0 z-10 bg-[#2B2E4D]">
+                <thead className="sticky top-0 z-10 bg-[#2B2E4D] text-base md:text-sm">
                   <tr>
-                    <th className="w-[10vw] px-4 py-3 font-semibold sm:w-[30vw] md:w-[25vw]">
-                      Title
-                    </th>
-                    <th className="hidden px-4 py-3 font-semibold md:table-cell">Department</th>
-                    <th className="hidden px-4 py-3 font-semibold sm:table-cell">Date</th>
-                    <th className="hidden px-4 py-3 font-semibold lg:table-cell">Severity</th>
-                    <th className="px-4 py-3 font-semibold">Status</th>
-                    <th className="px-4 py-3 font-semibold">Action</th>
+                    <th className="px-3 py-3 font-semibold md:w-[25vw]">Title</th>
+                    <th className="hidden px-3 py-3 font-semibold md:table-cell">Department</th>
+                    <th className="hidden px-3 py-3 font-semibold sm:table-cell">Date</th>
+                    <th className="hidden px-3 py-3 font-semibold lg:table-cell">Severity</th>
+                    <th className="px-3 py-3 font-semibold">Status</th>
+                    <th className="px-3 py-3 font-semibold">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -138,25 +144,25 @@ export default function HseDash() {
                     filteredReports.map((report) => (
                       <tr
                         key={report.id}
-                        className="border-b border-[#C4C4C4]/20 bg-[#2B2E4D]/30 transition-colors hover:bg-[#C4C4C4]/10"
+                        className="border-b border-[#C4C4C4]/20 bg-[#2B2E4D]/30 text-base transition-colors hover:bg-[#C4C4C4]/10 md:text-sm"
                       >
-                        <td className="max-w-xs truncate overflow-hidden px-4 py-4 font-semibold text-ellipsis">
+                        <td className="max-w-[120px] truncate overflow-hidden px-3 py-4 text-sm font-semibold text-ellipsis sm:max-w-[200px] md:w-[25vw] md:max-w-xs md:text-base">
                           {report.title}
                         </td>
-                        <td className="hidden px-4 py-4 text-[#C4C4C4] md:table-cell">
+                        <td className="hidden px-3 py-4 text-[#C4C4C4] md:table-cell">
                           {report.department}
                         </td>
-                        <td className="hidden px-4 py-4 text-[#C4C4C4] sm:table-cell">
+                        <td className="hidden px-3 py-4 text-[#C4C4C4] sm:table-cell">
                           {report.date}
                         </td>
-                        <td className="hidden px-4 py-4 lg:table-cell">
+                        <td className="hidden px-3 py-4 lg:table-cell">
                           <Severity level={report.severity} />
                         </td>
-                        <td className="px-4 py-4">
+                        <td className="px-3 py-4">
                           <Status status={report.status} />
                         </td>
-                        <td className="px-4 py-4 text-center">
-                          <div className="justify-left flex items-center space-x-5">
+                        <td className="px-3 py-4 text-center">
+                          <div className="justify-left flex items-center space-x-2 md:space-x-5">
                             <FaEye
                               title="View Report"
                               className="cursor-pointer"

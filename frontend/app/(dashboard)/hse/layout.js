@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import PropTypes from "prop-types";
 import Navbar from "@/components/allPage/Navbar";
 import SidebarHeader from "@/components/allPage/SidebarHeader";
 import { usePathname } from "next/navigation";
@@ -24,3 +25,7 @@ export default function HseLayout({ children }) {
     </div>
   );
 }
+
+HseLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
