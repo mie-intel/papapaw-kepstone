@@ -1,14 +1,15 @@
 "use client";
 import React from "react";
+import PropTypes from "prop-types";
 import Navbar from "@/components/allPage/Navbar";
 import SidebarHeader from "@/components/allPage/SidebarHeader";
 import { usePathname } from "next/navigation";
 import { BiSolidDashboard } from "react-icons/bi";
-import { IoIosCreate } from "react-icons/io";
+import { FaHistory } from "react-icons/fa";
 
 const kepalaNavItems = [
   { name: "Dashboard", href: "/kepala/dashboard", icon: <BiSolidDashboard /> },
-  { name: "History", href: "/kepala/history", icon: <IoIosCreate /> },
+  { name: "History", href: "/kepala/history", icon: <FaHistory /> },
 ];
 
 export default function KepalaLayout({ children }) {
@@ -24,3 +25,7 @@ export default function KepalaLayout({ children }) {
     </div>
   );
 }
+
+KepalaLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};

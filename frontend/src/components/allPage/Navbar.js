@@ -55,9 +55,9 @@ export default function Navbar({ userRole, navItems, activeItem, onChangeActive 
             />
           ))}
 
-          <button className="flex cursor-pointer flex-col items-center justify-center space-y-1 py-2 lg:hidden">
-            <MdLogout size={22} className="text-[#B5B5B5]" />
-            <span className="text-xs font-medium text-[#B5B5B5]">Logout</span>
+          <button className="flex cursor-pointer flex-col items-center justify-center space-y-1 py-2 duration-300 ease-in-out active:text-[#E8697E] lg:hidden">
+            <MdLogout size={22} className="text-[#B5B5B5] duration-300 active:text-[#E8697E]" />
+            <span className="text-[#B5B5B5 ] text-xs font-medium">Logout</span>
           </button>
         </ul>
       </nav>
@@ -65,7 +65,7 @@ export default function Navbar({ userRole, navItems, activeItem, onChangeActive 
       <hr className="hidden border-2 border-t border-[#191A36] opacity-50 lg:block" />
 
       <div className="hidden p-4 lg:block">
-        <button className="flex w-full cursor-pointer items-center space-x-3 rounded-lg px-4 py-3 text-[#E8697E] transition-colors duration-200 hover:bg-[#C4C4C4]/5">
+        <button className="flex w-full cursor-pointer items-center space-x-3 rounded-lg px-4 py-3 text-[#E8697E] transition-colors duration-500 ease-in-out hover:bg-[#C4C4C4]/5 active:bg-[#E8697E]/50">
           <MdLogout size={22} className="text-[#E8697E]" />
           <span className="font-jakarta font-bold">Logout</span>
         </button>
