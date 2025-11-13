@@ -44,6 +44,34 @@ export function Button3({ label, onClick, type = "button", disabled = false, cla
   );
 }
 
+// Cancel Button
+export function Button4({ label, onClick, type = "button", disabled = false, className = "" }) {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`hover:bg-gray-primary/40 mt-5 w-full cursor-pointer rounded-2xl bg-[#969696] p-3 text-lg font-bold transition-colors duration-300 ease-in-out disabled:opacity-50 ${className}`}
+    >
+      {label}
+    </button>
+  );
+}
+
+// Save as Draft Button
+export function Button5({ label, onClick, type = "button", disabled = false, className = "" }) {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`mt-5 w-full cursor-pointer rounded-2xl bg-[#001488] p-3 text-lg font-bold transition-colors duration-300 ease-in-out hover:bg-[#536bf7] disabled:opacity-50 ${className}`}
+    >
+      {label}
+    </button>
+  );
+}
+
 const buttonPropTypes = {
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
@@ -55,3 +83,5 @@ const buttonPropTypes = {
 Button1.propTypes = buttonPropTypes;
 Button2.propTypes = buttonPropTypes;
 Button3.propTypes = buttonPropTypes;
+Button4.propTypes = buttonPropTypes;
+Button5.propTypes = buttonPropTypes;
