@@ -18,7 +18,6 @@ export default function Overview({ report, onClose }) {
     ? STATUS_MAP.rejected
     : STATUS_MAP[report.status] || { label: "Unknown", color: "#999999" };
   const severity = { 1: "Minor", 2: "Moderate", 3: "Severe" }[report.skalaCedera] || "Unknown";
-  const steps = ["HSE (Draft)", "Kepala Bagian", "Direktur"];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">

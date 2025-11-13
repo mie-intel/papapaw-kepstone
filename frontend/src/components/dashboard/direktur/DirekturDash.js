@@ -1,6 +1,6 @@
 import React from "react";
 import CardReport from "@/components/allPage/CardReport";
-import { FaFileAlt, FaMapMarkerAlt, FaCalendarAlt, FaExclamationCircle } from "react-icons/fa";
+import { FaFileAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { FaClock } from "react-icons/fa6";
 import { mockReports2 } from "@/libs/constants/mockData";
 import Status from "@/components/allPage/Status";

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import PropTypes from "prop-types";
-import { Input } from "postcss";
 
 InputForm.propTypes = {
   type: PropTypes.string,

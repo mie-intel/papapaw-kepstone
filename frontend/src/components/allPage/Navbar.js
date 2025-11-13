@@ -6,7 +6,7 @@ import Link from "next/link";
 import { MdLogout } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../contexts/AuthContext";
-function NavItem({ item, isActive, onClick }) {
+function NavItem({ item, isActive }) {
   return (
     <li className="px-4 py-1 lg:px-4 lg:py-1">
       <Link
