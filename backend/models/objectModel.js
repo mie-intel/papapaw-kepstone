@@ -1,13 +1,24 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
+const DEPARTEMEN = [
+  "Mechanical Assembly",
+  "Electronical Assembly",
+  "Software Installation",
+  "Quality Assurance",
+  "Warehouse",
+  "Direktur",
+];
+
+const JABATAN = ["HSE", "Kepala Bagian", "Direktur"];
+
 const pekerjaSchema = new mongoose.Schema({
   nomorInduk: { type: String, required: true, unique: true },
   nama: { type: String, required: true },
-  jabatan: { type: String, enum: ["hse", "kepala bagian", "direktur"], required: true },
+  jabatan: { type: String, enum: JABATAN, required: true },
   departemen: {
     type: String,
-    enum: ["mechanical", "electronical", "software", "qa", "warehouse"],
+    enum: DEPARTEMEN,
     required: false,
   },
   username: { type: String, required: true, unique: true },
@@ -33,7 +44,11 @@ const laporanSchema = new mongoose.Schema({
   tertolak: { type: Boolean, required: true, default: false },
   headBagianApprove: { type: Date },
   direkturApprove: { type: Date },
-  departemen: { type: String, enum: ["mechanical", "electronical", "software", "qa", "warehouse"], required: true }
+  departemen: {
+    type: String,
+    enum: DEPARTEMEN,
+    required: true,
+  },
 });
 
 const Pekerja = mongoose.model("Pekerja", pekerjaSchema);

@@ -25,7 +25,7 @@ export async function create(req, res) {
       skalaCedera,
       detail,
       lokasi,
-      departemen
+      departemen,
     });
 
     // Simpan ke database
