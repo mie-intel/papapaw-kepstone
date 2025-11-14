@@ -80,16 +80,16 @@ export default function KepalaHis() {
           />
 
           {/* Filters */}
-          <div className="flex shrink-0 flex-col gap-3 md:flex-row md:items-center">
+          <div className="mt-2 flex shrink-0 flex-col gap-3 md:flex-row md:items-center">
             <p className="text-lg font-medium text-[#FFFFFF] md:text-sm">Filter:</p>
-            <div className="flex w-[60%] flex-col gap-3 sm:flex-row sm:gap-4 md:w-[40%]">
+            <div className="flex w-[60%] flex-col gap-3 sm:flex-row sm:gap-4">
               <Dropdown1
                 name="status"
                 placeholder="All Status"
                 options={statusOptions}
                 formData={formData}
                 handleChange={handleChange}
-                className="h-10 rounded-lg border-[#A3A5B1] text-base"
+                className="h-10 rounded-lg border-[#A3A5B1] text-base text-nowrap"
               />
               <Dropdown1
                 name="severity"
@@ -97,7 +97,7 @@ export default function KepalaHis() {
                 options={severityOptions}
                 formData={formData}
                 handleChange={handleChange}
-                className="h-10 rounded-lg border-[#A3A5B1] text-base"
+                className="h-10 rounded-lg border-[#A3A5B1] text-base text-nowrap"
               />
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function KepalaHis() {
                         key={report.idSurat}
                         className="border-b border-[#C4C4C4]/20 bg-[#2B2E4D]/30 text-base transition-colors hover:bg-[#C4C4C4]/10 md:text-sm"
                       >
-                        <td className="max-w-[30vw] truncate overflow-hidden px-3 py-4 text-sm font-semibold text-ellipsis md:w-[25vw] md:max-w-xs md:text-base">
+                        <td className="max-w-[30vw] truncate overflow-hidden px-3 py-4 text-sm font-semibold md:max-w-[15vw] md:text-base xl:max-w-xs">
                           {report.detail}
                         </td>
                         <td className="hidden px-3 py-4 text-[#C4C4C4] md:table-cell">

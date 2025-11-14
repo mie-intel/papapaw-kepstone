@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Image from "next/image";
 
 const SidebarHeader = ({ role, namaAkun, children }) => {
@@ -13,7 +14,14 @@ const SidebarHeader = ({ role, namaAkun, children }) => {
           </div>
         </div>
 
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center gap-1">
+          <Image
+            src={"/logo.png"}
+            alt="foto profile"
+            width={100}
+            height={100}
+            className="w-[40px]"
+          />
           <p className="font-light text-white">{namaAkun}</p>
         </div>
       </div>

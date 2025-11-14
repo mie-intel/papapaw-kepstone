@@ -11,7 +11,7 @@ function NavItem({ item, isActive }) {
     <li className="px-4 py-1 lg:px-4 lg:py-1">
       <Link
         href={item.href}
-        className={`flex cursor-pointer flex-col items-center space-y-1 rounded-lg py-2 transition-colors duration-200 lg:flex-row lg:space-y-0 lg:space-x-3 lg:px-4 lg:py-3 ${
+        className={`flex w-full cursor-pointer flex-col items-center space-y-1 rounded-lg py-2 transition-colors duration-200 lg:flex-row lg:space-y-0 lg:space-x-3 lg:px-4 lg:py-3 ${
           isActive
             ? "text-white lg:bg-[#0273EA] lg:shadow-lg"
             : "hover:bg-opacity-50 text-gray-400 lg:text-gray-300 lg:hover:bg-[#C4C4C4]/20"
@@ -23,7 +23,7 @@ function NavItem({ item, isActive }) {
           {item.icon}
         </span>
         <span
-          className={`text-xs font-medium lg:text-base ${isActive ? "text-[#0273EA] lg:text-white" : "text-[#B5B5B5] lg:text-white"}`}
+          className={`text-xs font-medium whitespace-nowrap lg:text-base ${isActive ? "text-[#0273EA] lg:text-white" : "text-[#B5B5B5] lg:text-white"}`}
         >
           {item.name}
         </span>
@@ -37,7 +37,7 @@ export default function Navbar({ userRole, navItems, activeItem, onChangeActive 
   const router = useRouter();
   return (
     <aside className="fixed bottom-5 left-1/2 z-50 flex w-[80%] -translate-x-1/2 flex-row rounded-3xl border-2 border-[#818181] bg-[#37383C] text-gray-200 shadow-lg lg:static lg:h-full lg:w-64 lg:translate-x-0 lg:flex-col lg:rounded-t-none lg:rounded-tl-2xl lg:rounded-b-none lg:border-0 lg:bg-gradient-to-b lg:from-[#1A1B37] lg:via-[#1A1B37] lg:via-60% lg:to-[#2B2E4D] lg:shadow-[inset_-8px_0_16px_#2B2E4D]">
-      <div className="hidden items-center space-x-3 p-5 lg:flex">
+      <div className="xL:items-center hidden flex-row items-center space-x-3 p-5 lg:flex lg:flex-col lg:items-start xl:flex-row">
         <Image src={"/logo.png"} alt="logo" width={70} height={70} className="h-fit w-[70px]" />
         <div>
           <h1 className="text-xl font-bold text-white">SOLANUM</h1>

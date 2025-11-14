@@ -1,3 +1,4 @@
+import React from "react";
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "@/styles/global.css";
 import PropTypes from "prop-types";
