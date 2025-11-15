@@ -46,72 +46,114 @@ export default function Login() {
   };
 
   return (
-    <div className="font-jakarta relative flex min-h-screen w-full items-center justify-center overflow-hidden p-5">
-      {/* Logo Desktop */}
-      <div className="absolute top-10 left-[6vw] hidden flex-col items-start text-white lg:flex">
-        <div className="flex items-end">
-          <Image src={"/logo.png"} alt="logo solanum" width={50} height={50} />
-          <div className="flex flex-row items-end leading-tight">
-            <span className="text-xl font-bold">SOLANUM.</span>
-            <span className="text-sm font-light text-white/80">agrotech</span>
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes float-gentle {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          25% {
+            transform: translate(15px, -20px) scale(1.05);
+          }
+          50% {
+            transform: translate(-10px, -30px) scale(0.95);
+          }
+          75% {
+            transform: translate(-20px, -10px) scale(1.03);
+          }
+        }
+
+        @keyframes float-reverse {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          25% {
+            transform: translate(-18px, 15px) scale(0.97);
+          }
+          50% {
+            transform: translate(12px, 25px) scale(1.04);
+          }
+          75% {
+            transform: translate(22px, 8px) scale(0.98);
+          }
+        }
+
+        .blob-green {
+          animation: float-gentle 12s ease-in-out infinite;
+        }
+
+        .blob-pink {
+          animation: float-reverse 10s ease-in-out infinite;
+        }
+      `}} />
+      
+      <div className="font-jakarta relative flex min-h-screen w-full items-center justify-center overflow-hidden p-5">
+        {/* Logo Desktop */}
+        <div className="absolute top-10 left-[6vw] hidden flex-col items-start text-white lg:flex">
+          <div className="flex items-end">
+            <Image src={"/logo.png"} alt="logo solanum" width={50} height={50} />
+            <div className="flex flex-row items-end leading-tight">
+              <span className="text-xl font-bold">SOLANUM.</span>
+              <span className="text-sm font-light text-white/80">agrotech</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* FORM */}
-      <div className="relative z-10 flex min-h-screen w-full max-w-sm flex-col items-center justify-between pt-[10vw] pb-[15vw] lg:justify-center">
-        {/* Logo Mobile */}
-        <div className="text-center lg:hidden">
-          <div className="flex items-end justify-center">
-            <Image src={"/logo.png"} alt="logo solanum" width={40} height={40} />
-            <span className="text-2xl font-bold">SOLANUM.</span>
-            <span className="text-sm font-light text-white/80">agrotech</span>
+        {/* FORM */}
+        <div className="relative z-10 flex min-h-screen w-full max-w-sm flex-col items-center justify-between pt-[10vw] pb-[15vw] lg:justify-center">
+          {/* Logo Mobile */}
+          <div className="text-center lg:hidden">
+            <div className="flex items-end justify-center">
+              <Image src={"/logo.png"} alt="logo solanum" width={40} height={40} />
+              <span className="text-2xl font-bold">SOLANUM.</span>
+              <span className="text-sm font-light text-white/80">agrotech</span>
+            </div>
+            <p className="text-sm text-white/80">Anywhere you farm, we power progress</p>
           </div>
-          <p className="text-sm text-white/80">Anywhere you farm, we power progress</p>
+
+          <h2 className="mb-10 hidden text-4xl font-extrabold lg:flex">Login</h2>
+          <form
+            id="loginForm"
+            onSubmit={handleSubmit}
+            className="flex w-full flex-col gap-4"
+            autoComplete="off"
+          >
+            <InputForm
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              showError={showErrors}
+            />
+            <InputForm
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              showError={showErrors}
+            />
+          </form>
+
+          <div className="relative flex w-full flex-col gap-3">
+            <Button1 type="submit" label="Login" onClick={handleSubmit} disabled={loading} />
+            <Button2
+              type="button"
+              label="Create new account"
+              onClick={() => router.push("/register")}
+            />
+
+            {errorMsg && (
+              <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-sm text-[#E8697E]">
+                {errorMsg}
+              </p>
+            )}
+          </div>
         </div>
 
-        <h2 className="mb-10 hidden text-4xl font-extrabold lg:flex">Login</h2>
-        <form
-          id="loginForm"
-          onSubmit={handleSubmit}
-          className="flex w-full flex-col gap-4"
-          autoComplete="off"
-        >
-          <InputForm
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            showError={showErrors}
-          />
-          <InputForm
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            showError={showErrors}
-          />
-        </form>
-
-        <div className="relative flex w-full flex-col gap-3">
-          <Button1 type="submit" label="Login" onClick={handleSubmit} disabled={loading} />
-          <Button2
-            type="button"
-            label="Create new account"
-            onClick={() => router.push("/register")}
-          />
-
-          {errorMsg && (
-            <p className="animate-fade-in absolute top-[105%] left-1/2 -translate-x-1/2 text-sm text-[#E8697E]">
-              {errorMsg}
-            </p>
-          )}
-        </div>
+        {/* ANIMATED BLOBS */}
+        <div className="blob-green absolute bottom-[120px] left-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] blur-xs lg:block" />
+        <div className="blob-pink absolute top-[60px] right-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] blur-lg lg:block" />
       </div>
-
-      {/* BOLBB */}
-      <div className="absolute bottom-[120px] left-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] blur-xs lg:block" />
-      <div className="absolute top-[60px] right-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] blur-lg lg:block" />
-    </div>
+    </>
   );
 }
