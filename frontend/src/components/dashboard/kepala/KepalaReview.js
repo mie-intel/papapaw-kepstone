@@ -38,7 +38,7 @@ const KepalaReview = ({ reportData, onClose }) => {
 
   return (
     <div className="font-jakarta relative flex h-screen w-full overflow-hidden p-8">
-        <div className="w-full max-w-6xl overflow-y-auto">    
+      <div className="w-full max-w-6xl overflow-y-auto">
         {/* Header */}
         <div className="mb-8">
           <h2 className="mb-2 text-4xl font-bold text-white">Review Report</h2>
@@ -118,7 +118,7 @@ const KepalaReview = ({ reportData, onClose }) => {
               </label>
               <input
                 type="text"
-                value={new Date(report.incidentDate).toLocaleDateString('id-ID')}
+                value={new Date(report.incidentDate).toLocaleDateString("id-ID")}
                 readOnly
                 placeholder="dd/mm/yyyy"
                 className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-400"
@@ -184,12 +184,10 @@ const KepalaReview = ({ reportData, onClose }) => {
 
       {/* Reject Modal */}
       {showRejectModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-2xl rounded-2xl border border-slate-700/50 bg-slate-800 p-8 shadow-2xl">
-            <h3 className="mb-6 text-center text-2xl font-bold text-white">
-              Reason for rejection
-            </h3>
-            
+            <h3 className="mb-6 text-center text-2xl font-bold text-white">Reason for rejection</h3>
+
             <textarea
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}

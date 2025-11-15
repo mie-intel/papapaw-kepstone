@@ -21,7 +21,7 @@ export default function Overview({ report, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative w-[90%] max-w-2xl rounded-2xl bg-[#2B2E4D] p-6 text-white shadow-lg">
+      <div className="animate-pop relative w-[90%] max-w-2xl rounded-2xl bg-[#2B2E4D] p-6 text-white shadow-lg">
         <div className="mb-4 flex justify-between border-b border-[#C4C4C4]/30 pb-3">
           <h2 className="text-xl font-bold">Overview Report</h2>
           <button

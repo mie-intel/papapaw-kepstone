@@ -1,21 +1,43 @@
 "use client";
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Button1, Button4, Button5 } from "../../allPage/Button";
 import InputForm from "../../allPage/InputForm";
 import { Dropdown1 } from "../../allPage/Dropdown";
 
-const HseCreate = () => {
-  const [reportTitle, setReportTitle] = useState("");
-  const [employeeName, setEmployeeName] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
-  const [department, setDepartment] = useState("");
-  const [severity, setSeverity] = useState("Minor");
-  const [incidentDate, setIncidentDate] = useState("");
-  const [description, setDescription] = useState("");
+const getSeverityString = (level) => {
+  if (level === 3) return "Critical";
+  if (level === 2) return "Moderate";
+  return "Minor";
+};
+
+const formatDateForInput = (dateString) => {
+  if (!dateString) return "";
+  try {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  } catch {
+    console.error("Invalid date string:", dateString);
+    return "";
+  }
+};
+
+const HseCreate = ({ draftData, onClose }) => {
+  const [reportTitle, setReportTitle] = useState(draftData?.detail || "");
+  const [employeeName, setEmployeeName] = useState(draftData?.employeeName || "");
+  const [employeeId, setEmployeeId] = useState(draftData?.uid || "");
+  const [department, setDepartment] = useState(draftData?.departemen || "");
+  const [severity, setSeverity] = useState(
+    draftData ? getSeverityString(draftData.skalaCedera) : "Minor",
+  );
+  const [incidentDate, setIncidentDate] = useState(
+    draftData ? formatDateForInput(draftData.tanggal) : "",
+  );
+  const [description, setDescription] = useState(draftData?.description || "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({
+    console.log("Submitting report:", {
       reportTitle,
       employeeName,
       employeeId,
@@ -24,6 +46,20 @@ const HseCreate = () => {
       incidentDate,
       description,
     });
+    if (onClose) onClose();
+  };
+
+  const handleSaveDraft = () => {
+    console.log("Saving draft:", {
+      reportTitle,
+      employeeName,
+      employeeId,
+      department,
+      severity,
+      incidentDate,
+      description,
+    });
+    if (onClose) onClose();
   };
 
   return (
@@ -31,8 +67,14 @@ const HseCreate = () => {
       <div className="w-full max-w-6xl">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="mb-2 text-4xl font-bold text-white">Create New Report</h2>
-          <p className="text-gray-400">Create a new workplace report. All fields are required.</p>
+          <h2 className="mb-2 text-4xl font-bold text-white">
+            {draftData ? "Edit Draft" : "Create New Report"}
+          </h2>
+          <p className="text-gray-400">
+            {draftData
+              ? "Continue editing your draft report."
+              : "Create a new workplace report. All fields are required."}
+          </p>
         </div>
 
         {/* Form Container */}
@@ -108,7 +150,7 @@ const HseCreate = () => {
                     "Quality Assurance",
                     "Warehouse",
                   ]}
-                  formData={{ department }}
+                  formData={{ department: department }}
                   handleChange={(e) => setDepartment(e.target.value)}
                   placeholder="Department"
                   showError={false}
@@ -141,7 +183,7 @@ const HseCreate = () => {
               <Dropdown1
                 name="severity"
                 options={["Minor", "Moderate", "Critical"]}
-                formData={{ severity }}
+                formData={{ severity: severity }}
                 handleChange={(e) => setSeverity(e.target.value)}
                 placeholder="Select Severity"
                 showError={false}
@@ -172,6 +214,7 @@ const HseCreate = () => {
                 <Button4
                   type="button"
                   label="Cancel"
+                  onClick={onClose}
                   className="w-full rounded-lg bg-gray-600 px-6 py-2.5 text-sm text-white transition-all hover:bg-gray-700"
                 />
               </div>
@@ -181,6 +224,7 @@ const HseCreate = () => {
                 <Button5
                   type="button"
                   label="Save as draft"
+                  onClick={handleSaveDraft}
                   className="w-full rounded-lg bg-[#19298085] px-6 py-2.5 text-sm text-white transition-all hover:bg-[#48529685]"
                 />
               </div>
@@ -189,7 +233,7 @@ const HseCreate = () => {
               <div className="sm:col-span-1">
                 <Button1
                   type="submit"
-                  label="Submit Report"
+                  label={draftData ? "Update Report" : "Submit Report"}
                   className="w-full rounded-lg bg-blue-600 px-6 py-2.5 text-sm text-white transition-all hover:bg-blue-700"
                 />
               </div>
@@ -199,6 +243,15 @@ const HseCreate = () => {
       </div>
     </div>
   );
+};
+
+HseCreate.propTypes = {
+  draftData: PropTypes.object,
+  onClose: PropTypes.func.isRequired,
+};
+
+HseCreate.defaultProps = {
+  draftData: null,
 };
 
 export default HseCreate;
