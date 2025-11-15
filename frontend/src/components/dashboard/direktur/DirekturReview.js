@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button1 } from "../../allPage/Button";
 
-const KepalaReview = ({ reportData }) => {
+const DirekturReview = ({ reportData }) => {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
   const [status, setStatus] = useState(""); // "approved" or "rejected"
@@ -221,7 +221,7 @@ const KepalaReview = ({ reportData }) => {
   );
 };
 
-KepalaReview.propTypes = {
+DirekturReview.propTypes = {
   reportData: PropTypes.shape({
     reportTitle: PropTypes.string,
     employeeName: PropTypes.string,
@@ -233,4 +233,4 @@ KepalaReview.propTypes = {
   }),
 };
 
-export default KepalaReview;
+export default DirekturReview;

@@ -102,7 +102,7 @@ export default function KepalaDash() {
           {/* Back Button */}
           <button
             onClick={handleCloseReview}
-            className="mb-4 flex items-center gap-2 text-gray-400 transition hover:text-white"
+            className="flex items-center gap-2 text-gray-400 transition hover:text-white"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
