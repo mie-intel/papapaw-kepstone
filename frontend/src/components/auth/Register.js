@@ -51,7 +51,48 @@ export default function Register() {
   };
 
   return (
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes float-gentle {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          25% {
+            transform: translate(15px, -20px) scale(1.05);
+          }
+          50% {
+            transform: translate(-10px, -30px) scale(0.95);
+          }
+          75% {
+            transform: translate(-20px, -10px) scale(1.03);
+          }
+        }
+
+        @keyframes float-reverse {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          25% {
+            transform: translate(-18px, 15px) scale(0.97);
+          }
+          50% {
+            transform: translate(12px, 25px) scale(1.04);
+          }
+          75% {
+            transform: translate(22px, 8px) scale(0.98);
+          }
+        }
+
+        .blob-green {
+          animation: float-gentle 12s ease-in-out infinite;
+        }
+
+        .blob-pink {
+          animation: float-reverse 10s ease-in-out infinite;
+        }
+      `}} />
     <div className="font-jakarta relative flex min-h-screen w-full items-center justify-center overflow-hidden p-5">
+
       {/* Logo Desktop */}
       <div className="absolute top-10 left-[6vw] hidden flex-col items-start text-white lg:flex">
         <div className="flex items-end">
@@ -155,9 +196,10 @@ export default function Register() {
         </div>
       </div>
 
-      {/* BOLBB */}
-      <div className="absolute bottom-[120px] left-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] blur-xs lg:block" />
-      <div className="absolute top-[60px] right-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] blur-lg lg:block" />
+      {/* ANIMATED BLOBS */}
+      <div className="blob-green absolute bottom-[120px] left-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#34D391] blur-xs lg:block" />
+      <div className="blob-pink absolute top-[60px] right-[120px] z-0 hidden h-[200px] w-[200px] rounded-full bg-[#E8697E] blur-lg lg:block" />
     </div>
+    </>
   );
 }
