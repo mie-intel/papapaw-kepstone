@@ -5,7 +5,7 @@ import { Button1, Button4, Button5 } from "../../allPage/Button";
 import InputForm from "../../allPage/InputForm";
 import { Dropdown1 } from "../../allPage/Dropdown";
 
-const getSeverityString = (level) => {
+const getskalaCederaString = (level) => {
   if (level === 3) return "Critical";
   if (level === 2) return "Moderate";
   return "Minor";
@@ -23,27 +23,25 @@ const formatDateForInput = (dateString) => {
 };
 
 const HseCreate = ({ draftData, onClose }) => {
-  const [reportTitle, setReportTitle] = useState(draftData?.detail || "");
-  const [employeeName, setEmployeeName] = useState(draftData?.employeeName || "");
-  const [employeeId, setEmployeeId] = useState(draftData?.uid || "");
-  const [department, setDepartment] = useState(draftData?.departemen || "");
-  const [severity, setSeverity] = useState(
-    draftData ? getSeverityString(draftData.skalaCedera) : "Minor",
+  const [reportID, setreportID] = useState(draftData?.detail || "");
+  const [lokasi, setlokasi] = useState(draftData?.lokasi || "");
+  const [uid, setuid] = useState(draftData?.uid || "");
+  const [departemen, setdepartemen] = useState(draftData?.departemen || "");
+  const [skalaCedera, setskalaCedera] = useState(
+    draftData ? getskalaCederaString(draftData.skalaCedera) : "Minor",
   );
-  const [incidentDate, setIncidentDate] = useState(
-    draftData ? formatDateForInput(draftData.tanggal) : "",
-  );
+  const [tanggal, settanggal] = useState(draftData ? formatDateForInput(draftData.tanggal) : "");
   const [description, setDescription] = useState(draftData?.description || "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitting report:", {
-      reportTitle,
-      employeeName,
-      employeeId,
-      department,
-      severity,
-      incidentDate,
+      reportID,
+      lokasi,
+      uid,
+      departemen,
+      skalaCedera,
+      tanggal,
       description,
     });
     if (onClose) onClose();
@@ -51,12 +49,12 @@ const HseCreate = ({ draftData, onClose }) => {
 
   const handleSaveDraft = () => {
     console.log("Saving draft:", {
-      reportTitle,
-      employeeName,
-      employeeId,
-      department,
-      severity,
-      incidentDate,
+      reportID,
+      lokasi,
+      uid,
+      departemen,
+      skalaCedera,
+      tanggal,
       description,
     });
     if (onClose) onClose();
@@ -86,14 +84,14 @@ const HseCreate = ({ draftData, onClose }) => {
             {/* Report Title */}
             <div className="mb-6">
               <label className="mb-3 block text-base font-medium text-white">
-                Report Title <span className="text-red-400">*</span>
+                Report ID <span className="text-red-400">*</span>
               </label>
               <InputForm
                 type="text"
-                name="reportTitle"
-                placeholder="Enter report title"
-                value={reportTitle}
-                onChange={(e) => setReportTitle(e.target.value)}
+                name="reportID"
+                placeholder="Enter report ID"
+                value={reportID}
+                onChange={(e) => setreportID(e.target.value)}
                 showError={false}
                 className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-500 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
@@ -101,22 +99,6 @@ const HseCreate = ({ draftData, onClose }) => {
 
             {/* Employee Name & ID - Grid Layout */}
             <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-              {/* Employee Name */}
-              <div>
-                <label className="mb-3 block text-base font-medium text-white">
-                  Employee name <span className="text-red-400">*</span>
-                </label>
-                <InputForm
-                  type="text"
-                  name="employeeName"
-                  placeholder="Employee name"
-                  value={employeeName}
-                  onChange={(e) => setEmployeeName(e.target.value)}
-                  showError={false}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-500 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
-              </div>
-
               {/* Employee ID Number */}
               <div>
                 <label className="mb-3 block text-base font-medium text-white">
@@ -124,25 +106,40 @@ const HseCreate = ({ draftData, onClose }) => {
                 </label>
                 <InputForm
                   type="text"
-                  name="employeeId"
+                  name="uid"
                   placeholder="Employee ID number"
-                  value={employeeId}
-                  onChange={(e) => setEmployeeId(e.target.value)}
+                  value={uid}
+                  onChange={(e) => setuid(e.target.value)}
+                  showError={false}
+                  className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-500 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-3 block text-base font-medium text-white">
+                  Location <span className="text-red-400">*</span>
+                </label>
+                <InputForm
+                  type="text"
+                  name="lokasi"
+                  placeholder="Location"
+                  value={lokasi}
+                  onChange={(e) => setlokasi(e.target.value)}
                   showError={false}
                   className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-500 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
             </div>
 
-            {/* Department & Date - Grid Layout */}
+            {/* departemen & Date - Grid Layout */}
             <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-              {/* Department Dropdown */}
+              {/* departemen Dropdown */}
               <div>
                 <label className="mb-3 block text-base font-medium text-white">
                   Department <span className="text-red-400">*</span>
                 </label>
                 <Dropdown1
-                  name="department"
+                  name="departemen"
                   options={[
                     "Mechanical Assembly",
                     "Electronic Assembly",
@@ -150,8 +147,8 @@ const HseCreate = ({ draftData, onClose }) => {
                     "Quality Assurance",
                     "Warehouse",
                   ]}
-                  formData={{ department: department }}
-                  handleChange={(e) => setDepartment(e.target.value)}
+                  formData={{ departemen: departemen }}
+                  handleChange={(e) => setdepartemen(e.target.value)}
                   placeholder="Department"
                   showError={false}
                   className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-500 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -165,27 +162,27 @@ const HseCreate = ({ draftData, onClose }) => {
                 </label>
                 <InputForm
                   type="date"
-                  name="incidentDate"
+                  name="tanggal"
                   placeholder="dd/mm/yyyy"
-                  value={incidentDate}
-                  onChange={(e) => setIncidentDate(e.target.value)}
+                  value={tanggal}
+                  onChange={(e) => settanggal(e.target.value)}
                   showError={false}
                   className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-400 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
             </div>
 
-            {/* Severity Dropdown */}
+            {/* skalaCedera Dropdown */}
             <div className="mb-6">
               <label className="mb-3 block text-base font-medium text-white">
                 Severity Level <span className="text-red-400">*</span>
               </label>
               <Dropdown1
-                name="severity"
+                name="skalaCedera"
                 options={["Minor", "Moderate", "Critical"]}
-                formData={{ severity: severity }}
-                handleChange={(e) => setSeverity(e.target.value)}
-                placeholder="Select Severity"
+                formData={{ skalaCedera: skalaCedera }}
+                handleChange={(e) => setskalaCedera(e.target.value)}
+                placeholder="Select skalaCedera"
                 showError={false}
                 className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-500 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />

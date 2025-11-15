@@ -10,13 +10,13 @@ const DirekturReview = ({ reportData }) => {
 
   // Sample data jika tidak ada reportData
   const report = reportData || {
-    reportTitle: "Slip and fall and blablabla",
-    employeeName: "Jiki Wididi",
-    employeeId: "1112321121312323",
-    department: "Mechanical Assembly",
-    severity: "Minor",
+    idSurat: "Slip and fall and blablabla",
+    lokasi: "Jiki Wididi",
+    uid: "1112321121312323",
+    departemen: "Mechanical Assembly",
+    skalaCedera: "Minor",
     incidentDate: "2024-11-10",
-    description: "Detailed description about the incident...",
+    detail: "Detailed detail about the incident...",
   };
 
   const handleApprove = () => {
@@ -53,11 +53,11 @@ const DirekturReview = ({ reportData }) => {
           {/* Report Title */}
           <div className="mb-6">
             <label className="mb-3 block text-base font-medium text-white">
-              Report Title <span className="text-red-400">*</span>
+              Report ID <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
-              value={report.reportTitle}
+              value={report.idSurat}
               readOnly
               placeholder="e.g., Slip and fall and blablabla"
               className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-500"
@@ -66,20 +66,6 @@ const DirekturReview = ({ reportData }) => {
 
           {/* Employee Name & ID - Grid Layout */}
           <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Employee Name */}
-            <div>
-              <label className="mb-3 block text-base font-medium text-white">
-                Employee name <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={report.employeeName}
-                readOnly
-                placeholder="e.g., Jiki Wididi"
-                className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-500"
-              />
-            </div>
-
             {/* Employee ID Number */}
             <div>
               <label className="mb-3 block text-base font-medium text-white">
@@ -87,24 +73,37 @@ const DirekturReview = ({ reportData }) => {
               </label>
               <input
                 type="text"
-                value={report.employeeId}
+                value={report.uid}
                 readOnly
                 placeholder="e.g., 1112321121312323"
                 className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-500"
               />
             </div>
+
+            <div>
+              <label className="mb-3 block text-base font-medium text-white">
+                Location <span className="text-red-400">*</span>
+              </label>
+              <input
+                type="text"
+                value={report.lokasi}
+                readOnly
+                placeholder="House"
+                className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-500"
+              />
+            </div>
           </div>
 
-          {/* Department & Date - Grid Layout */}
+          {/* departemen & Date - Grid Layout */}
           <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Department */}
+            {/* departemen */}
             <div>
               <label className="mb-3 block text-base font-medium text-white">
                 Department <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
-                value={report.department}
+                value={report.departemen}
                 readOnly
                 placeholder="Department"
                 className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-500"
@@ -126,29 +125,29 @@ const DirekturReview = ({ reportData }) => {
             </div>
           </div>
 
-          {/* Severity Level */}
+          {/* skalaCedera Level */}
           <div className="mb-6">
             <label className="mb-3 block text-base font-medium text-white">
               Severity Level <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
-              value={report.severity}
+              value={report.skalaCedera}
               readOnly
               placeholder="Minor"
               className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-500"
             />
           </div>
 
-          {/* Detailed Description */}
+          {/* Detailed detail */}
           <div className="mb-10">
             <label className="mb-3 block text-base font-medium text-white">
               Detailed Description <span className="text-red-400">*</span>
             </label>
             <textarea
-              value={report.description}
+              value={report.detail}
               readOnly
-              placeholder="Provide detailed description about the incident..."
+              placeholder="Provide detailed detail about the incident..."
               rows="5"
               className="w-full resize-none rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-gray-400 placeholder-gray-500"
             />
@@ -223,13 +222,13 @@ const DirekturReview = ({ reportData }) => {
 
 DirekturReview.propTypes = {
   reportData: PropTypes.shape({
-    reportTitle: PropTypes.string,
-    employeeName: PropTypes.string,
-    employeeId: PropTypes.string,
-    department: PropTypes.string,
-    severity: PropTypes.string,
+    idSurat: PropTypes.string,
+    lokasi: PropTypes.string,
+    uid: PropTypes.string,
+    departemen: PropTypes.string,
+    skalaCedera: PropTypes.string,
     incidentDate: PropTypes.string,
-    description: PropTypes.string,
+    detail: PropTypes.string,
   }),
 };
 
