@@ -25,7 +25,7 @@ export default function Severity({ level }) {
 
   return (
     <div
-      className={`font-jakarta inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold text-white ${colorClasses} min-w-[80px]`}
+      className={`font-jakarta inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold text-white ${colorClasses} min-w-20`}
     >
       {label}
     </div>
