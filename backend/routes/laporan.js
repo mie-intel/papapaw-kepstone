@@ -1,7 +1,7 @@
 import express from "express";
-import { create, view } from "../controller/laporan/index.js";
+import { create, deleteByIdSurat, view } from "../controller/laporan/index.js";
 import { logger } from "../middleware/logger.js";
-import { protectRoute, authorizeHSE } from "../middleware/auth.js";
+import { protectRoute, checkHSE } from "../middleware/auth.js";
 import {
   updateStatus,
   revisiLaporan,
@@ -12,8 +12,9 @@ const router = express.Router();
 
 router.use(logger);
 
-router.post("/", protectRoute, authorizeHSE, create);
+router.post("/", protectRoute, checkHSE, create);
 router.get("/", view);
+router.delete("/", protectRoute, checkHSE, deleteByIdSurat);
 router.patch("/:id/status", protectRoute, updateStatus);
 router.patch("/:id/revisi", protectRoute, revisiLaporan);
 router.patch("/:id/tolak", protectRoute, tolakLaporan);

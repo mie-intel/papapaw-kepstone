@@ -1,14 +1,49 @@
 import { Laporan } from "../../models/objectModel.js";
+import { getUserFromToken } from "../../middleware/auth.js";
+import bcrypt from "bcrypt";
 
 export async function create(req, res) {
   try {
     // Ambil data yang diperlukan dari body request
-    const { idSurat, uid, skalaCedera, detail, lokasi, departemen } = req.body;
+    const { title, skalaCedera, detail, lokasi, departemen, status, tanggal } = req.body;
+    const { id: uid } = getUserFromToken(req) || {};
+    console.log("Creating laporan with data:", req.headers.authorization, req.body);
+    console.log("DECODED", getUserFromToken(req));
 
     // Validasi input sederhana
-    if (!idSurat || !skalaCedera || !detail || !lokasi || !uid || !departemen) {
+    if (
+      !uid ||
+      !title ||
+      !skalaCedera ||
+      !detail ||
+      !lokasi ||
+      !departemen ||
+      !tanggal ||
+      status === undefined
+    ) {
+      console.log("Missing fields:", {
+        uid,
+        title,
+        skalaCedera,
+        detail,
+        lokasi,
+        departemen,
+        tanggal,
+        status,
+      });
       return res.status(400).json({ error: "Data yang dibutuhkan tidak lengkap." });
     }
+
+    const date = new Date(tanggal);
+
+    console.log(
+      "All required fields are present.",
+      `SURAT-${JSON.stringify({ uid, title, skalaCedera, lokasi, date })}`,
+    );
+    const idSurat = await bcrypt.hash(
+      `SURAT-${JSON.stringify({ uid, title, skalaCedera, lokasi, date })}`,
+      16,
+    );
 
     // cek apakah id surat already exists
     const isExist = await Laporan.findOne({ idSurat });
@@ -18,18 +53,24 @@ export async function create(req, res) {
       });
     }
 
+    console.log("Generated idSurat:", idSurat);
     // Buat instance Laporan baru dengan data dari request
     const laporanBaru = new Laporan({
       idSurat,
       uid,
+      title,
       skalaCedera,
       detail,
       lokasi,
       departemen,
+      status,
+      tanggal,
     });
 
     // Simpan ke database
     await laporanBaru.save();
+
+    console.log("New laporan created:", laporanBaru);
 
     // Kirim respons sukses
     res.status(201).json({

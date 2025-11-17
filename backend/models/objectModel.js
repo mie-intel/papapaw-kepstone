@@ -7,7 +7,7 @@ const DEPARTEMEN = [
   "Software Installation",
   "Quality Assurance",
   "Warehouse",
-  "Direktur",
+  "-",
 ];
 
 const JABATAN = ["HSE", "Kepala Bagian", "Direktur"];
@@ -35,6 +35,7 @@ pekerjaSchema.pre("save", async function (next) {
 const laporanSchema = new mongoose.Schema({
   idSurat: { type: String, required: true, unique: true },
   uid: { type: String, required: true },
+  title: { type: String, required: true },
   skalaCedera: { type: Number, required: true },
   detail: { type: String, required: true },
   lokasi: { type: String, required: true },

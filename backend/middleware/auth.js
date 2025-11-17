@@ -1,3 +1,4 @@
+import { get } from "http";
 import jwt from "jsonwebtoken";
 
 const protectRoute = (req, res, next) => {
@@ -24,23 +25,27 @@ const protectRoute = (req, res, next) => {
   }
 };
 
-export { protectRoute };
+export const getUserFromToken = (req) => {
+  let token;
+  const authHeader = req.headers.authorization;
 
-export function rolesAuthorization(...roles) {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ message: "Akses ditolak." });
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    try {
+      token = authHeader.split(" ")[1];
+      const secretKey = process.env.JWT_SECRET;
+      const decoded = jwt.verify(token, secretKey);
+      return decoded; // Kembalikan data user yang sudah didecode
+    } catch (error) {
+      console.log("Token verification error:", error);
+      return null;
     }
-    next();
-  };
-}
+  }
+};
 
-export function authorizeHSE(req, res, next) {
-  // Middleware ini berasumsi 'protectRoute' sudah berjalan sebelumnya
-  // dan berhasil menaruh data user di `req.user`.
+export function checkHSE(req, res, next) {
+  const user = getUserFromToken(req);
 
-  // Menggunakan .toLowerCase() agar tidak case-sensitive (misal: "HSE", "hse", "Hse")
-  if (req.user && req.user.jabatan && req.user.jabatan.toLowerCase() === "hse") {
+  if (user.jabatan === "HSE") {
     // Jika jabatan sesuai, lanjutkan ke controller
     next();
   } else {
@@ -50,3 +55,33 @@ export function authorizeHSE(req, res, next) {
       .json({ message: "Akses ditolak. Hanya user dengan jabatan HSE yang diizinkan." });
   }
 }
+
+export function checkKepalaBagian(req, res, next) {
+  const user = getUserFromToken(req);
+
+  if (user.jabatan === "Kepala Bagian") {
+    // Jika jabatan sesuai, lanjutkan ke controller
+    next();
+  } else {
+    // Jika tidak, kirim respons error 403 Forbidden
+    res
+      .status(403)
+      .json({ message: "Akses ditolak. Hanya user dengan jabatan HSE yang diizinkan." });
+  }
+}
+
+export function checkDirektur(req, res, next) {
+  const user = getUserFromToken(req);
+
+  if (user.jabatan === "Direktur") {
+    // Jika jabatan sesuai, lanjutkan ke controller
+    next();
+  } else {
+    // Jika tidak, kirim respons error 403 Forbidden
+    res
+      .status(403)
+      .json({ message: "Akses ditolak. Hanya user dengan jabatan HSE yang diizinkan." });
+  }
+}
+
+export { protectRoute };
