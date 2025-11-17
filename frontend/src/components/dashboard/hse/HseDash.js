@@ -1,17 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaFileAlt } from "react-icons/fa";
 import { IoCheckmarkDoneCircle, IoPencilSharp } from "react-icons/io5";
 import { FaClock, FaCircleInfo, FaEye, FaTrashCan, FaDownload } from "react-icons/fa6";
 import CardReport from "@/components/allPage/CardReport";
 import InputForm from "@/components/allPage/InputForm";
 import { Dropdown1 } from "@/components/allPage/Dropdown";
-import { mockReports2 } from "@/libs/constants/mockData";
+import { laporan, mockReports2 } from "@/libs/constants/mockData";
 import Status from "@/components/allPage/Status";
 import Severity from "@/components/allPage/Severity";
 import Overview from "@/components/allPage/Overview";
 import { Button1, Button4 } from "@/components/allPage/Button";
 import HseCreate from "./HseCreate";
+import { LaporanContext } from "@/components/contexts/LaporanContext";
+import { useRouter } from "next/navigation";
+import { set } from "zod";
+import { showToast } from "@/libs/helpers/toaster";
 
 export default function HseDash() {
   const [selectedReport, setSelectedReport] = useState(null);
@@ -27,12 +31,41 @@ export default function HseDash() {
     severity: "",
     search: "",
   });
+  console.log("Form Data:", formData);
+  const router = useRouter();
 
-  const filteredReports = mockReports2.filter((report) => {
+  const { getAllLaporan, deleteByIdSurat } = React.useContext(LaporanContext);
+  const [laporan, setLaporan] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [update, setUpdate] = React.useState(false);
+
+  console.log("Laporan data:", laporan);
+
+  useEffect(() => {
+    const init = async () => {
+      setLoading(true);
+      // setLaporan(mockReports2);
+      const response = await getAllLaporan();
+      if (response.success) {
+        setLaporan(response.data.data);
+      } else {
+        console.log("Failed to fetch reports:", response.error);
+      }
+      setUpdate(false);
+      setLoading(false);
+    };
+    init();
+  }, [update]);
+
+  console.log("Laporan state:", laporan);
+  const filteredReports = laporan.filter((report) => {
+    console.log("Filtering report:", report, report.departemen, report.lokasi, report.detail);
+
     const searchMatch =
-      report.detail.toLowerCase().includes(formData.search.toLowerCase()) ||
-      report.lokasi.toLowerCase().includes(formData.search.toLowerCase()) ||
-      report.departemen.toLowerCase().includes(formData.search.toLowerCase());
+      (report.detail && report.detail.toLowerCase().includes(formData.search.toLowerCase())) ||
+      (report.lokasi && report.lokasi.toLowerCase().includes(formData.search.toLowerCase())) ||
+      (report.departemen &&
+        report.departemen.toLowerCase().includes(formData.search.toLowerCase()));
 
     const statusLabel = report.tertolak
       ? "Rejected"
@@ -57,14 +90,24 @@ export default function HseDash() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log("Handling change for", name, "with value", value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const handleDeleteDraft = () => {
+  const handleDeleteDraft = async () => {
     if (reportToDelete) {
+      setUpdate(true);
+      const response = await deleteByIdSurat(reportToDelete.idSurat);
       console.log("Deleting draft:", reportToDelete.idSurat);
+
+      if (response.success) {
+        showToast(true, "Report deleted successfully");
+      } else {
+        showToast(false, response.error || "Failed to delete report");
+      }
     }
     setReportToDelete(null);
     setShowDeleteModal(false);
+    router.refresh();
   };
 
   return (
@@ -82,29 +125,29 @@ export default function HseDash() {
           <div className="flex shrink-0 flex-row flex-wrap justify-center gap-5 md:justify-start">
             <CardReport
               label="Total"
-              value={mockReports2.length}
+              value={laporan.length}
               icon={<FaFileAlt className="h-full w-[37px] text-[#0273EA]" />}
             />
             <CardReport
               label="Completed"
-              value={mockReports2.filter((r) => r.status === 3 && !r.tertolak).length}
+              value={laporan.filter((r) => r.status === 3 && !r.tertolak).length}
               icon={<IoCheckmarkDoneCircle className="h-full w-[45px] text-[#34D391]" />}
             />
             <CardReport
               label="Ongoing"
               value={
-                mockReports2.filter((r) => (r.status === 1 || r.status === 2) && !r.tertolak).length
+                laporan.filter((r) => (r.status === 1 || r.status === 2) && !r.tertolak).length
               }
               icon={<FaClock className="h-full w-[35px] text-[#FDBC64]" />}
             />
             <CardReport
               label="Rejected"
-              value={mockReports2.filter((r) => r.tertolak).length}
+              value={laporan.filter((r) => r.tertolak).length}
               icon={<FaCircleInfo className="h-full w-[35px] text-[#E8697E]" />}
             />
             <CardReport
               label="Draft"
-              value={mockReports2.filter((r) => r.status === 0 && !r.tertolak).length}
+              value={laporan.filter((r) => r.status === 0 && !r.tertolak).length}
               icon={<FaFileAlt className="h-full w-[37px] text-[#C4C4C4]" />}
             />
           </div>
@@ -153,12 +196,13 @@ export default function HseDash() {
               </div>
 
               {/* Reports Table */}
+
               <div className="mt-4 flex-1 overflow-hidden rounded-xl border border-[#C4C4C4]/20">
                 <div className="relative h-[90vh] overflow-y-auto md:h-full">
                   <table className="min-w-full text-left text-sm whitespace-nowrap">
                     <thead className="sticky top-0 z-10 bg-[#2B2E4D] text-base md:text-sm">
                       <tr>
-                        <th className="px-3 py-3 font-semibold">Detail</th>
+                        <th className="px-3 py-3 font-semibold">Title</th>
                         <th className="hidden px-3 py-3 font-semibold md:table-cell">Department</th>
                         <th className="hidden px-3 py-3 font-semibold sm:table-cell">Date</th>
                         <th className="hidden px-3 py-3 font-semibold lg:table-cell">Severity</th>
@@ -167,67 +211,72 @@ export default function HseDash() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredReports.length > 0 ? (
-                        filteredReports.map((report) => (
-                          <tr
-                            key={report.idSurat}
-                            className="border-b border-[#C4C4C4]/20 bg-[#2B2E4D]/30 text-base transition-colors hover:bg-[#C4C4C4]/10 md:text-sm"
-                          >
-                            <td className="max-w-[30vw] truncate overflow-hidden px-3 py-4 text-sm font-semibold md:max-w-[15vw] md:text-base xl:max-w-xs">
-                              {report.detail}
-                            </td>
-                            <td className="hidden px-3 py-4 text-[#C4C4C4] md:table-cell">
-                              {report.departemen}
-                            </td>
-                            <td className="hidden px-3 py-4 text-[#C4C4C4] sm:table-cell">
-                              {new Date(report.tanggal).toLocaleDateString()}
-                            </td>
-                            <td className="hidden px-3 py-4 lg:table-cell">
-                              <Severity level={report.skalaCedera} />
-                            </td>
-                            <td className="px-3 py-4">
-                              <Status status={report.status} tertolak={report.tertolak} />
-                            </td>
-                            <td className="px-3 py-4 text-center">
-                              <div className="flex items-center space-x-2 md:space-x-5">
-                                <FaEye
-                                  title="View Report"
-                                  className="cursor-pointer duration-300 hover:text-[#B4B4B4]"
-                                  onClick={() => {
-                                    setSelectedReport(report);
-                                    setShowOverview(true);
-                                  }}
-                                />
-                                {report.status === 3 && !report.tertolak && (
-                                  <FaDownload
-                                    title="Download Report"
+                      {loading ? (
+                        <tr>
+                          <td colSpan="6" className="px-4 py-8 text-center text-gray-400">
+                            Loading reports...
+                          </td>
+                        </tr>
+                      ) : filteredReports.length > 0 ? (
+                        filteredReports.map((report) => {
+                          console.log("Rendering report:", report);
+                          return (
+                            <tr
+                              key={report.idSurat}
+                              className="border-b border-[#C4C4C4]/20 bg-[#2B2E4D]/30 text-base transition-colors hover:bg-[#C4C4C4]/10 md:text-sm"
+                            >
+                              <td className="max-w-[30vw] truncate overflow-hidden px-3 py-4 text-sm font-semibold md:max-w-[15vw] md:text-base xl:max-w-xs">
+                                {report.title}
+                              </td>
+                              <td className="hidden px-3 py-4 text-[#C4C4C4] md:table-cell">
+                                {report.departemen}
+                              </td>
+                              <td className="hidden px-3 py-4 text-[#C4C4C4] sm:table-cell">
+                                {new Date(report.tanggal).toLocaleDateString()}
+                              </td>
+                              <td className="hidden px-3 py-4 lg:table-cell">
+                                <Severity level={report.skalaCedera} />
+                              </td>
+                              <td className="px-3 py-4">
+                                <Status status={report.status} tertolak={report.tertolak} />
+                              </td>
+                              <td className="px-3 py-4 text-center">
+                                <div className="flex items-center space-x-2 md:space-x-5">
+                                  <FaEye
+                                    title="View Report"
                                     className="cursor-pointer duration-300 hover:text-[#B4B4B4]"
+                                    onClick={() => {
+                                      setSelectedReport(report);
+                                      setShowOverview(true);
+                                    }}
                                   />
-                                )}
-                                {report.status === 0 && !report.tertolak && (
-                                  <>
-                                    <IoPencilSharp
-                                      title="Edit Report"
-                                      className="cursor-pointer duration-300 hover:text-[#B4B4B4]"
-                                      onClick={() => {
-                                        setEditingDraft(report);
-                                        setShowCreate(true);
-                                      }}
-                                    />
-                                    <FaTrashCan
-                                      title="Delete Report"
-                                      className="cursor-pointer duration-300 hover:text-[#E8697E]"
-                                      onClick={() => {
-                                        setReportToDelete(report);
-                                        setShowDeleteModal(true);
-                                      }}
-                                    />
-                                  </>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        ))
+                                  {report.status === 0 ||
+                                    (report.tertolak && (
+                                      <>
+                                        <IoPencilSharp
+                                          title="Edit Report"
+                                          className="cursor-pointer duration-300 hover:text-[#B4B4B4]"
+                                          onClick={() => {
+                                            setEditingDraft(report);
+                                            setShowCreate(true);
+                                          }}
+                                        />
+                                        <FaTrashCan
+                                          title="Delete Report"
+                                          className="cursor-pointer duration-300 hover:text-[#E8697E]"
+                                          onClick={() => {
+                                            setReportToDelete(report);
+                                            setShowDeleteModal(true);
+                                          }}
+                                        />
+                                      </>
+                                    ))}
+                                  {}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
                       ) : (
                         <tr>
                           <td colSpan="6" className="px-4 py-8 text-center text-gray-400">
@@ -248,6 +297,7 @@ export default function HseDash() {
           onClose={() => {
             setShowCreate(false);
             setEditingDraft(null);
+            setUpdate(true);
           }}
         />
       )}
@@ -278,8 +328,6 @@ export default function HseDash() {
           </div>
         </div>
       )}
-
-      {showOverview && <Overview report={selectedReport} onClose={() => setShowOverview(false)} />}
     </div>
   );
 }

@@ -3,6 +3,10 @@ import PropTypes from "prop-types";
 import { FaClock, FaCircleInfo, FaFile } from "react-icons/fa6";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 
+const truncate = (str, n) => {
+  return str?.length > n ? str.substr(0, n - 1) + "…" : str;
+};
+
 export default function Overview({ report, onClose }) {
   if (!report) return null;
 
@@ -44,7 +48,7 @@ export default function Overview({ report, onClose }) {
 
         <div className="mb-6 grid grid-cols-2 gap-4 text-base">
           {[
-            ["Report ID", report.idSurat],
+            ["Report ID", truncate(report.idSurat, 10)],
             ["Incident Date", new Date(report.tanggal).toLocaleDateString()],
             ["Employee ID", report.uid],
             ["Department", report.departemen],

@@ -19,9 +19,7 @@ export default function HseLayout({ children }) {
   return (
     <div className="flex h-full w-full">
       <Navbar userRole="HSE" navItems={hseNavItems} activeItem={currentActiveItem} />
-      <SidebarHeader role="HSE" namaAkun="Poli GG Gaming">
-        {children}
-      </SidebarHeader>
+      <SidebarHeader role="HSE">{children}</SidebarHeader>
     </div>
   );
 }

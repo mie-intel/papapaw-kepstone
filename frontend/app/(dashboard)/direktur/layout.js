@@ -19,9 +19,7 @@ export default function DirekturLayout({ children }) {
   return (
     <div className="flex h-full w-full">
       <Navbar userRole="Direktur" navItems={direkturNavItems} activeItem={currentActiveItem} />
-      <SidebarHeader role="Direktur" namaAkun="Poli GG Gaming">
-        {children}
-      </SidebarHeader>
+      <SidebarHeader role="Direktur">{children}</SidebarHeader>
     </div>
   );
 }

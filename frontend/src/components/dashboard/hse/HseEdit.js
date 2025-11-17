@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button1, Button4, Button5 } from "../../allPage/Button";
 import InputForm from "../../allPage/InputForm";
@@ -7,9 +7,6 @@ import { Dropdown1 } from "../../allPage/Dropdown";
 import { LaporanContext } from "@/components/contexts/LaporanContext";
 import { showToast } from "@/libs/helpers/toaster";
 import { useRouter } from "next/navigation";
-import { id } from "zod/v4/locales";
-import { date } from "zod";
-import { format } from "path";
 
 const getskalaCederaString = (level) => {
   if (level === 3) return "Critical";
@@ -23,22 +20,27 @@ const getSkalaCederaNumber = (levelStr) => {
   return 1;
 };
 
-function parseDateString(str) {
-  if (!str) return null;
-  return new Date(str.replace(/-/g, "/"));
-}
+const formatDateForInput = (value) => {
+  if (!value) return "";
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
 
-// Mengubah objek Date menjadi string "YYYY-MM-DD"
-function formatDateForInput(date) {
-  if (!date) return "";
-  const dateObject = date instanceof Date ? date : new Date(date);
+  let date;
+  if (typeof value === "number") date = new Date(value);
+  else date = new Date(String(value));
 
-  // Menggunakan metode lokal, bukan toISOString() untuk menghindari masalah timezone
-  const pad = (num) => num.toString().padStart(2, "0");
-  return `${dateObject.getFullYear()}-${pad(dateObject.getMonth() + 1)}-${pad(dateObject.getDate())}`;
-}
+  if (Number.isNaN(date.getTime())) {
+    console.warn("formatDateForInput: invalid date", value);
+    return "";
+  }
+  const year = date.getFullYear();
+  if (year < 1900 || year > 2100) {
+    console.warn("formatDateForInput: year out of range", year, value);
+    return "";
+  }
+  return date.toISOString().split("T")[0];
+};
 
-const HseCreate = ({ draftData, onClose }) => {
+const HseEdit = ({ draftData, onClose }) => {
   const [reportTitle, setreportTitle] = useState(draftData?.title || "");
   const [lokasi, setlokasi] = useState(draftData?.lokasi || "");
   const [uid, setuid] = useState(draftData?.uid || "");
@@ -46,81 +48,105 @@ const HseCreate = ({ draftData, onClose }) => {
   const [skalaCedera, setskalaCedera] = useState(
     draftData ? getskalaCederaString(draftData.skalaCedera) : "Minor",
   );
-  const [tanggal, settanggal] = useState(draftData ? draftData.tanggal : Date.now());
-  const [description, setDescription] = useState(draftData?.detail || "");
+  const [tanggal, settanggal] = useState(draftData ? formatDateForInput(draftData.tanggal) : "");
+  const [description, setDescription] = useState(draftData?.detail || draftData?.description || "");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const { createLaporan, editLaporan } = useContext(LaporanContext);
+  const isEdit = Boolean(draftData && (draftData.idSurat || draftData._id || draftData.id));
+
+  // Mock fetch function to simulate retrieving the laporan from DB by idSurat
+  // Replace this with real API call when backend endpoint available
+  const fetchLaporanByIdSurat = async (idSurat) => {
+    // simulate network delay
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          idSurat,
+          uid: "mock-uid-123",
+          title: "Mocked Report Title",
+          lokasi: "Mocked Location",
+          departemen: "Mechanical Assembly",
+          skalaCedera: 2,
+          tanggal: new Date().toISOString(),
+          detail: "This is mocked detail fetched from DB for editing.",
+        });
+      }, 500);
+    });
+  };
+
+  useEffect(() => {
+    let mounted = true;
+
+    const load = async () => {
+      if (!draftData) return;
+
+      // If an id is present, fetch latest data from DB (mocked here)
+      const idToFetch = draftData.idSurat || draftData._id || draftData.id;
+      if (idToFetch) {
+        setLoading(true);
+        try {
+          const data = await fetchLaporanByIdSurat(idToFetch);
+          if (!mounted) return;
+          setreportTitle(data.title || "");
+          setlokasi(data.lokasi || "");
+          setuid(data.uid || "");
+          setdepartemen(data.departemen || "");
+          setskalaCedera(getskalaCederaString(data.skalaCedera));
+          settanggal(formatDateForInput(data.tanggal));
+          setDescription(data.detail || data.description || "");
+        } catch (err) {
+          console.error("Failed to fetch draft data:", err);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        // If draftData exists but has full fields, populate from it
+        setreportTitle(draftData.title || draftData.name || "");
+        setlokasi(draftData.lokasi || "");
+        setuid(draftData.uid || "");
+        setdepartemen(draftData.departemen || "");
+        setskalaCedera(getskalaCederaString(draftData.skalaCedera || draftData.skala || 1));
+        settanggal(formatDateForInput(draftData.tanggal));
+        setDescription(draftData.detail || draftData.description || "");
+      }
+    };
+
+    load();
+
+    return () => {
+      mounted = false;
+    };
+  }, [draftData]);
+
+  const { createLaporan } = useContext(LaporanContext);
 
   const handleClick = async (status) => {
     setLoading(true);
-    if (draftData) {
-      console.log("Editing draft data:", {
-        idSurat: draftData.idSurat,
-        title: reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera: getSkalaCederaNumber(skalaCedera),
-        tanggal: parseDateString(formatDateForInput(tanggal)),
-        detail: description,
-        status,
-      });
-      const response = await editLaporan({
-        idSurat: draftData.idSurat,
-        title: reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera: getSkalaCederaNumber(skalaCedera),
-        tanggal: parseDateString(formatDateForInput(tanggal)),
-        detail: description,
-        status,
-      });
+    const payload = {
+      title: reportTitle,
+      lokasi,
+      departemen,
+      skalaCedera: getSkalaCederaNumber(skalaCedera),
+      tanggal,
+      detail: description,
+      status,
+    };
 
-      console.log("Edit Laporan response:", response);
-      if (response.success) {
-        showToast(true, "Report updated successfully");
-      } else {
-        showToast(false, response.error || "Failed to update report");
-      }
-    } else {
-      console.log("Creating new report with data:", {
-        title: reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera: getSkalaCederaNumber(skalaCedera),
-        tanggal: parseDateString(formatDateForInput(tanggal)),
-        detail: description,
-        status,
-      });
-      const response = await createLaporan({
-        title: reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera: getSkalaCederaNumber(skalaCedera),
-        tanggal: parseDateString(formatDateForInput(tanggal)),
-        detail: description,
-        status,
-      });
-
-      console.log("Create Laporan response:", response);
-
-      if (response.success) {
-        showToast(true, "Report submitted successfully");
-      } else {
-        showToast(false, response.error || "Failed to submit report");
-      }
-
-      console.log("Submitting report:", {
-        reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera,
-        tanggal,
-        description,
-        status,
-      });
+    if (isEdit) {
+      payload.idSurat = draftData.idSurat || draftData._id || draftData.id;
     }
+
+    const response = await createLaporan(payload);
+
+    console.log("Create Laporan response:", response);
+
+    if (response && response.success) {
+      showToast(true, isEdit ? "Report updated successfully" : "Report submitted successfully");
+    } else {
+      showToast(false, (response && response.error) || "Failed to submit report");
+    }
+
     // setreportTitle("");
     // setlokasi("");
     // setdepartemen("");
@@ -128,11 +154,17 @@ const HseCreate = ({ draftData, onClose }) => {
     // settanggal("");
     // setDescription("");
 
+    console.log("Submitting report:", {
+      reportTitle,
+      lokasi,
+      departemen,
+      skalaCedera,
+      tanggal,
+      description,
+      status,
+    });
     setLoading(false);
     router.push("/hse/dashboard");
-    if (onClose) {
-      onClose();
-    }
   };
 
   const handleSubmit = async (e, status) => {
@@ -140,10 +172,8 @@ const HseCreate = ({ draftData, onClose }) => {
     await handleClick(status);
   };
 
-  console.log("TANGGAL STATE:", tanggal, new Date(tanggal));
-
   return (
-    <div className="font-jakarta relative flex h-full w-full overflow-y-auto p-1 md:p-8">
+    <div className="font-jakarta relative flex h-full w-full overflow-y-auto p-8">
       <div className="w-full max-w-6xl">
         {/* Header */}
         <div className="mb-8">
@@ -158,7 +188,7 @@ const HseCreate = ({ draftData, onClose }) => {
         </div>
 
         {/* Form Container */}
-        <div className="rounded-2xl border border-slate-700/50 bg-slate-800/40 p-1 backdrop-blur-sm md:p-8">
+        <div className="rounded-2xl border border-slate-700/50 bg-slate-800/40 p-8 backdrop-blur-sm">
           {/* Section Title */}
           <h3 className="mb-8 text-2xl font-extrabold text-white">Basic Information</h3>
 
@@ -212,7 +242,7 @@ const HseCreate = ({ draftData, onClose }) => {
                   type="date"
                   name="tanggal"
                   placeholder="mm/dd/yyyy"
-                  value={formatDateForInput(tanggal)}
+                  value={tanggal}
                   onChange={(e) => settanggal(e.target.value)}
                   showError={false}
                   className="w-full rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-3.5 text-white placeholder-gray-400 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -308,13 +338,13 @@ const HseCreate = ({ draftData, onClose }) => {
   );
 };
 
-HseCreate.propTypes = {
+HseEdit.propTypes = {
   draftData: PropTypes.object,
   onClose: PropTypes.func.isRequired,
 };
 
-HseCreate.defaultProps = {
+HseEdit.defaultProps = {
   draftData: null,
 };
 
-export default HseCreate;
+export default HseEdit;

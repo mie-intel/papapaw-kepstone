@@ -37,7 +37,7 @@ const KepalaReview = ({ reportData }) => {
   };
 
   return (
-    <div className="font-jakarta relative flex h-screen w-full overflow-hidden p-8">
+    <div className="font-jakarta relative flex h-screen w-full overflow-hidden p-1 md:p-8">
       <div className="w-full max-w-6xl overflow-y-auto pb-20 md:pb-30">
         {/* Header */}
         <div className="mb-8">
@@ -46,7 +46,7 @@ const KepalaReview = ({ reportData }) => {
         </div>
 
         {/* Form Container */}
-        <div className="rounded-2xl border border-slate-700/50 bg-slate-800/40 p-8 backdrop-blur-sm">
+        <div className="rounded-2xl border border-slate-700/50 bg-slate-800/40 p-1 backdrop-blur-sm md:p-8">
           {/* Section Title */}
           <h3 className="mb-8 text-2xl font-extrabold text-white">Basic Information</h3>
 

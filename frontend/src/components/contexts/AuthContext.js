@@ -23,11 +23,13 @@ export const AuthProvider = ({ children }) => {
       console.log("Attempting login with:", { username }); // Debug log
       const response = await axios.post("/pekerja/login", { username, password });
       console.log("Login response:", response.data); // Debug log
-      
-      const { token, jabatan } = response.data;
+
+      const { token, jabatan, nama } = response.data;
+      console.log(response.data);
       Cookies.set("token", token, { expires: 1 / 24 });
       Cookies.set("role", jabatan, { expires: 1 / 24 });
-      
+      Cookies.set("nama", nama, { expires: 1 / 24 });
+
       return {
         success: true,
       };
@@ -39,14 +41,15 @@ export const AuthProvider = ({ children }) => {
         config: error.config?.url,
         fullError: error.response,
       });
-      
+
       // Ambil pesan error dari backend
-      const errorMessage = error.response?.data?.error 
-        || error.response?.data?.message 
-        || error.response?.data?.msg
-        || error.message 
-        || "Login failed. Please check your credentials.";
-      
+      const errorMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.response?.data?.msg ||
+        error.message ||
+        "Login failed. Please check your credentials.";
+
       return {
         success: false,
         error: errorMessage,
@@ -57,6 +60,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     Cookies.remove("token");
     Cookies.remove("role");
+    Cookies.remove("nama");
     console.log("Logged out");
   };
 

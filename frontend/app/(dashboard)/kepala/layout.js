@@ -19,9 +19,7 @@ export default function KepalaLayout({ children }) {
   return (
     <div className="flex h-full w-full">
       <Navbar userRole="Kepala Bagian" navItems={kepalaNavItems} activeItem={currentActiveItem} />
-      <SidebarHeader role="Kepala Bagian" namaAkun="Poli GG Gaming">
-        {children}
-      </SidebarHeader>
+      <SidebarHeader role="Kepala Bagian">{children}</SidebarHeader>
     </div>
   );
 }

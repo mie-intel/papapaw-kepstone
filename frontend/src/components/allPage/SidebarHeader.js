@@ -1,8 +1,13 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
-const SidebarHeader = ({ role, namaAkun, children }) => {
+const SidebarHeader = ({ role, children }) => {
+  const [nama, setNama] = React.useState("");
+  React.useEffect(() => {
+    setNama(Cookies.get("nama") || "User");
+  }, []);
   return (
     <main className="flex-grow justify-center space-y-5 bg-[#1A1B37] p-5 lg:rounded-tl-2xl">
       <div className="flex flex-row justify-between lg:hidden">
@@ -22,7 +27,7 @@ const SidebarHeader = ({ role, namaAkun, children }) => {
             height={100}
             className="w-[40px]"
           />
-          <p className="font-light text-white">{namaAkun}</p>
+          <p className="font-light text-white">{nama}</p>
         </div>
       </div>
       {children}
@@ -32,7 +37,6 @@ const SidebarHeader = ({ role, namaAkun, children }) => {
 
 SidebarHeader.propTypes = {
   role: String,
-  namaAkun: String,
   children: Object,
 };
 

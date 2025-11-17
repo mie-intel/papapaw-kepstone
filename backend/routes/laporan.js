@@ -1,5 +1,5 @@
 import express from "express";
-import { create, deleteByIdSurat, view } from "../controller/laporan/index.js";
+import { create, deleteByIdSurat, view, edit } from "../controller/laporan/index.js";
 import { logger } from "../middleware/logger.js";
 import { protectRoute, checkHSE } from "../middleware/auth.js";
 import {
@@ -13,6 +13,7 @@ const router = express.Router();
 router.use(logger);
 
 router.post("/", protectRoute, checkHSE, create);
+router.put("/", protectRoute, checkHSE, edit);
 router.get("/", view);
 router.delete("/", protectRoute, checkHSE, deleteByIdSurat);
 router.patch("/:id/status", protectRoute, updateStatus);
