@@ -28,7 +28,6 @@ export default function Dashboard({ Role, filterDashboard }) {
     };
     init();
   }, [update]);
-  // console.log("EAAA", laporan);
   const filteredLaporan = laporan.filter(filterDashboard);
 
   const handleViewDetails = (report) => {

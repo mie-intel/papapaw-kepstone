@@ -1,4 +1,4 @@
-import z, { email } from "zod";
+import z from "zod";
 
 export const loginSchema = z.object({
   username: z.string().trim().min(1, { message: "Username tidak boleh kosong" }),
@@ -23,6 +23,9 @@ const DEPARTEMEN = [
   "Warehouse",
   "-",
 ];
+
+export const STATUS_OPTIONS = ["All Status", "Ongoing", "Completed", "Draft", "Rejected"];
+export const SEVERITY_OPTIONS = ["Severity Level", "Severe", "Moderate", "Minor"];
 
 export const laporanSchema = z.object({
   title: z.string().trim().min(1, { message: "Judul belum terisi" }),

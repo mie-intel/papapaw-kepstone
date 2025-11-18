@@ -1,3 +1,4 @@
+import React from "react";
 import { cn } from "@/libs/helpers";
 import { FaFacebook, FaInstagram, FaLine, FaTiktok, FaYoutube, FaLinkedinIn } from "react-icons/fa";
 import { SlGlobe } from "react-icons/sl";

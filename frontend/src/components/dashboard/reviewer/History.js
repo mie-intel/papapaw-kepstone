@@ -8,12 +8,12 @@ import Severity from "@/components/allPage/Severity";
 import Status from "@/components/allPage/Status";
 import Overview from "@/components/allPage/Overview";
 import { Dropdown1 } from "@/components/allPage/Dropdown";
+import { reportMatcher } from "@/libs/helpers/reportMatcher";
+import { STATUS_OPTIONS, SEVERITY_OPTIONS } from "@/libs/schema";
 
 export default function History({ filterHistory }) {
   const [selectedReport, setSelectedReport] = useState(null);
   const [showOverview, setShowOverview] = useState(false);
-  const statusOptions = ["All Status", "Ongoing", "Completed", "Draft", "Rejected"];
-  const severityOptions = ["Severity Level", "Severe", "Moderate", "Minor"];
   const [loading, setLoading] = useState(false);
   const [laporan, setLaporan] = useState([]);
   const { getAllLaporan } = useContext(LaporanContext);
@@ -25,7 +25,7 @@ export default function History({ filterHistory }) {
         const response = await getAllLaporan();
         setLaporan(response.data.data);
       } catch (error) {
-        // console.error("Error fetching laporan data:", error);
+        console.error("Error fetching laporan:", error);
       }
       setLoading(false);
     };
@@ -38,33 +38,7 @@ export default function History({ filterHistory }) {
     search: "",
   });
 
-  const filteredReports = laporan.filter(filterHistory).filter((report) => {
-    const searchMatch =
-      (report.detail && report.detail.toLowerCase().includes(formData.search.toLowerCase())) ||
-      (report.lokasi && report.lokasi.toLowerCase().includes(formData.search.toLowerCase())) ||
-      (report.departemen &&
-        report.departemen.toLowerCase().includes(formData.search.toLowerCase()));
-
-    const statusLabel = report.tertolak
-      ? "Rejected"
-      : report.status === 3
-        ? "Completed"
-        : report.status === 0
-          ? "Draft"
-          : "Ongoing";
-
-    const statusMatch =
-      formData.status === "" || formData.status === "All Status" || formData.status === statusLabel;
-
-    const severityMatch =
-      formData.severity === "" ||
-      formData.severity === "Severity Level" ||
-      (report.skalaCedera === 3 && formData.severity === "Severe") ||
-      (report.skalaCedera === 2 && formData.severity === "Moderate") ||
-      (report.skalaCedera === 1 && formData.severity === "Minor");
-
-    return searchMatch && statusMatch && severityMatch;
-  });
+  const filteredReports = reportMatcher(laporan.filter(filterHistory), formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +74,7 @@ export default function History({ filterHistory }) {
               <Dropdown1
                 name="status"
                 placeholder="All Status"
-                options={statusOptions}
+                options={STATUS_OPTIONS}
                 formData={formData}
                 handleChange={handleChange}
                 className="h-10 rounded-lg border-[#A3A5B1] text-base text-nowrap"
@@ -108,7 +82,7 @@ export default function History({ filterHistory }) {
               <Dropdown1
                 name="severity"
                 placeholder="Severity Level"
-                options={severityOptions}
+                options={SEVERITY_OPTIONS}
                 formData={formData}
                 handleChange={handleChange}
                 className="h-10 rounded-lg border-[#A3A5B1] text-base text-nowrap"

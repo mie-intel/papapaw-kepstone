@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Button1 } from "../../allPage/Button";
 import { getskalaCederaString } from "@/libs/helpers/cidera";
 import { LaporanContext } from "@/components/contexts/LaporanContext";
-import { showToast } from "@/libs/helpers/toaster";
+import { showToast } from "@/components/allPage/Toaster";
 
 const Review = ({ reportData, onClose }) => {
   const [showRejectModal, setShowRejectModal] = useState(false);

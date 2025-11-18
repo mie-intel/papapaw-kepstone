@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 export const getUserFromToken = (req) => {
   let token;
   const authHeader = req.headers.authorization;
-  // console.log("AUTH HEADER:", authHeader);
   if (authHeader && authHeader.startsWith("Bearer")) {
     try {
       token = authHeader.split(" ")[1];
@@ -12,7 +11,6 @@ export const getUserFromToken = (req) => {
       const decoded = jwt.verify(token, secretKey);
       return decoded; // Kembalikan data user yang sudah didecode
     } catch (error) {
-      // console.log("Token verification error:", error);
       return null;
     }
   } else return null;
@@ -20,10 +18,7 @@ export const getUserFromToken = (req) => {
 
 const protectRoute = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  // console.log("AUTH HEADER IN PROTECT ROUTE:", req.headers);
-  // console.log("BODY IN PROTECT ROUTE:", req.body);
   const user = getUserFromToken(req);
-  // console.log("USER FROM TOKEN:", user);
   if (user) return next();
   else return res.status(401).json({ message: "Tidak ada token, akses ditolak." });
 };
@@ -60,10 +55,8 @@ export function checkDirektur(req, res, next) {
   const user = getUserFromToken(req);
 
   if (user.jabatan === "Direktur") {
-    // Jika jabatan sesuai, lanjutkan ke controller
     next();
   } else {
-    // Jika tidak, kirim respons error 403 Forbidden
     res
       .status(403)
       .json({ message: "Akses ditolak. Hanya user dengan jabatan HSE yang diizinkan." });

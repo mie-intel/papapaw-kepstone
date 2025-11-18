@@ -5,29 +5,14 @@ import { Button1, Button4, Button5 } from "../../allPage/Button";
 import InputForm from "../../allPage/InputForm";
 import { Dropdown1 } from "../../allPage/Dropdown";
 import { LaporanContext } from "@/components/contexts/LaporanContext";
-import { showToast } from "@/libs/helpers/toaster";
+import { showToast } from "@/components/allPage/Toaster";
 import { useRouter } from "next/navigation";
 import { getSkalaCederaNumber, getskalaCederaString } from "@/libs/helpers/cidera";
-
-function parseDateString(str) {
-  if (!str) return null;
-  return new Date(str.replace(/-/g, "/"));
-}
-
-// Mengubah objek Date menjadi string "YYYY-MM-DD"
-function formatDateForInput(date) {
-  if (!date) return "";
-  const dateObject = date instanceof Date ? date : new Date(date);
-
-  // Menggunakan metode lokal, bukan toISOString() untuk menghindari masalah timezone
-  const pad = (num) => num.toString().padStart(2, "0");
-  return `${dateObject.getFullYear()}-${pad(dateObject.getMonth() + 1)}-${pad(dateObject.getDate())}`;
-}
+import { formatDateForInput, parseDateString } from "@/libs/helpers/formatDate";
 
 const HseCreate = ({ draftData, onClose }) => {
   const [reportTitle, setreportTitle] = useState(draftData?.title || "");
   const [lokasi, setlokasi] = useState(draftData?.lokasi || "");
-  const [uid, setuid] = useState(draftData?.uid || "");
   const [departemen, setdepartemen] = useState(draftData?.departemen || "");
   const [skalaCedera, setskalaCedera] = useState(
     draftData ? getskalaCederaString(draftData.skalaCedera) : "Minor",
@@ -42,16 +27,6 @@ const HseCreate = ({ draftData, onClose }) => {
   const handleClick = async (status) => {
     setLoading(true);
     if (draftData) {
-      // console.log("Editing draft data:", {
-      //   idSurat: draftData.idSurat,
-      //   title: reportTitle,
-      //   lokasi,
-      //   departemen,
-      //   skalaCedera: getSkalaCederaNumber(skalaCedera),
-      //   tanggal: parseDateString(formatDateForInput(tanggal)),
-      //   detail: description,
-      //   status,
-      // });
       const response = await editLaporan({
         idSurat: draftData.idSurat,
         title: reportTitle,
@@ -70,15 +45,6 @@ const HseCreate = ({ draftData, onClose }) => {
         showToast(false, response.error || "Failed to update report");
       }
     } else {
-      // console.log("Creating new report with data:", {
-      //   title: reportTitle,
-      //   lokasi,
-      //   departemen,
-      //   skalaCedera: getSkalaCederaNumber(skalaCedera),
-      //   tanggal: parseDateString(formatDateForInput(tanggal)),
-      //   detail: description,
-      //   status,
-      // });
       const response = await createLaporan({
         title: reportTitle,
         lokasi,
@@ -96,23 +62,7 @@ const HseCreate = ({ draftData, onClose }) => {
       } else {
         showToast(false, response.error || "Failed to submit report");
       }
-
-      // console.log("Submitting report:", {
-      //   reportTitle,
-      //   lokasi,
-      //   departemen,
-      //   skalaCedera,
-      //   tanggal,
-      //   description,
-      //   status,
-      // });
     }
-    // setreportTitle("");
-    // setlokasi("");
-    // setdepartemen("");
-    // setskalaCedera("Minor");
-    // settanggal("");
-    // setDescription("");
 
     setLoading(false);
     router.push("/hse/dashboard");
@@ -123,11 +73,8 @@ const HseCreate = ({ draftData, onClose }) => {
 
   const handleSubmit = async (e, status) => {
     e.preventDefault();
-    // console.log("Form submitted with status:", status);
     await handleClick(status);
   };
-
-  // console.log("TANGGAL STATE:", tanggal, new Date(tanggal));
 
   return (
     <div className="font-jakarta relative flex h-full w-full overflow-y-auto p-1 md:p-8">

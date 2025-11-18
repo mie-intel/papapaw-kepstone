@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "@/styles/global.css";
 import PropTypes from "prop-types";
 import { AuthProvider } from "@/components/contexts/AuthContext";
-import ToasterComponent from "@/libs/helpers/toaster";
+import ToasterComponent from "@/components/allPage/Toaster";
 import { LaporanProvider } from "@/components/contexts/LaporanContext";
 
 const geistSans = Geist({

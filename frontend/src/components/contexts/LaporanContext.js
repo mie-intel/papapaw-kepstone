@@ -18,7 +18,6 @@ export const LaporanProvider = ({ children }) => {
   const createLaporan = async (laporanData) => {
     const result = laporanSchema.safeParse(laporanData);
     if (!result.success) {
-      // // // console.log("Laporan validation errors:", result.error.issues);
       const error = result.error.issues[0].message;
       return {
         success: false,
@@ -84,19 +83,6 @@ export const LaporanProvider = ({ children }) => {
     }
   };
 
-  const mock = {
-    idSurat: "LPR001",
-    uid: "EMP001",
-    skalaCedera: 2,
-    detail: "Minor finger injury caused by a metal cutting tool.",
-    lokasi: "Workshop Mechanical Assembly",
-    tanggal: new Date("2025-11-01"),
-    status: 1,
-    pesanKesalahan: "Need Validation",
-    tertolak: true,
-    departemen: "Mechanical Assembly",
-  };
-
   const getAllLaporan = async () => {
     try {
       const response = await axios.get("/laporan/", {
@@ -122,21 +108,15 @@ export const LaporanProvider = ({ children }) => {
 
   const approveSurat = async (idSurat) => {
     try {
-      // // // console.log("ID SURAT", idSurat);
-      // // // console.log(getAxiosHeader());
-      // axios.put(url, data, config) — data is second arg, config (headers) is third
       await axios.put(`/laporan/approve`, { idSurat }, { headers: getAxiosHeader() });
-      // // // console.log("Laporan approved:", idSurat);
       return { success: true, message: "Laporan berhasil disetujui." };
     } catch (error) {
-      // // // console.log("Error approving laporan:", error);
       return { success: false, error: error.message };
     }
   };
 
   const tolakSurat = async (idSurat, pesanKesalahan) => {
     try {
-      // // // console.log(getAxiosHeader());
       await axios.put(`/laporan/tolak`, { idSurat, pesanKesalahan }, { headers: getAxiosHeader() });
       return { success: true, message: "Laporan berhasil ditolak." };
     } catch (error) {

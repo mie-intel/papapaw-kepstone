@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { memo, useRef } from "react";
 import PropTypes from "prop-types";
 import { cn } from "@/libs/helpers";

@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { FaFileAlt } from "react-icons/fa";
 import { IoCheckmarkDoneCircle, IoPencilSharp } from "react-icons/io5";
-import { FaClock, FaCircleInfo, FaEye, FaTrashCan, FaDownload } from "react-icons/fa6";
+import { FaClock, FaCircleInfo, FaEye, FaTrashCan } from "react-icons/fa6";
 import CardReport from "@/components/allPage/CardReport";
 import InputForm from "@/components/allPage/InputForm";
 import { Dropdown1 } from "@/components/allPage/Dropdown";
-import { laporan, mockReports2 } from "@/libs/constants/mockData";
+
 import Status from "@/components/allPage/Status";
 import Severity from "@/components/allPage/Severity";
 import Overview from "@/components/allPage/Overview";
@@ -14,8 +14,8 @@ import { Button1, Button4 } from "@/components/allPage/Button";
 import HseCreate from "./HseCreate";
 import { LaporanContext } from "@/components/contexts/LaporanContext";
 import { useRouter } from "next/navigation";
-import { set } from "zod";
-import { showToast } from "@/libs/helpers/toaster";
+import { showToast } from "@/components/allPage/Toaster";
+import { reportMatcher } from "@/libs/helpers/reportMatcher";
 
 export default function HseDash() {
   const [selectedReport, setSelectedReport] = useState(null);
@@ -31,7 +31,6 @@ export default function HseDash() {
     severity: "",
     search: "",
   });
-  // console.log("Form Data:", formData);
   const router = useRouter();
 
   const { getAllLaporan, deleteByIdSurat } = React.useContext(LaporanContext);
@@ -39,17 +38,12 @@ export default function HseDash() {
   const [loading, setLoading] = React.useState(true);
   const [update, setUpdate] = React.useState(false);
 
-  // // console.log("Laporan data:", laporan);
-
   useEffect(() => {
     const init = async () => {
       setLoading(true);
-      // setLaporan(mockReports2);
       const response = await getAllLaporan();
       if (response.success) {
         setLaporan(response.data.data);
-      } else {
-        // console.log("Failed to fetch reports:", response.error);
       }
       setUpdate(false);
       setLoading(false);
@@ -57,47 +51,16 @@ export default function HseDash() {
     init();
   }, [update]);
 
-  // // console.log("Laporan state:", laporan);
-  const filteredReports = laporan.filter((report) => {
-    // // console.log("Filtering report:", report, report.departemen, report.lokasi, report.detail);
-
-    const searchMatch =
-      (report.detail && report.detail.toLowerCase().includes(formData.search.toLowerCase())) ||
-      (report.lokasi && report.lokasi.toLowerCase().includes(formData.search.toLowerCase())) ||
-      (report.departemen &&
-        report.departemen.toLowerCase().includes(formData.search.toLowerCase()));
-
-    const statusLabel = report.tertolak
-      ? "Rejected"
-      : report.status === 3
-        ? "Completed"
-        : report.status === 0
-          ? "Draft"
-          : "Ongoing";
-
-    const statusMatch =
-      formData.status === "" || formData.status === "All Status" || formData.status === statusLabel;
-
-    const severityMatch =
-      formData.severity === "" ||
-      formData.severity === "Severity Level" ||
-      (report.skalaCedera === 3 && formData.severity === "Severe") ||
-      (report.skalaCedera === 2 && formData.severity === "Moderate") ||
-      (report.skalaCedera === 1 && formData.severity === "Minor");
-
-    return searchMatch && statusMatch && severityMatch;
-  });
+  const filteredReports = reportMatcher(laporan, formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // console.log("Handling change for", name, "with value", value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   const handleDeleteDraft = async () => {
     if (reportToDelete) {
       setUpdate(true);
       const response = await deleteByIdSurat(reportToDelete.idSurat);
-      // // console.log("Deleting draft:", reportToDelete.idSurat);
 
       if (response.success) {
         showToast(true, "Report deleted successfully");

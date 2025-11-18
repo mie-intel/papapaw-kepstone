@@ -1,5 +1,7 @@
 "use client";
+import React from "react";
 import { Toaster, toast } from "react-hot-toast";
+import PropTypes from "prop-types";
 
 export const showToast = (success, message) => {
   const options = {
@@ -27,3 +29,5 @@ export default function ToasterComponent({ children }) {
     </>
   );
 }
+
+ToasterComponent.propTypes = { children: PropTypes.node.isRequired };

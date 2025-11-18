@@ -27,14 +27,7 @@ export async function approve(req, res) {
     if (laporan.status === 3 && user.jabatan === "Direktur") {
       laporan.direkturApprove = new Date();
       laporan.tertolak = false;
-      // kirimkan email
-      // console.log(
-      //   "Preparing to send email notification for approved laporan:",
-      //   laporan,
-      //   laporan.uid,
-      // );
       const hse = await Pekerja.findOne({ _id: laporan.uid });
-      // console.log("HSE found for email notification:", hse.nama, hse.email, laporan);
       await postEmail(hse.nama, hse.email, laporan);
     }
     await laporan.save();

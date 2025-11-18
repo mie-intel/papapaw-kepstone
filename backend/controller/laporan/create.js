@@ -7,9 +7,6 @@ export async function create(req, res) {
     // Ambil data yang diperlukan dari body request
     const { title, skalaCedera, detail, lokasi, departemen, status, tanggal } = req.body;
     const { id: uid } = getUserFromToken(req) || {};
-    // console.log("Creating laporan with data:", req.headers.authorization, req.body);
-    // console.log("DECODED", getUserFromToken(req));
-
     // Validasi input sederhana
     if (
       !uid ||
@@ -21,16 +18,6 @@ export async function create(req, res) {
       tanggal === undefined ||
       status === undefined
     ) {
-      // console.log("Missing fields:", {
-      //   uid,
-      //   title,
-      //   skalaCedera,
-      //   detail,
-      //   lokasi,
-      //   departemen,
-      //   tanggal,
-      //   status,
-      // });
       return res.status(400).json({ error: "Data yang dibutuhkan tidak lengkap." });
     }
 
@@ -51,7 +38,6 @@ export async function create(req, res) {
       });
     }
 
-    // console.log("Generated idSurat:", idSurat);
     // Buat instance Laporan baru dengan data dari request
     const laporanBaru = new Laporan({
       idSurat,
@@ -67,9 +53,6 @@ export async function create(req, res) {
 
     // Simpan ke database
     await laporanBaru.save();
-
-    // console.log("New laporan created:", laporanBaru);
-
     // Kirim respons sukses
     res.status(201).json({
       message: "Laporan baru berhasil dibuat!",
@@ -79,7 +62,6 @@ export async function create(req, res) {
     });
   } catch (error) {
     // Tangani kemungkinan error
-    // console.error("Error in create controller", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }

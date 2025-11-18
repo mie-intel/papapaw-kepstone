@@ -20,28 +20,15 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      // console.log("Attempting login with:", { username }); // Debug log
       const response = await axios.post("/pekerja/login", { username, password });
-      // console.log("Login response:", response.data); // Debug log
-
       const { token, jabatan, nama } = response.data;
-      // console.log(response.data);
       Cookies.set("token", token, { expires: 1 / 24 });
       Cookies.set("role", jabatan, { expires: 1 / 24 });
       Cookies.set("nama", nama, { expires: 1 / 24 });
-
       return {
         success: true,
       };
     } catch (error) {
-      // console.error("Login error details:", {
-      //   message: error.message,
-      //   response: error.response?.data,
-      //   status: error.response?.status,
-      //   config: error.config?.url,
-      //   fullError: error.response,
-      // });
-
       // Ambil pesan error dari backend
       const errorMessage =
         error.response?.data?.error ||
@@ -61,7 +48,6 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
     Cookies.remove("role");
     Cookies.remove("nama");
-    // console.log("Logged out");
   };
 
   const register = async (formData) => {

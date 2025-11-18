@@ -35,16 +35,6 @@ export async function register(req, res) {
       });
     }
 
-    // Buat instance Pekerja baru dengan data dari request
-    // const pekerjaBaru = new Pekerja({
-    //   nomorInduk,
-    //   nama,
-    //   jabatan,
-    //   departemen,
-    //   username,
-    //   password,
-    // });
-
     // Siapkan data dasar
     const dataPekerja = {
       nomorInduk,
@@ -78,7 +68,6 @@ export async function register(req, res) {
     });
   } catch (error) {
     // Tangani kemungkinan error
-    // console.error("Error in register controller", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }

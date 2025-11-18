@@ -16,7 +16,7 @@ connectDB();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["*", "https://solanum-agrotech-paw-fe.netlify.app"],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   }),
 );
@@ -27,5 +27,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  // console.log(`Server started on port ${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });

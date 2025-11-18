@@ -85,7 +85,7 @@ const run = async () => {
           continue;
         }
       }
-      // console.warn(`Skipping out-of-range tanggal for _id=${doc._id} value='${doc.tanggal}'`);
+
     }
 
     // console.log("Migration finished");

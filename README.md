@@ -14,7 +14,9 @@ Aplikasi ini merupakan aplikasi yang dibuat untuk membuat laporan apabila terjad
 | Timothy Tanuwidjaya         | 23/515955/TK/56763 | (Back End Developer)  |
 | Dzulfikar Rizqi Ramadhani   | 23/522193/TK/57616 | (Back End Developer)  |
 
-## **Struktur folder**
+### URL Youtube
+
+[![Watch the video]](linknya taruh sini)
 
 ### **Back End**
 
