@@ -49,6 +49,7 @@ export async function register(req, res) {
     const dataPekerja = {
       nomorInduk,
       nama,
+      email,
       jabatan,
       username,
       password,

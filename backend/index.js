@@ -14,7 +14,12 @@ connectDB();
 
 // MIDDLEWARE
 app.use(express.json());
-app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"] }));
+app.use(
+  cors({
+    origin: ["*", "https://solanum-agrotech-paw-fe.netlify.app"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  }),
+);
 app.use("/pekerja", pekerjaRouter);
 app.use("/laporan", laporanRouter);
 app.get("/", (req, res) => {
