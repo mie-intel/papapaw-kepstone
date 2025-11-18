@@ -14,6 +14,10 @@ Aplikasi ini merupakan aplikasi yang dibuat untuk membuat laporan apabila terjad
 | Timothy Tanuwidjaya         | 23/515955/TK/56763 | (Back End Developer)  |
 | Dzulfikar Rizqi Ramadhani   | 23/522193/TK/57616 | (Back End Developer)  |
 
+### Deploymeny
+* Front End: [solanum-agrotech-paw-fe.netlify.app/](http://solanum-agrotech-paw-fe.netlify.app/)
+* Back End:  [solanum-agrotech-paw-be.vercel.app/](https://solanum-agrotech-paw-be.vercel.app/)
+
 ### URL Youtube
 
 [![Watch the video]](https://youtu.be/qdscMr99WkY)
