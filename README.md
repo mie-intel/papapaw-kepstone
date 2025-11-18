@@ -16,7 +16,7 @@ Aplikasi ini merupakan aplikasi yang dibuat untuk membuat laporan apabila terjad
 
 ### URL Youtube
 
-[![Watch the video]](linknya taruh sini)
+[![Watch the video]](https://youtu.be/qdscMr99WkY)
 
 ### **Back End**
 
