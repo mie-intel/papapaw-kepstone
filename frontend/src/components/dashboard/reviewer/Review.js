@@ -6,7 +6,7 @@ import { getskalaCederaString } from "@/libs/helpers/cidera";
 import { LaporanContext } from "@/components/contexts/LaporanContext";
 import { showToast } from "@/libs/helpers/toaster";
 
-const KepalaReview = ({ reportData, onClose }) => {
+const Review = ({ reportData, onClose }) => {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
   const [status, setStatus] = useState(""); // "approved" or "rejected"
@@ -227,7 +227,7 @@ const KepalaReview = ({ reportData, onClose }) => {
   );
 };
 
-KepalaReview.propTypes = {
+Review.propTypes = {
   reportData: PropTypes.shape({
     idSurat: PropTypes.string,
     lokasi: PropTypes.string,
@@ -240,4 +240,4 @@ KepalaReview.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default KepalaReview;
+export default Review;

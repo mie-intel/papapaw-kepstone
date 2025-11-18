@@ -7,21 +7,7 @@ import { Dropdown1 } from "../../allPage/Dropdown";
 import { LaporanContext } from "@/components/contexts/LaporanContext";
 import { showToast } from "@/libs/helpers/toaster";
 import { useRouter } from "next/navigation";
-import { id } from "zod/v4/locales";
-import { date } from "zod";
-import { format } from "path";
-
-const getskalaCederaString = (level) => {
-  if (level === 3) return "Critical";
-  if (level === 2) return "Moderate";
-  return "Minor";
-};
-
-const getSkalaCederaNumber = (levelStr) => {
-  if (levelStr === "Critical") return 3;
-  if (levelStr === "Moderate") return 2;
-  return 1;
-};
+import { getSkalaCederaNumber, getskalaCederaString } from "@/libs/helpers/cidera";
 
 function parseDateString(str) {
   if (!str) return null;
@@ -56,16 +42,16 @@ const HseCreate = ({ draftData, onClose }) => {
   const handleClick = async (status) => {
     setLoading(true);
     if (draftData) {
-      console.log("Editing draft data:", {
-        idSurat: draftData.idSurat,
-        title: reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera: getSkalaCederaNumber(skalaCedera),
-        tanggal: parseDateString(formatDateForInput(tanggal)),
-        detail: description,
-        status,
-      });
+      // console.log("Editing draft data:", {
+      //   idSurat: draftData.idSurat,
+      //   title: reportTitle,
+      //   lokasi,
+      //   departemen,
+      //   skalaCedera: getSkalaCederaNumber(skalaCedera),
+      //   tanggal: parseDateString(formatDateForInput(tanggal)),
+      //   detail: description,
+      //   status,
+      // });
       const response = await editLaporan({
         idSurat: draftData.idSurat,
         title: reportTitle,
@@ -77,22 +63,22 @@ const HseCreate = ({ draftData, onClose }) => {
         status,
       });
 
-      console.log("Edit Laporan response:", response);
+      // console.log("Edit Laporan response:", response);
       if (response.success) {
         showToast(true, "Report updated successfully");
       } else {
         showToast(false, response.error || "Failed to update report");
       }
     } else {
-      console.log("Creating new report with data:", {
-        title: reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera: getSkalaCederaNumber(skalaCedera),
-        tanggal: parseDateString(formatDateForInput(tanggal)),
-        detail: description,
-        status,
-      });
+      // console.log("Creating new report with data:", {
+      //   title: reportTitle,
+      //   lokasi,
+      //   departemen,
+      //   skalaCedera: getSkalaCederaNumber(skalaCedera),
+      //   tanggal: parseDateString(formatDateForInput(tanggal)),
+      //   detail: description,
+      //   status,
+      // });
       const response = await createLaporan({
         title: reportTitle,
         lokasi,
@@ -103,7 +89,7 @@ const HseCreate = ({ draftData, onClose }) => {
         status,
       });
 
-      console.log("Create Laporan response:", response);
+      // console.log("Create Laporan response:", response);
 
       if (response.success) {
         showToast(true, "Report submitted successfully");
@@ -111,15 +97,15 @@ const HseCreate = ({ draftData, onClose }) => {
         showToast(false, response.error || "Failed to submit report");
       }
 
-      console.log("Submitting report:", {
-        reportTitle,
-        lokasi,
-        departemen,
-        skalaCedera,
-        tanggal,
-        description,
-        status,
-      });
+      // console.log("Submitting report:", {
+      //   reportTitle,
+      //   lokasi,
+      //   departemen,
+      //   skalaCedera,
+      //   tanggal,
+      //   description,
+      //   status,
+      // });
     }
     // setreportTitle("");
     // setlokasi("");
@@ -137,10 +123,11 @@ const HseCreate = ({ draftData, onClose }) => {
 
   const handleSubmit = async (e, status) => {
     e.preventDefault();
+    // console.log("Form submitted with status:", status);
     await handleClick(status);
   };
 
-  console.log("TANGGAL STATE:", tanggal, new Date(tanggal));
+  // console.log("TANGGAL STATE:", tanggal, new Date(tanggal));
 
   return (
     <div className="font-jakarta relative flex h-full w-full overflow-y-auto p-1 md:p-8">
@@ -296,7 +283,7 @@ const HseCreate = ({ draftData, onClose }) => {
                 <Button1
                   type="submit"
                   disabled={loading}
-                  label={draftData ? "Update Report" : "Submit Report"}
+                  label={draftData ? "Send Report" : "Submit Report"}
                   className="w-full rounded-lg bg-blue-600 px-6 py-2.5 text-sm text-white transition-all hover:bg-blue-700"
                 />
               </div>

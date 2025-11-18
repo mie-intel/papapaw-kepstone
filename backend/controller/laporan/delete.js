@@ -17,14 +17,14 @@ export async function deleteByIdSurat(req, res) {
     if (user) {
       const isOwner = String(user.id || user._id) === String(laporan.uid);
       const isAdminRole = user.jabatan === "HSE";
-      console.log(
-        "Delete request by user:",
-        user,
-        "isOwner:",
-        isOwner,
-        "isAdminRole:",
-        isAdminRole,
-      );
+      // console.log(
+      //   "Delete request by user:",
+      //   user,
+      //   "isOwner:",
+      //   isOwner,
+      //   "isAdminRole:",
+      //   isAdminRole,
+      // );
       if (!isOwner && !isAdminRole) {
         return res
           .status(403)
@@ -34,11 +34,11 @@ export async function deleteByIdSurat(req, res) {
 
     // Proceed to delete
     await Laporan.deleteOne({ idSurat });
-    console.log(`Laporan with idSurat ${idSurat} deleted successfully.`);
+    // console.log(`Laporan with idSurat ${idSurat} deleted successfully.`);
 
     return res.json({ message: "Laporan berhasil dihapus", idSurat });
   } catch (err) {
-    console.error("Error deleting laporan:", err);
+    // console.error("Error deleting laporan:", err);
     return res
       .status(500)
       .json({ message: "Terjadi kesalahan saat menghapus laporan", error: err.message });

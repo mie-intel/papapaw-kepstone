@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import { LaporanContext } from "@/components/contexts/LaporanContext";
-import { IoPencilSharp } from "react-icons/io5";
-import { FaEye, FaTrashCan, FaDownload } from "react-icons/fa6";
+import PropTypes from "prop-types";
+import { FaEye } from "react-icons/fa6";
 import InputForm from "@/components/allPage/InputForm";
 import Severity from "@/components/allPage/Severity";
 import Status from "@/components/allPage/Status";
 import Overview from "@/components/allPage/Overview";
 import { Dropdown1 } from "@/components/allPage/Dropdown";
 
-export default function KepalaHis() {
+export default function History({ filterHistory }) {
   const [selectedReport, setSelectedReport] = useState(null);
   const [showOverview, setShowOverview] = useState(false);
   const statusOptions = ["All Status", "Ongoing", "Completed", "Draft", "Rejected"];
@@ -21,7 +21,6 @@ export default function KepalaHis() {
   useEffect(() => {
     const init = async () => {
       setLoading(true);
-      // Fetch laporan data here if needed
       try {
         const response = await getAllLaporan();
         setLaporan(response.data.data);
@@ -39,37 +38,33 @@ export default function KepalaHis() {
     search: "",
   });
 
-  const filteredReports = laporan
-    .filter((report) => report.status !== 0 && !report.tertolak)
-    .filter((report) => {
-      const searchMatch =
-        (report.detail && report.detail.toLowerCase().includes(formData.search.toLowerCase())) ||
-        (report.lokasi && report.lokasi.toLowerCase().includes(formData.search.toLowerCase())) ||
-        (report.departemen &&
-          report.departemen.toLowerCase().includes(formData.search.toLowerCase()));
+  const filteredReports = laporan.filter(filterHistory).filter((report) => {
+    const searchMatch =
+      (report.detail && report.detail.toLowerCase().includes(formData.search.toLowerCase())) ||
+      (report.lokasi && report.lokasi.toLowerCase().includes(formData.search.toLowerCase())) ||
+      (report.departemen &&
+        report.departemen.toLowerCase().includes(formData.search.toLowerCase()));
 
-      const statusLabel = report.tertolak
-        ? "Rejected"
-        : report.status === 3
-          ? "Completed"
-          : report.status === 0
-            ? "Draft"
-            : "Ongoing";
+    const statusLabel = report.tertolak
+      ? "Rejected"
+      : report.status === 3
+        ? "Completed"
+        : report.status === 0
+          ? "Draft"
+          : "Ongoing";
 
-      const statusMatch =
-        formData.status === "" ||
-        formData.status === "All Status" ||
-        formData.status === statusLabel;
+    const statusMatch =
+      formData.status === "" || formData.status === "All Status" || formData.status === statusLabel;
 
-      const severityMatch =
-        formData.severity === "" ||
-        formData.severity === "Severity Level" ||
-        (report.skalaCedera === 3 && formData.severity === "Severe") ||
-        (report.skalaCedera === 2 && formData.severity === "Moderate") ||
-        (report.skalaCedera === 1 && formData.severity === "Minor");
+    const severityMatch =
+      formData.severity === "" ||
+      formData.severity === "Severity Level" ||
+      (report.skalaCedera === 3 && formData.severity === "Severe") ||
+      (report.skalaCedera === 2 && formData.severity === "Moderate") ||
+      (report.skalaCedera === 1 && formData.severity === "Minor");
 
-      return searchMatch && statusMatch && severityMatch;
-    });
+    return searchMatch && statusMatch && severityMatch;
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -173,15 +168,6 @@ export default function KepalaHis() {
                                 setShowOverview(true);
                               }}
                             />
-                            {report.status === 3 && !report.tertolak && (
-                              <FaDownload title="Download Report" className="cursor-pointer" />
-                            )}
-                            {report.status === 0 && !report.tertolak && (
-                              <>
-                                <IoPencilSharp title="Edit Report" className="cursor-pointer" />
-                                <FaTrashCan title="Delete Report" className="cursor-pointer" />
-                              </>
-                            )}
                           </div>
                         </td>
                       </tr>
@@ -204,3 +190,7 @@ export default function KepalaHis() {
     </div>
   );
 }
+
+History.propTypes = {
+  filterHistory: PropTypes.func.isRequired,
+};

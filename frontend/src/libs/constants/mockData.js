@@ -18,6 +18,7 @@ export const mockUsers = [
 
 export const mockReports2 = [
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR001",
     uid: "EMP001",
     skalaCedera: 2,
@@ -30,6 +31,7 @@ export const mockReports2 = [
     departemen: "Mechanical Assembly",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR002",
     uid: "EMP002",
     skalaCedera: 3,
@@ -43,6 +45,7 @@ export const mockReports2 = [
     departemen: "Electronical Assembly",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR003",
     uid: "EMP004",
     skalaCedera: 1,
@@ -57,6 +60,7 @@ export const mockReports2 = [
     departemen: "Software Installation",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR004",
     uid: "EMP005",
     skalaCedera: 1,
@@ -69,6 +73,7 @@ export const mockReports2 = [
     departemen: "Warehouse",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR005",
     uid: "EMP003",
     skalaCedera: 2,
@@ -83,6 +88,7 @@ export const mockReports2 = [
     departemen: "Direktur",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR006",
     uid: "EMP002",
     skalaCedera: 2,
@@ -96,6 +102,7 @@ export const mockReports2 = [
     departemen: "Electronical Assembly",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR007",
     uid: "EMP001",
     skalaCedera: 3,
@@ -110,6 +117,7 @@ export const mockReports2 = [
     departemen: "Mechanical Assembly",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR008",
     uid: "EMP004",
     skalaCedera: 1,
@@ -122,6 +130,7 @@ export const mockReports2 = [
     departemen: "Software Installation",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR009",
     uid: "EMP005",
     skalaCedera: 2,
@@ -135,6 +144,7 @@ export const mockReports2 = [
     departemen: "Warehouse",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR010",
     uid: "EMP003",
     skalaCedera: 3,
@@ -149,6 +159,7 @@ export const mockReports2 = [
     departemen: "Direktur",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR011",
     uid: "EMP001",
     skalaCedera: 1,
@@ -162,6 +173,7 @@ export const mockReports2 = [
     departemen: "Mechanical Assembly",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR012",
     uid: "EMP004",
     skalaCedera: 3,
@@ -176,6 +188,7 @@ export const mockReports2 = [
     departemen: "Software Installation",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR013",
     uid: "EMP002",
     skalaCedera: 1,
@@ -188,6 +201,7 @@ export const mockReports2 = [
     departemen: "Electronical Assembly",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR014",
     uid: "EMP005",
     skalaCedera: 2,
@@ -200,6 +214,7 @@ export const mockReports2 = [
     departemen: "Warehouse",
   },
   {
+    title: "Injury Report LPR001",
     idSurat: "LPR015",
     uid: "EMP003",
     skalaCedera: 2,

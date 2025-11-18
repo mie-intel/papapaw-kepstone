@@ -20,7 +20,7 @@ export const BREAKPOINTS = {
  * @example
  * const { isSm, isMd, isLg, isXl, is2Xl } = useTailwindBreakpoint();
  * if (isLg) {
- *   console.log("Large breakpoint or above");
+ *   // console.log("Large breakpoint or above");
  * }
  */
 

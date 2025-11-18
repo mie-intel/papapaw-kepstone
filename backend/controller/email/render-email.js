@@ -1,4 +1,4 @@
-const render_email = (name) => {
+const render_email = (name, details) => {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -82,11 +82,15 @@ const render_email = (name) => {
 </head>
 <body>
   <div class="card">
-    <h1>All Set, ${name}!</h1>
-    <p>Your <span class="highlight">Report Document</span> has been fully approved!</p>
-    <p>You can now download the approved report document or keep it for your records.</p>
-
-    <a href="#" class="button">View Report</a>
+    <h1>Halo, ${name}!</h1>
+    <p>Your Report Document has been fully approved!</p>
+  
+    <h3>${details.title}</h3>
+    <p>Lokasi: ${details.lokasi}</p>
+    <p>Department: ${details.departemen}</p>
+    <p>Date: ${new Date(details.tanggal).toLocaleDateString()}</p>
+    <p>Severity Level: ${details.skalaCedera}</p>
+    <p>Detailed Description: ${details.detail}</p>
 
     <div class="footer">
       Thank you for your cooperation and stay safe!<br>

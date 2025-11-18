@@ -44,21 +44,21 @@ const normalizeDateFromString = (raw) => {
 
 const run = async () => {
   await connectDB();
-  console.log("Connected to DB");
+  // console.log("Connected to DB");
 
   try {
     // 1) Documents where tanggal is a string
     const stringDocs = await Laporan.find({ tanggal: { $type: "string" } }).lean();
-    console.log(`Found ${stringDocs.length} laporan with tanggal as string`);
+    // console.log(`Found ${stringDocs.length} laporan with tanggal as string`);
 
     for (const doc of stringDocs) {
       const raw = doc.tanggal;
       const fixed = normalizeDateFromString(raw);
       if (fixed) {
         await Laporan.updateOne({ _id: doc._id }, { $set: { tanggal: fixed } });
-        console.log(`Fixed (string) _id=${doc._id} => ${fixed.toISOString().split("T")[0]}`);
+        // console.log(`Fixed (string) _id=${doc._id} => ${fixed.toISOString().split("T")[0]}`);
       } else {
-        console.warn(`Could not normalize tanggal for _id=${doc._id} raw='${raw}'`);
+        // console.warn(`Could not normalize tanggal for _id=${doc._id} raw='${raw}'`);
       }
     }
 
@@ -68,7 +68,7 @@ const run = async () => {
         $or: [{ $gt: [{ $year: "$tanggal" }, 2100] }, { $lt: [{ $year: "$tanggal" }, 1900] }],
       },
     }).lean();
-    console.log(`Found ${outOfRangeDocs.length} laporan with tanggal year out of range`);
+    // console.log(`Found ${outOfRangeDocs.length} laporan with tanggal year out of range`);
 
     for (const doc of outOfRangeDocs) {
       // Try to inspect the stored value; if it's Date but year bad, we can't recover the original string reliably
@@ -79,25 +79,25 @@ const run = async () => {
         const candidate = new Date(m[1]);
         if (!Number.isNaN(candidate.getTime()) && isReasonableYear(candidate.getFullYear())) {
           await Laporan.updateOne({ _id: doc._id }, { $set: { tanggal: candidate } });
-          console.log(
+          // console.log(
             `Fixed (outOfRange) _id=${doc._id} => ${candidate.toISOString().split("T")[0]}`,
           );
           continue;
         }
       }
-      console.warn(`Skipping out-of-range tanggal for _id=${doc._id} value='${doc.tanggal}'`);
+      // console.warn(`Skipping out-of-range tanggal for _id=${doc._id} value='${doc.tanggal}'`);
     }
 
-    console.log("Migration finished");
+    // console.log("Migration finished");
   } catch (err) {
-    console.error("Migration error:", err);
+    // console.error("Migration error:", err);
   } finally {
     await mongoose.disconnect();
-    console.log("Disconnected");
+    // console.log("Disconnected");
   }
 };
 
 run().catch((e) => {
-  console.error(e);
+  // console.error(e);
   process.exit(1);
 });

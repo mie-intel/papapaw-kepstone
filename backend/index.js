@@ -1,7 +1,6 @@
 import express from "express";
 import pekerjaRouter from "./routes/pekerja.js";
 import laporanRouter from "./routes/laporan.js";
-import emailRouter from "./routes/email.js";
 import { connectDB } from "./config/db.js";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -15,14 +14,13 @@ connectDB();
 
 // MIDDLEWARE
 app.use(express.json());
-app.use(cors(["*"]));
+app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"] }));
 app.use("/pekerja", pekerjaRouter);
 app.use("/laporan", laporanRouter);
-app.use("/email-verification", emailRouter);
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello Kel 5 Web App!");
 });
 
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  // console.log(`Server started on port ${PORT}`);
 });

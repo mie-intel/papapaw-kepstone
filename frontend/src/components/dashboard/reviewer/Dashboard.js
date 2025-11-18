@@ -4,12 +4,12 @@ import { LaporanContext } from "@/components/contexts/LaporanContext";
 import CardReport from "@/components/allPage/CardReport";
 import { FaFileAlt, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { FaClock } from "react-icons/fa6";
-import { mockReports2 } from "@/libs/constants/mockData";
 import Status from "@/components/allPage/Status";
-import KepalaReview from "@/components/dashboard/kepala/KepalaReview";
+import Review from "@/components/dashboard/reviewer/Review";
 import { useRouter } from "next/navigation";
+import PropTypes from "prop-types";
 
-export default function KepalaDash() {
+export default function Dashboard({ Role, filterDashboard }) {
   const [selectedReport, setSelectedReport] = useState(null);
   const [showReview, setShowReview] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,14 +22,14 @@ export default function KepalaDash() {
     const init = async () => {
       setLoading(true);
       const response = await getAllLaporan();
-      // // console.log("RESPONSES", response);
       setLaporan(response.data.data);
       setLoading(false);
       setUpdate(false);
     };
     init();
   }, [update]);
-  const filteredLaporan = laporan.filter((report) => report.status === 1 && !report.tertolak);
+  // console.log("EAAA", laporan);
+  const filteredLaporan = laporan.filter(filterDashboard);
 
   const handleViewDetails = (report) => {
     setSelectedReport(report);
@@ -50,7 +50,7 @@ export default function KepalaDash() {
           <div className="flex shrink-0 flex-col">
             <h2 className="text-[6.5vw] font-extrabold md:text-2xl">Dashboard</h2>
             <p className="text-[4vw] text-[#B5B5B5] md:text-sm">
-              Welcome! Here is the overview of Kepala Bagian reports.
+              Welcome! Here is the overview of {Role} reports.
             </p>
           </div>
 
@@ -150,7 +150,7 @@ export default function KepalaDash() {
           </button>
 
           {/* Review Component */}
-          <KepalaReview
+          <Review
             reportData={{
               title: selectedReport?.title || "",
               idSurat: selectedReport?.idSurat || "",
@@ -167,3 +167,8 @@ export default function KepalaDash() {
     </div>
   );
 }
+
+Dashboard.propTypes = {
+  Role: PropTypes.string.isRequired,
+  filterDashboard: PropTypes.func.isRequired,
+};

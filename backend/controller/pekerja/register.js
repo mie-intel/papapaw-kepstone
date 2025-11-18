@@ -3,10 +3,10 @@ import { Pekerja } from "../../models/objectModel.js";
 export async function register(req, res) {
   try {
     // Ambil data yang diperlukan dari body request
-    const { nomorInduk, nama, jabatan, departemen, username, password } = req.body;
+    const { nomorInduk, nama, email, jabatan, departemen, username, password } = req.body;
 
     // Validasi input
-    if (!nomorInduk || !nama || !jabatan || !username || !password) {
+    if (!nomorInduk || !nama || !email || !jabatan || !username || !password) {
       return res.status(400).json({
         error:
           "Data tidak lengkap. Semua field (nomor induk, nama, jabatan, departemen, username, password) harus diisi.",
@@ -77,7 +77,7 @@ export async function register(req, res) {
     });
   } catch (error) {
     // Tangani kemungkinan error
-    console.error("Error in register controller", error);
+    // console.error("Error in register controller", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }

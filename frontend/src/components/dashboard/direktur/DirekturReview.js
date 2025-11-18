@@ -21,7 +21,7 @@ const DirekturReview = ({ reportData }) => {
 
   const handleApprove = () => {
     setStatus("approved");
-    console.log("Report approved:", report);
+    // console.log("Report approved:", report);
     // TODO: Send approval to backend
   };
 
@@ -32,7 +32,7 @@ const DirekturReview = ({ reportData }) => {
     }
     setStatus("rejected");
     setShowRejectModal(false);
-    console.log("Report rejected with reason:", rejectionReason);
+    // console.log("Report rejected with reason:", rejectionReason);
     // TODO: Send rejection to backend
   };
 

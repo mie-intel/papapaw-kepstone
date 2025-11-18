@@ -31,7 +31,7 @@ export default function HseDash() {
     severity: "",
     search: "",
   });
-  console.log("Form Data:", formData);
+  // console.log("Form Data:", formData);
   const router = useRouter();
 
   const { getAllLaporan, deleteByIdSurat } = React.useContext(LaporanContext);
@@ -39,7 +39,7 @@ export default function HseDash() {
   const [loading, setLoading] = React.useState(true);
   const [update, setUpdate] = React.useState(false);
 
-  console.log("Laporan data:", laporan);
+  // // console.log("Laporan data:", laporan);
 
   useEffect(() => {
     const init = async () => {
@@ -49,7 +49,7 @@ export default function HseDash() {
       if (response.success) {
         setLaporan(response.data.data);
       } else {
-        console.log("Failed to fetch reports:", response.error);
+        // console.log("Failed to fetch reports:", response.error);
       }
       setUpdate(false);
       setLoading(false);
@@ -57,9 +57,9 @@ export default function HseDash() {
     init();
   }, [update]);
 
-  console.log("Laporan state:", laporan);
+  // // console.log("Laporan state:", laporan);
   const filteredReports = laporan.filter((report) => {
-    console.log("Filtering report:", report, report.departemen, report.lokasi, report.detail);
+    // // console.log("Filtering report:", report, report.departemen, report.lokasi, report.detail);
 
     const searchMatch =
       (report.detail && report.detail.toLowerCase().includes(formData.search.toLowerCase())) ||
@@ -90,14 +90,14 @@ export default function HseDash() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("Handling change for", name, "with value", value);
+    // console.log("Handling change for", name, "with value", value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   const handleDeleteDraft = async () => {
     if (reportToDelete) {
       setUpdate(true);
       const response = await deleteByIdSurat(reportToDelete.idSurat);
-      console.log("Deleting draft:", reportToDelete.idSurat);
+      // // console.log("Deleting draft:", reportToDelete.idSurat);
 
       if (response.success) {
         showToast(true, "Report deleted successfully");
@@ -219,7 +219,7 @@ export default function HseDash() {
                         </tr>
                       ) : filteredReports.length > 0 ? (
                         filteredReports.map((report) => {
-                          console.log("Rendering report:", report);
+                          // // console.log("Rendering report:", report);
                           return (
                             <tr
                               key={report.idSurat}
@@ -250,27 +250,26 @@ export default function HseDash() {
                                       setShowOverview(true);
                                     }}
                                   />
-                                  {report.status === 0 ||
-                                    (report.tertolak && (
-                                      <>
-                                        <IoPencilSharp
-                                          title="Edit Report"
-                                          className="cursor-pointer duration-300 hover:text-[#B4B4B4]"
-                                          onClick={() => {
-                                            setEditingDraft(report);
-                                            setShowCreate(true);
-                                          }}
-                                        />
-                                        <FaTrashCan
-                                          title="Delete Report"
-                                          className="cursor-pointer duration-300 hover:text-[#E8697E]"
-                                          onClick={() => {
-                                            setReportToDelete(report);
-                                            setShowDeleteModal(true);
-                                          }}
-                                        />
-                                      </>
-                                    ))}
+                                  {(report.status === 0 || report.tertolak) && (
+                                    <>
+                                      <IoPencilSharp
+                                        title="Edit Report"
+                                        className="cursor-pointer duration-300 hover:text-[#B4B4B4]"
+                                        onClick={() => {
+                                          setEditingDraft(report);
+                                          setShowCreate(true);
+                                        }}
+                                      />
+                                      <FaTrashCan
+                                        title="Delete Report"
+                                        className="cursor-pointer duration-300 hover:text-[#E8697E]"
+                                        onClick={() => {
+                                          setReportToDelete(report);
+                                          setShowDeleteModal(true);
+                                        }}
+                                      />
+                                    </>
+                                  )}
                                   {}
                                 </div>
                               </td>

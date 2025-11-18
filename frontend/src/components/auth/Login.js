@@ -30,7 +30,7 @@ export default function Login() {
     setLoading(false);
     setShowErrors(false);
     setErrorMsg("");
-    console.log("ROLE", role);
+    // console.log("ROLE", role);
     // Mock data for testing
     switch (role) {
       case "HSE":
@@ -47,7 +47,9 @@ export default function Login() {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{__html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @keyframes float-gentle {
           0%, 100% {
             transform: translate(0, 0) scale(1);
@@ -85,8 +87,10 @@ export default function Login() {
         .blob-pink {
           animation: float-reverse 10s ease-in-out infinite;
         }
-      `}} />
-      
+      `,
+        }}
+      />
+
       <div className="font-jakarta relative flex min-h-screen w-full items-center justify-center overflow-hidden p-5">
         {/* Logo Desktop */}
         <div className="absolute top-10 left-[6vw] hidden flex-col items-start text-white lg:flex">

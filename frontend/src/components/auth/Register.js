@@ -12,6 +12,7 @@ export default function Register() {
   const [formData, setFormData] = useState({
     nomorInduk: "",
     nama: "",
+    email: "",
     jabatan: "",
     departemen: "",
     username: "",
@@ -138,6 +139,14 @@ export default function Register() {
               name="nama"
               placeholder="Nama"
               value={formData.nama}
+              onChange={handleChange}
+              showError={showErrors}
+            />
+            <InputForm
+              type="text"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
               onChange={handleChange}
               showError={showErrors}
             />

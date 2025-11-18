@@ -7,8 +7,8 @@ export async function create(req, res) {
     // Ambil data yang diperlukan dari body request
     const { title, skalaCedera, detail, lokasi, departemen, status, tanggal } = req.body;
     const { id: uid } = getUserFromToken(req) || {};
-    console.log("Creating laporan with data:", req.headers.authorization, req.body);
-    console.log("DECODED", getUserFromToken(req));
+    // console.log("Creating laporan with data:", req.headers.authorization, req.body);
+    // console.log("DECODED", getUserFromToken(req));
 
     // Validasi input sederhana
     if (
@@ -21,23 +21,23 @@ export async function create(req, res) {
       tanggal === undefined ||
       status === undefined
     ) {
-      console.log("Missing fields:", {
-        uid,
-        title,
-        skalaCedera,
-        detail,
-        lokasi,
-        departemen,
-        tanggal,
-        status,
-      });
+      // console.log("Missing fields:", {
+      //   uid,
+      //   title,
+      //   skalaCedera,
+      //   detail,
+      //   lokasi,
+      //   departemen,
+      //   tanggal,
+      //   status,
+      // });
       return res.status(400).json({ error: "Data yang dibutuhkan tidak lengkap." });
     }
 
-    console.log(
-      "All required fields are present.",
-      `SURAT-${JSON.stringify({ uid, title, skalaCedera, lokasi, tanggal })}`,
-    );
+    // console.log(
+    //   "All required fields are present.",
+    //   `SURAT-${JSON.stringify({ uid, title, skalaCedera, lokasi, tanggal })}`,
+    // );
     const idSurat = await bcrypt.hash(
       `SURAT-${JSON.stringify({ uid, title, skalaCedera, lokasi, tanggal })}`,
       16,
@@ -51,7 +51,7 @@ export async function create(req, res) {
       });
     }
 
-    console.log("Generated idSurat:", idSurat);
+    // console.log("Generated idSurat:", idSurat);
     // Buat instance Laporan baru dengan data dari request
     const laporanBaru = new Laporan({
       idSurat,
@@ -68,7 +68,7 @@ export async function create(req, res) {
     // Simpan ke database
     await laporanBaru.save();
 
-    console.log("New laporan created:", laporanBaru);
+    // console.log("New laporan created:", laporanBaru);
 
     // Kirim respons sukses
     res.status(201).json({
@@ -79,7 +79,7 @@ export async function create(req, res) {
     });
   } catch (error) {
     // Tangani kemungkinan error
-    console.error("Error in create controller", error);
+    // console.error("Error in create controller", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }

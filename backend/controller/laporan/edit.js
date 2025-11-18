@@ -16,11 +16,11 @@ export async function edit(req, res) {
       tanggal,
     } = req.body;
 
-    console.log("BODY", req.body);
-    console.log("GET", getUserFromToken(req));
+    // console.log("BODY", req.body);
+    // console.log("GET", getUserFromToken(req));
     const { id: uid } = getUserFromToken(req) || {};
-    console.log("Membuat laporan dengan data:", req.headers.authorization, req.body);
-    console.log("DECODED", getUserFromToken(req));
+    // console.log("Membuat laporan dengan data:", req.headers.authorization, req.body);
+    // console.log("DECODED", getUserFromToken(req));
 
     // Validasi input sederhana
     if (
@@ -34,26 +34,26 @@ export async function edit(req, res) {
       tanggal === undefined ||
       status === undefined
     ) {
-      console.log("Missing fields:", {
-        id,
-        uid,
-        title,
-        skalaCedera,
-        detail,
-        lokasi,
-        departemen,
-        tanggal,
-        status,
-      });
+      // console.log("Missing fields:", {
+      //   id,
+      //   uid,
+      //   title,
+      //   skalaCedera,
+      //   detail,
+      //   lokasi,
+      //   departemen,
+      //   tanggal,
+      //   status,
+      // });
       return res.status(400).json({ error: "Data yang dibutuhkan tidak lengkap." });
     }
 
     const date = new Date(tanggal);
 
-    console.log(
-      "All required fields are present.",
-      `SURAT-${JSON.stringify({ uid, title, skalaCedera, lokasi, date })}`,
-    );
+    // console.log(
+    //   "All required fields are present.",
+    //   `SURAT-${JSON.stringify({ uid, title, skalaCedera, lokasi, date })}`,
+    // );
 
     // cek apakah id surat exists
     const laporanBaru = await Laporan.findOne({ idSurat: id });
@@ -69,13 +69,13 @@ export async function edit(req, res) {
     laporanBaru.departemen = departemen;
     laporanBaru.status = status;
     laporanBaru.tanggal = tanggal;
-    laporanBaru.tertolak = false;
+    if (status === 1) laporanBaru.tertolak = false;
     laporanBaru.pesanKesalahan = "";
 
     // Simpan ke database
     await laporanBaru.save();
 
-    console.log("New laporan updated:", laporanBaru);
+    // console.log("New laporan updated:", laporanBaru);
 
     // Kirim respons sukses
     res.status(201).json({
@@ -86,7 +86,7 @@ export async function edit(req, res) {
     });
   } catch (error) {
     // Tangani kemungkinan error
-    console.error("Error in edit controller", error);
+    // console.error("Error in edit controller", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }

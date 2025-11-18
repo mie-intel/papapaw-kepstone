@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { createContext } from "react";
 import axios from "@/config/axios-config";
 import PropTypes from "prop-types";
@@ -11,12 +12,13 @@ export const LaporanContext = createContext();
 export const LaporanProvider = ({ children }) => {
   const getAxiosHeader = () => ({
     Authorization: `Bearer ${Cookies.get("token")}`,
+    "Content-Type": "application/json",
   });
 
   const createLaporan = async (laporanData) => {
     const result = laporanSchema.safeParse(laporanData);
     if (!result.success) {
-      console.log("Laporan validation errors:", result.error.issues);
+      // // // console.log("Laporan validation errors:", result.error.issues);
       const error = result.error.issues[0].message;
       return {
         success: false,
@@ -51,7 +53,6 @@ export const LaporanProvider = ({ children }) => {
   const editLaporan = async (laporanData) => {
     const result = laporanSchema.safeParse({ ...laporanData, idSurat: undefined });
     if (!result.success) {
-      console.log("Laporan validation errors:", result.error.issues);
       const error = result.error.issues[0].message;
       return {
         success: false,
@@ -59,7 +60,6 @@ export const LaporanProvider = ({ children }) => {
       };
     }
 
-    console.log("LAPORAN YANG DIKIRIM", laporanData);
     try {
       await axios.put("/laporan/", laporanData, {
         headers: getAxiosHeader(),
@@ -104,7 +104,7 @@ export const LaporanProvider = ({ children }) => {
       });
       return { success: true, data: response.data };
     } catch (error) {
-      return { success: false, data: [] };
+      return { success: false, error: error.message, data: [] };
     }
   };
 
@@ -120,6 +120,30 @@ export const LaporanProvider = ({ children }) => {
     }
   };
 
+  const approveSurat = async (idSurat) => {
+    try {
+      // // // console.log("ID SURAT", idSurat);
+      // // // console.log(getAxiosHeader());
+      // axios.put(url, data, config) — data is second arg, config (headers) is third
+      await axios.put(`/laporan/approve`, { idSurat }, { headers: getAxiosHeader() });
+      // // // console.log("Laporan approved:", idSurat);
+      return { success: true, message: "Laporan berhasil disetujui." };
+    } catch (error) {
+      // // // console.log("Error approving laporan:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  const tolakSurat = async (idSurat, pesanKesalahan) => {
+    try {
+      // // // console.log(getAxiosHeader());
+      await axios.put(`/laporan/tolak`, { idSurat, pesanKesalahan }, { headers: getAxiosHeader() });
+      return { success: true, message: "Laporan berhasil ditolak." };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
   return (
     <LaporanContext.Provider
       value={{
@@ -127,6 +151,8 @@ export const LaporanProvider = ({ children }) => {
         editLaporan,
         getAllLaporan,
         deleteByIdSurat,
+        approveSurat,
+        tolakSurat,
       }}
     >
       {children}

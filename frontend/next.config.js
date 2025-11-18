@@ -2,9 +2,9 @@
 
 module.exports = {
   trailingSlash: false,
-  compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
-  },
+  // compiler: {
+  //   remove, // console: process.env.NODE_ENV === "production",
+  // },
   async rewrites() {
     return [
       {

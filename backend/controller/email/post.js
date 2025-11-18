@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import nodemailer from "nodemailer";
 import render_email from "./render-email.js";
-export async function postEmail(req, res) {
+export async function postEmail(name, email, details) {
   try {
     const transporter = nodemailer.createTransport({
       //   service: "gmail",
@@ -20,28 +20,21 @@ export async function postEmail(req, res) {
 
     let mailOptions = {
       from: process.env.EMAIL_USER,
-      to: req.body.email,
+      to: email,
       subject: "Report Approval Confirmation",
-      html: render_email(req.body.name),
+      html: render_email(name, details),
     };
 
-    // console.log(mailOptions);
+    // // console.log(mailOptions);
 
     await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return console.log(error);
+        return; // console.log(error);
       }
-      console.log("Message sent: %s", info.messageId);
-      res.render("contact.ejs", { msg: "Email has been sent" });
-    });
-
-    // Kirim respons sukses
-    res.status(200).json({
-      message: "Email berhasil dikirimkan!",
+      // console.log("Message sent: %s", info.messageId);
     });
   } catch (error) {
     // Tangani kemungkinan error
-    console.error("Email gagal dikirim", error);
-    res.status(500).json({ error: "Internal server error" });
+    // console.error("Email gagal dikirim", error);
   }
 }

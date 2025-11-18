@@ -1,4 +1,4 @@
-import z from "zod";
+import z, { email } from "zod";
 
 export const loginSchema = z.object({
   username: z.string().trim().min(1, { message: "Username tidak boleh kosong" }),
@@ -12,6 +12,7 @@ export const registerSchema = z.object({
   departemen: z.string().min(1, { message: "Data belum lengkap" }),
   username: z.string().trim().min(1, { message: "Data belum lengkap" }),
   password: z.string().trim().min(1, { message: "Data belum lengkap" }),
+  email: z.string().trim().email({ message: "Email tidak valid" }),
 });
 
 const DEPARTEMEN = [

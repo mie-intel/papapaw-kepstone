@@ -1,34 +1,10 @@
 import { get } from "http";
 import jwt from "jsonwebtoken";
 
-const protectRoute = (req, res, next) => {
-  let token;
-  const authHeader = req.headers.authorization;
-
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    try {
-      // Ambil token dari header ('Bearer <token>')
-      token = authHeader.split(" ")[1];
-
-      // Verifikasi token menggunakan secret yang SAMA
-      const secretKey = process.env.JWT_SECRET;
-      const decoded = jwt.verify(token, secretKey);
-      // Jika berhasil, simpan data user ke request untuk dipakai di controller selanjutnya
-      req.user = decoded;
-      next(); // Lanjutkan ke controller
-    } catch (error) {
-      console.log("Token verification error:", error);
-      res.status(401).json({ message: "Token tidak valid atau sudah kedaluwarsa." });
-    }
-  } else {
-    res.status(401).json({ message: "Tidak ada token, akses ditolak." });
-  }
-};
-
 export const getUserFromToken = (req) => {
   let token;
   const authHeader = req.headers.authorization;
-
+  // console.log("AUTH HEADER:", authHeader);
   if (authHeader && authHeader.startsWith("Bearer")) {
     try {
       token = authHeader.split(" ")[1];
@@ -36,10 +12,20 @@ export const getUserFromToken = (req) => {
       const decoded = jwt.verify(token, secretKey);
       return decoded; // Kembalikan data user yang sudah didecode
     } catch (error) {
-      console.log("Token verification error:", error);
+      // console.log("Token verification error:", error);
       return null;
     }
-  }
+  } else return null;
+};
+
+const protectRoute = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  // console.log("AUTH HEADER IN PROTECT ROUTE:", req.headers);
+  // console.log("BODY IN PROTECT ROUTE:", req.body);
+  const user = getUserFromToken(req);
+  // console.log("USER FROM TOKEN:", user);
+  if (user) return next();
+  else return res.status(401).json({ message: "Tidak ada token, akses ditolak." });
 };
 
 export function checkHSE(req, res, next) {

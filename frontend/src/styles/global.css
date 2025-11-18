@@ -5,6 +5,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* scrollbar colors (light theme) */
+  ::-webkit-scrollbar {
+    background: #0f1724;
+  }
+  --scrollbar-track: #0f1724; /* slightly lighter than background */
+  --scrollbar-thumb: #34d391; /* green-primary for contrast */
+  --scrollbar-thumb-hover: #1fc16b; /* green */
 }
 
 @theme inline {
@@ -19,6 +26,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    /* scrollbar colors (dark theme) */
   }
 }
 
@@ -41,3 +49,16 @@ body {
 .animate-pop {
   animation: popIn 0.25s ease-out;
 }
+
+::-webkit-scrollbar {
+  background: #0f1724;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1724;
+} /* slightly lighter than background */
+::-webkit-scrollbar-thumb {
+  background: #737391;
+  border-radius: 5px;
+} /* green-primary for contrast */
