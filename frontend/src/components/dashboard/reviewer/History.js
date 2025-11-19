@@ -45,7 +45,7 @@ export default function History({ filterHistory }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   return (
-    <div className="font-jakarta flex min-h-screen w-full flex-col gap-7 overflow-hidden text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0">
+    <div className="font-jakarta flex min-h-screen w-full flex-col gap-7 overflow-hidden pb-20 text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0 lg:pb-0">
       {/* History */}
       <div className="flex h-screen flex-1 flex-col overflow-hidden pb-5 lg:pb-0">
         <div className="flex shrink-0 flex-col">

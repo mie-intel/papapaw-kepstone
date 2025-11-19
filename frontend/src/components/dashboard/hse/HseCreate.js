@@ -77,7 +77,7 @@ const HseCreate = ({ draftData, onClose }) => {
   };
 
   return (
-    <div className="font-jakarta relative flex h-full w-full overflow-y-auto p-1 md:p-8">
+    <div className="font-jakarta relative flex h-full w-full overflow-y-auto p-1 pb-20 md:p-8 lg:pb-0">
       <div className="w-full max-w-6xl">
         {/* Header */}
         <div className="mb-8">

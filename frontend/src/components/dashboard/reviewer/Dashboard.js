@@ -43,7 +43,7 @@ export default function Dashboard({ Role, filterDashboard }) {
   };
 
   return (
-    <div className="font-jakarta flex min-h-screen w-full flex-col gap-4 overflow-hidden text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0">
+    <div className="font-jakarta flex min-h-screen w-full flex-col gap-4 overflow-hidden pb-24 text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0 lg:pb-0">
       {!showReview ? (
         <>
           <div className="flex shrink-0 flex-col">

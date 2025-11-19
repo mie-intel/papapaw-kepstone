@@ -74,7 +74,7 @@ export default function HseDash() {
   };
 
   return (
-    <div className="font-jakarta flex min-h-screen w-full flex-col gap-7 overflow-hidden text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0">
+    <div className="font-jakarta flex min-h-screen w-full flex-col gap-7 overflow-hidden pb-20 text-white lg:h-full lg:min-h-0 lg:bg-transparent lg:p-0 lg:pb-0">
       {!showCreate ? (
         <>
           {/* Dashboard */}
